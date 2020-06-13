@@ -1,37 +1,59 @@
 package com.codingame.game;
 import java.util.List;
+import java.util.Random;
 
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
 import com.codingame.gameengine.core.AbstractReferee;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
+import com.codingame.gameengine.module.tooltip.TooltipModule;
 import com.google.inject.Inject;
+import engine.Board;
+import engine.task.TaskManager;
+import view.BoardView;
 
 public class Referee extends AbstractReferee {
-    // Uncomment the line below and comment the line under it to create a Solo Game
-    // @Inject private SoloGameManager<Player> gameManager;
     @Inject private MultiplayerGameManager<Player> gameManager;
     @Inject private GraphicEntityModule graphicEntityModule;
+    @Inject private TooltipModule tooltipModule;
 
+    private Board board;
+    private TaskManager taskManager;
     @Override
     public void init() {
-        // Initialize your game here.
+        Random random = new Random(gameManager.getSeed());
+        Player.registerPlayer(gameManager.getPlayer(0));
+        Player.registerPlayer(gameManager.getPlayer(1));
+
+        board = new Board(random, graphicEntityModule, tooltipModule);
+        taskManager = new TaskManager();
+        gameManager.setMaxTurns(50);
     }
 
     @Override
     public void gameTurn(int turn) {
-        for (Player player : gameManager.getActivePlayers()) {
-            player.sendInputLine("input");
-            player.execute();
+        if (!taskManager.hasTasks()) {
+            if (board.finalizeTurn()){
+                gameManager.setMaxTurns(gameManager.getMaxTurns() + 1);
+                return;
+            }
+            for (Player player : gameManager.getActivePlayers()) {
+                player.sendInputLine(board.getInput(turn == 1, player));
+                player.execute();
+            }
+
+            for (Player player : gameManager.getActivePlayers()) {
+                try {
+                    List<String> outputs = player.getOutputs();
+                    taskManager.parseTasks(player, board, outputs.get(0));
+                } catch (TimeoutException e) {
+                    player.deactivate(String.format("$%d timeout!", player.getIndex()));
+                }
+            }
+        } else {
+            gameManager.setMaxTurns(gameManager.getMaxTurns() + 1);
         }
 
-        for (Player player : gameManager.getActivePlayers()) {
-            try {
-                List<String> outputs = player.getOutputs();
-                // Check validity of the player output and compute the new game state
-            } catch (TimeoutException e) {
-                player.deactivate(String.format("$%d timeout!", player.getIndex()));
-            }
-        }        
+        board.applyActions(taskManager);
     }
 }
