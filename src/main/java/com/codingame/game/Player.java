@@ -10,6 +10,7 @@ public class Player extends AbstractMultiplayerPlayer {
     }
 
     private static Player[] players = new Player[2];
+
     public static Player getPlayer(int id) {
         return players[id];
     }
@@ -25,5 +26,9 @@ public class Player extends AbstractMultiplayerPlayer {
     @Override
     public int getExpectedOutputLines() {
         return 1;
+    }
+
+    public Player getOpponent() {
+        return getPlayer((1 + this.getIndex()) % 2);
     }
 }

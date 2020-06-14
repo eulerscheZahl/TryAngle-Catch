@@ -25,6 +25,8 @@ public abstract class Task {
                 return new MoveTask(player, board, command);
             if (SpawnTask.pattern.matcher(command).matches())
                 return new SpawnTask(player, board, command);
+            if (AttackTask.pattern.matcher(command).matches())
+                return new AttackTask(player, board, command);
         } catch (Exception ex) {
             return null;
         }

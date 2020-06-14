@@ -10,7 +10,7 @@ public class Triangle {
     private Node node2;
     private Node node3;
     private Player owner;
-    private boolean[] canConquer = new boolean[]{true, true};
+    private boolean[] canCapture = new boolean[]{true, true};
     private TriangleView view;
 
     public Triangle(Node node1, Node node2, Node node3, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule) {
@@ -51,9 +51,9 @@ public class Triangle {
 
     public boolean capture() {
         Player oldOwner = owner;
-        if (canConquer[0] && node1.units[0] > node1.units[1] && node2.units[0] > node2.units[1] && node3.units[0] > node3.units[1])
+        if (canCapture[0] && node1.units[0] > node1.units[1] && node2.units[0] > node2.units[1] && node3.units[0] > node3.units[1])
             doCapture(0);
-        if (canConquer[1] && node1.units[0] < node1.units[1] && node2.units[0] < node2.units[1] && node3.units[0] < node3.units[1])
+        if (canCapture[1] && node1.units[0] < node1.units[1] && node2.units[0] < node2.units[1] && node3.units[0] < node3.units[1])
             doCapture(1);
         return owner != oldOwner;
     }
@@ -62,9 +62,19 @@ public class Triangle {
         node1.units[owner.getIndex()] -= units;
         node2.units[owner.getIndex()] -= units;
         node3.units[owner.getIndex()] -= units;
-        canConquer[owner.getIndex()] = false;
+        node1.remainingUnits[owner.getIndex()] -= units;
+        node2.remainingUnits[owner.getIndex()] -= units;
+        node3.remainingUnits[owner.getIndex()] -= units;
+        canCapture[owner.getIndex()] = false;
         owner = null;
         view.update();
+    }
+
+    public boolean canUse(Player player, int units) {
+        return owner == player &&
+                node1.remainingUnits[player.getIndex()] >= units &&
+                node2.remainingUnits[player.getIndex()] >= units &&
+                node3.remainingUnits[player.getIndex()] >= units;
     }
 
     private void doCapture(int id) {
@@ -77,7 +87,7 @@ public class Triangle {
         if (owner == player) ownerId = 0;
         else if (owner != null) ownerId = 1;
         return node1.getId() + " " + node2.getId() + " " + node3.getId() + " " + ownerId + " " +
-                (canConquer[player.getIndex()] ? 1 : 0) + " " + (canConquer[(player.getIndex() + 1) % 2] ? 1 : 0);
+                (canCapture[player.getIndex()] ? 1 : 0) + " " + (canCapture[(player.getIndex() + 1) % 2] ? 1 : 0);
     }
 
     public boolean hasNode(Node node) {
@@ -86,8 +96,14 @@ public class Triangle {
 
     public void updateAllowedCaptures() {
         for (int i = 0; i < 2; i++) {
-            if (owner != null) canConquer[i] = owner.getIndex() != i;
-            else canConquer[i] |= node1.units[i] == 0 && node2.units[i] == 0 && node3.units[i] == 0;
+            if (owner != null) canCapture[i] = owner.getIndex() != i;
+            else canCapture[i] |= node1.units[i] == 0 && node2.units[i] == 0 && node3.units[i] == 0;
         }
+    }
+
+    public boolean hasNeighbor(Node node) {
+        return node1.neighbors.contains(node) ||
+                node2.neighbors.contains(node) ||
+                node3.neighbors.contains(node);
     }
 }
