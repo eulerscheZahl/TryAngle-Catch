@@ -51,9 +51,9 @@ public class Triangle {
 
     public boolean capture() {
         Player oldOwner = owner;
-        if (canCapture[0] && node1.units[0] > node1.units[1] && node2.units[0] > node2.units[1] && node3.units[0] > node3.units[1])
+        if (canCapture[0] && node1.ownedBy(Player.getPlayer(0)) && node2.ownedBy(Player.getPlayer(0)) && node3.ownedBy(Player.getPlayer(0)))
             doCapture(0);
-        if (canCapture[1] && node1.units[0] < node1.units[1] && node2.units[0] < node2.units[1] && node3.units[0] < node3.units[1])
+        if (canCapture[1] && node1.ownedBy(Player.getPlayer(1)) && node2.ownedBy(Player.getPlayer(1)) && node3.ownedBy(Player.getPlayer(1)))
             doCapture(1);
         return owner != oldOwner;
     }

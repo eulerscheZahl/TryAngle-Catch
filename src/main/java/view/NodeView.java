@@ -46,8 +46,8 @@ public class NodeView {
             unitsViews[i].updateAmount(node.units[i]);
         }
         int lineColor = 0;
-        if (node.units[0] < node.units[1]) lineColor = Player.getColor(1);
-        if (node.units[0] > node.units[1]) lineColor = Player.getColor(0);
+        if (node.ownedBy(Player.getPlayer(0))) lineColor = Player.getColor(0);
+        if (node.ownedBy(Player.getPlayer(1))) lineColor = Player.getColor(1);
         mainCircle.setLineColor(lineColor);
     }
 }
