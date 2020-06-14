@@ -64,4 +64,10 @@ public class UnitView {
     public void hide() {
         group.setVisible(false);
     }
+
+    public void commitAmount(GraphicEntityModule graphics, int unit) {
+        if (unit == amount) return;
+        updateAmount(unit);
+        commit(graphics, 0);
+    }
 }

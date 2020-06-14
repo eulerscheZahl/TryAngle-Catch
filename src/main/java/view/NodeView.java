@@ -36,8 +36,7 @@ public class NodeView {
 
     public void startMove() {
         for (int i = 0; i < 2; i++) {
-            unitsViews[i].updateAmount(node.remainingUnits[i]);
-            unitsViews[i].commit(graphics, 0);
+            unitsViews[i].commitAmount(graphics, node.remainingUnits[i]);
         }
     }
 
