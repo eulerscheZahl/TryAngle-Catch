@@ -27,6 +27,10 @@ public abstract class Task {
                 return new SpawnTask(player, board, command);
             if (AttackTask.pattern.matcher(command).matches())
                 return new AttackTask(player, board, command);
+            if (AddEdgeTask.pattern.matcher(command).matches())
+                return new AddEdgeTask(player, board, command);
+            if (RemoveEdgeTask.pattern.matcher(command).matches())
+                return new RemoveEdgeTask(player, board, command);
         } catch (Exception ex) {
             return null;
         }

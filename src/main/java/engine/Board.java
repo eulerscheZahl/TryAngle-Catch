@@ -46,14 +46,14 @@ public class Board {
             }
         }
         Collections.sort(lines, (o1, o2) -> (int) Math.signum(o1.length() - o2.length()));
-        ArrayList<Line> fixed = new ArrayList<>();
+        ArrayList<Line> exsitingLines = new ArrayList<>();
         for (int i = 0; i < lines.size(); i++) {
-            if (lines.get(i).length() > 500 || lines.get(i).isBlocked(fixed)) {
+            if (lines.get(i).length() > 500 || lines.get(i).isBlocked(exsitingLines)) {
                 lines.remove(i);
                 i--;
             } else {
                 lines.get(i).makeNeighbors();
-                fixed.add(lines.get(i));
+                exsitingLines.add(lines.get(i));
             }
         }
 
@@ -64,15 +64,40 @@ public class Board {
             node.units[0] = 1;
             getMirror(node).units[1] = 1;
         }
-        triangles = findTriangles();
+        updateTriangles();
 
         view = new BoardView(this, graphicEntityModule, tooltipModule);
         finalizeTurn();
     }
 
+    public boolean canConnect(Node from, Node to) {
+        ArrayList<Line> exsitingLines = new ArrayList<>();
+        for (Node n1 : nodes) {
+            for (Node n2 : n1.neighbors) {
+                if (n2.getId() > n1.getId()) exsitingLines.add(new Line(n1, n2));
+            }
+        }
+        Line connect = new Line(from, to);
+        return !connect.isBlocked(exsitingLines);
+    }
+
     private Node getMirror(Node node) {
         if (node.getId() % 2 == 0) return nodes.get(node.getId() + 1);
         return nodes.get(node.getId() - 1);
+    }
+
+    public void updateTriangles() {
+        ArrayList<Triangle> oldTriangles = triangles;
+        ArrayList<Triangle> newTriangles = findTriangles();
+        triangles = new ArrayList<>();
+        for (Triangle t : newTriangles) {
+            Triangle old = null;
+            for (Triangle t2 : oldTriangles) {
+                if (t.equals(t2)) old = t2;
+            }
+            if (old == null) triangles.add(t);
+            else triangles.add(old); // keep triangle stats like the owner
+        }
     }
 
     private ArrayList<Triangle> findTriangles() {
@@ -110,7 +135,37 @@ public class Board {
         for (Triangle triangle : triangles) {
             triangle.updateAllowedCaptures();
         }
-        return captureTriangles();
+        if (surroundNodes() || captureTriangles())
+            return true;
+
+        for (Triangle triangle : triangles) {
+            if (triangle.getOwner() != null) triangle.getOwner().increaseScore();
+        }
+        return false;
+    }
+
+    private boolean surroundNodes() {
+        ArrayList<Node>[] playerAdvantage = new ArrayList[2];
+        for (int i = 0; i < 2; i++) {
+            playerAdvantage[i] = new ArrayList<>();
+            for (Node node : nodes) {
+                if (node.units[i] > node.units[(i + 1) % 2]) playerAdvantage[i].add(node);
+            }
+        }
+
+        boolean surrounded = false;
+        for (int i = 0; i < 2; i++) {
+            for (Node node : nodes) {
+                int opponentIndex = (i + 1) % 2;
+                if (node.units[i] > 0 && node.neighbors.stream().allMatch(n -> playerAdvantage[opponentIndex].contains(n))) {
+                    node.units[i] = 0;
+                    node.updateView(i);
+                    surrounded = true;
+                }
+            }
+        }
+
+        return surrounded;
     }
 
     private boolean captureTriangles() {

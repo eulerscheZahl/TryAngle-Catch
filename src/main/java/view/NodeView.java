@@ -30,8 +30,8 @@ public class NodeView {
         endMove();
     }
 
-    public void updateView(int id) {
-        unitsViews[id].updateAmount(node.units[id]);
+    public void updateView(int playerId) {
+        unitsViews[playerId].updateAmount(node.units[playerId]);
     }
 
     public void startMove() {

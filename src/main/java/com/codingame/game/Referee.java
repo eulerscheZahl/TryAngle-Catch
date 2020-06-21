@@ -5,6 +5,7 @@ import java.util.Random;
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
 import com.codingame.gameengine.core.AbstractReferee;
 import com.codingame.gameengine.core.MultiplayerGameManager;
+import com.codingame.gameengine.module.endscreen.EndScreenModule;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
 import com.google.inject.Inject;
@@ -16,6 +17,7 @@ public class Referee extends AbstractReferee {
     @Inject private MultiplayerGameManager<Player> gameManager;
     @Inject private GraphicEntityModule graphicEntityModule;
     @Inject private TooltipModule tooltipModule;
+    @Inject private EndScreenModule endScreenModule;
 
     private Board board;
     private TaskManager taskManager;
@@ -48,6 +50,8 @@ public class Referee extends AbstractReferee {
                     taskManager.parseTasks(player, board, outputs.get(0));
                 } catch (TimeoutException e) {
                     player.deactivate(String.format("$%d timeout!", player.getIndex()));
+                    player.setScore(-1);
+                    gameManager.endGame();
                 }
             }
         } else {
@@ -55,5 +59,11 @@ public class Referee extends AbstractReferee {
         }
 
         board.applyActions(taskManager);
+    }
+
+    @Override
+    public void onEnd() {
+        int[] scores = gameManager.getPlayers().stream().mapToInt(p -> p.getScore()).toArray();
+        endScreenModule.setScores(scores);
     }
 }

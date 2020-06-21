@@ -69,8 +69,8 @@ public class Node {
         return dist;
     }
 
-    public void updateView(int id) {
-        view.updateView(id);
+    public void updateView(int playerId) {
+        view.updateView(playerId);
     }
 
     public boolean canMoveTo(int id, Node target) {

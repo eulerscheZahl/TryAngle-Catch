@@ -31,4 +31,8 @@ public class Player extends AbstractMultiplayerPlayer {
     public Player getOpponent() {
         return getPlayer((1 + this.getIndex()) % 2);
     }
+
+    public void increaseScore() {
+        setScore(getScore() + 1);
+    }
 }
