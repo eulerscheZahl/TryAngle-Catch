@@ -15,14 +15,9 @@ public class NodeView {
         this.graphics = graphics;
         this.node = node;
         node.view = this;
-        for (Node n : node.neighbors) {
-            if (n.getId() < node.getId()) continue;
-            graphics.createLine().setX(n.getX()).setY(n.getY()).setX2(node.getX()).setY2(node.getY())
-                    .setLineWidth(5).setFillColor(0);
-        }
-        mainCircle = graphics.createCircle().setX(node.getX()).setY(node.getY()).setRadius(35).setFillColor(0).setLineWidth(10).setLineColor(0);
+        mainCircle = graphics.createCircle().setX(node.getX()).setY(node.getY()).setRadius(35).setFillColor(0).setLineWidth(10).setLineColor(0).setZIndex(8);
         graphics.createText().setX(node.getX()).setY(node.getY()).setAnchor(0.5).setText(String.valueOf(node.getId()))
-                .setFillColor(0xffffff);
+                .setFillColor(0xffffff).setZIndex(8);
 
         for (int i = 0; i < 2; i++) {
             unitsViews[i] = new UnitView(Player.getPlayer(i), node, 0, graphics);

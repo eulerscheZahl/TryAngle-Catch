@@ -106,4 +106,8 @@ public class Triangle {
                 node2.neighbors.contains(node) ||
                 node3.neighbors.contains(node);
     }
+
+    public void delete() {
+        view.hide();
+    }
 }

@@ -3,6 +3,7 @@ package view;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.Polygon;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
+import com.google.inject.internal.cglib.proxy.$Factory;
 import engine.Triangle;
 
 public class TriangleView {
@@ -26,7 +27,11 @@ public class TriangleView {
                     .addPoint(triangle.getNode3().getX(), triangle.getNode3().getY());
             graphicEntityModule.commitEntityState(0, region);
         }
-        if (triangle.getOwner() == null) region.setAlpha(0);
-        else region.setAlpha(1).setFillColor(triangle.getOwner().getColor());
+        if (triangle.getOwner() == null) region.setVisible(false);
+        else region.setVisible(true).setFillColor(triangle.getOwner().getColor());
+    }
+
+    public void hide() {
+        region.setVisible(false);
     }
 }

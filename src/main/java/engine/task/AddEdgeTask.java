@@ -44,6 +44,11 @@ public class AddEdgeTask extends Task {
     }
 
     @Override
+    public int getTaskCost() {
+        return from.dist2(to);
+    }
+
+    @Override
     public boolean canApply(Board board) {
         boolean valid = triangle != null && triangle.canUse(player, 1) && !from.neighbors.contains(to);
         valid &= board.canConnect(from, to);
@@ -53,9 +58,7 @@ public class AddEdgeTask extends Task {
     @Override
     public void apply(Board board) {
         triangle.use(1);
-        from.neighbors.add(to);
-        to.neighbors.add(from);
-        board.updateTriangles();
+        board.connect(from, to);
     }
 
     @Override

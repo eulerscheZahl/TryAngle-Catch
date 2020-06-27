@@ -41,6 +41,10 @@ public abstract class Task {
 
     public abstract int getTaskPriority();
 
+    public int getTaskCost() {
+        return 0;
+    }
+
     public abstract boolean canApply(Board board);
 
     public abstract void apply(Board board);

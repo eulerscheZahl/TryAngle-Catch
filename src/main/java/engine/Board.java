@@ -30,10 +30,16 @@ public class Board {
         this.tooltipModule = tooltipModule;
 
         int tries = 0;
+        HashSet<Integer> nodeDistances = new HashSet<>();
         while (nodes.size() < NODE_COUNT && tries++ < 10000) {
             Node n1 = new Node(nodes.size(), FRAME_SIZE + random.nextInt(WIDTH - 2 * FRAME_SIZE), FRAME_SIZE + random.nextInt(HEIGHT - 2 * FRAME_SIZE));
             Node n2 = n1.mirror();
-            if (nodes.stream().anyMatch(n -> n.dist(n1) < NODE_MIN_DIST) || n1.dist(n2) < NODE_MIN_DIST) continue;
+            if (nodes.stream().anyMatch(n -> n.dist(n1) < NODE_MIN_DIST) ||
+                    n1.dist(n2) < NODE_MIN_DIST ||
+                    nodeDistances.contains(n1.dist2(n2)) ||
+                    nodes.stream().anyMatch(n -> nodeDistances.contains(n.dist2(n1)))) continue;
+            nodeDistances.add(n1.dist2(n2));
+            for (Node n : nodes) nodeDistances.add(n.dist2(n1));
             nodes.add(n1);
             nodes.add(n2);
         }
@@ -97,6 +103,9 @@ public class Board {
             }
             if (old == null) triangles.add(t);
             else triangles.add(old); // keep triangle stats like the owner
+        }
+        for (Triangle old : oldTriangles) {
+            if (!triangles.contains(old)) old.delete();
         }
     }
 
@@ -208,5 +217,19 @@ public class Board {
 
         //System.err.println(sb.toString());
         return sb.toString();
+    }
+
+    public void connect(Node from, Node to) {
+        from.neighbors.add(to);
+        to.neighbors.add(from);
+        updateTriangles();
+        view.connect(from, to);
+    }
+
+    public void disconnect(Node from, Node to) {
+        from.neighbors.remove(to);
+        to.neighbors.remove(from);
+        updateTriangles();
+        view.disconnect(from, to);
     }
 }

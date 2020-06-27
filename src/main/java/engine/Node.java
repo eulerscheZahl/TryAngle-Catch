@@ -40,10 +40,14 @@ public class Node {
         return new Node(id + 1, Board.WIDTH + 2 * Board.FRAME_SIZE - 1 - x, Board.HEIGHT + 2 * Board.FRAME_SIZE - 1 - y);
     }
 
-    public double dist(Node node) {
+    public int dist2(Node node) {
         int dx = this.x - node.x;
         int dy = this.y - node.y;
-        return Math.sqrt(dx * dx + dy * dy);
+        return dx * dx + dy * dy;
+    }
+
+    public double dist(Node node) {
+        return Math.sqrt(dist2(node));
     }
 
     public void finalizeTurn() {

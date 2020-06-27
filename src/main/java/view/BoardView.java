@@ -1,16 +1,12 @@
 package view;
 
 import com.codingame.game.Player;
-import com.codingame.gameengine.module.entities.Circle;
-import com.codingame.gameengine.module.entities.GraphicEntityModule;
-import com.codingame.gameengine.module.entities.Group;
-import com.codingame.gameengine.module.entities.Text;
+import com.codingame.gameengine.module.entities.*;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
 import engine.Board;
 import engine.Node;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class BoardView {
     private ArrayList<NodeView> nodeViews = new ArrayList<>();
@@ -21,7 +17,58 @@ public class BoardView {
         graphics.createRectangle().setZIndex(-9).setFillColor(0xffffff).setWidth(graphics.getWorld().getWidth()).setHeight(graphics.getWorld().getHeight());
         for (Node node : board.nodes) {
             nodeViews.add(new NodeView(node, graphics, tooltips));
+            for (Node n : node.neighbors) {
+                connect(node, n);
+            }
         }
+    }
+
+    class Connection {
+        public Node n1;
+        public Node n2;
+        public Line line;
+
+        public Connection(Node n1, Node n2) {
+            this.n1 = n1;
+            this.n2 = n2;
+            if (n1.getId() > n2.getId()) {
+                this.n1 = n2;
+                this.n2 = n1;
+            }
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            Connection conn = (Connection)other;
+            return this.n1 == conn.n1 && this.n2 == conn.n2;
+        }
+
+        public void drawLine() {
+            if (line != null) return;
+            line = graphics.createLine().setX(n1.getX()).setY(n1.getY()).setX2(n2.getX()).setY2(n2.getY())
+                    .setLineWidth(5).setFillColor(0).setZIndex(1);
+        }
+
+        public void hideLine() {
+            line.setVisible(false);
+        }
+    }
+
+    private ArrayList<Connection> connections = new ArrayList<>();
+    public void connect(Node n1, Node n2) {
+        Connection connection = new Connection(n1, n2);
+        if (!connections.contains(connection)) {
+            connections.add(connection);
+            connection.drawLine();
+        }
+    }
+
+    public void disconnect(Node n1, Node n2) {
+        Connection connection = new Connection(n1, n2);
+        for (Connection conn : connections) {
+            if (conn.equals(connection)) conn.hideLine();
+        }
+        connections.remove(connection);
     }
 
     public void startMove(){

@@ -5,6 +5,7 @@ import engine.Board;
 import io.undertow.server.handlers.accesslog.JBossLoggingAccessLogReceiver;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class TaskManager {
     private ArrayList<Task> tasks = new ArrayList<>();
@@ -40,6 +41,7 @@ public class TaskManager {
                     (task.allowMultiplePerFrame() || !result.stream().anyMatch(t -> t.player == task.player)))
                 result.add(task);
         }
+        result.sort(Comparator.comparingInt(Task::getTaskCost));
 
         return result;
     }

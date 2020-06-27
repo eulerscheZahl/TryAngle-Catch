@@ -51,9 +51,7 @@ public class RemoveEdgeTask extends Task {
     @Override
     public void apply(Board board) {
         triangle.use(1);
-        from.neighbors.remove(to);
-        to.neighbors.remove(from);
-        board.updateTriangles();
+        board.disconnect(from, to);
     }
 
     @Override

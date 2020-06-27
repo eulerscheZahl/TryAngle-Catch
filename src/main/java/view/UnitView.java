@@ -20,7 +20,7 @@ public class UnitView {
         this.player = player;
         this.amount = amount;
 
-        group = graphics.createGroup().setX(node.getX() - 40 + 80 * player.getIndex()).setY(node.getY() - 40);
+        group = graphics.createGroup().setX(node.getX() - 40 + 80 * player.getIndex()).setY(node.getY() - 40).setZIndex(9);
         Circle circle = graphics.createCircle().setRadius(25).setFillColor(player.getColor()).setLineWidth(1);
         group.add(circle);
         text = graphics.createText().setText(String.valueOf(amount)).setFillColor(0xffffff).setAnchor(0.5);
