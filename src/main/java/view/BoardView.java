@@ -21,6 +21,8 @@ public class BoardView {
                 connect(node, n);
             }
         }
+        Player.getPlayer(0).initView(graphics);
+        Player.getPlayer(1).initView(graphics);
     }
 
     class Connection {

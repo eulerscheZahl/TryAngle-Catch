@@ -35,7 +35,7 @@ public class Node {
     }
 
     public Node mirror() {
-        return new Node(id + 1, Board.WIDTH + 2 * Board.FRAME_SIZE - 1 - x, Board.HEIGHT + 2 * Board.FRAME_SIZE - 1 - y);
+        return new Node(id + 1, Board.WIDTH - 1 - (x - Board.SIDE_BORDER) + Board.SIDE_BORDER, Board.HEIGHT - 1 - (y - Board.TOP_BORDER) + Board.TOP_BORDER);
     }
 
     public int dist2(Node node) {

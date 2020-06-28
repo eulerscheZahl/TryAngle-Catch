@@ -11,9 +11,11 @@ import view.BoardView;
 import java.util.*;
 
 public class Board {
-    public static final int FRAME_SIZE = 80;
-    public static final int WIDTH = 1920 - 2 * FRAME_SIZE;
-    public static final int HEIGHT = 1080 - 2 * FRAME_SIZE;
+    public static final int TOP_BORDER = 200;
+    public static final int BOTTOM_BORDER = 60;
+    public static final int SIDE_BORDER = 80;
+    public static final int WIDTH = 1920 - 2 * SIDE_BORDER;
+    public static final int HEIGHT = 1080 - TOP_BORDER - BOTTOM_BORDER;
     public static final int NODE_COUNT = 50;
     public static final int NODE_MIN_DIST = 140;
 
@@ -31,7 +33,7 @@ public class Board {
         int tries = 0;
         HashSet<Integer> nodeDistances = new HashSet<>();
         while (nodes.size() < NODE_COUNT && tries++ < 10000) {
-            Node n1 = new Node(nodes.size(), FRAME_SIZE + random.nextInt(WIDTH - 2 * FRAME_SIZE), FRAME_SIZE + random.nextInt(HEIGHT - 2 * FRAME_SIZE));
+            Node n1 = new Node(nodes.size(), SIDE_BORDER + random.nextInt(WIDTH), TOP_BORDER + random.nextInt(HEIGHT));
             Node n2 = n1.mirror();
             if (nodes.stream().anyMatch(n -> n.dist(n1) < NODE_MIN_DIST) ||
                     n1.dist(n2) < NODE_MIN_DIST ||
@@ -122,6 +124,9 @@ public class Board {
     }
 
     public void applyActions(TaskManager taskManager) {
+        Player.getPlayer(0).updateMessage();
+        Player.getPlayer(1).updateMessage();
+
         boolean move = false;
         for (Task task : taskManager.popTasks()) {
             task.apply(this);
@@ -149,6 +154,8 @@ public class Board {
         for (Triangle triangle : triangles) {
             if (triangle.getOwner() != null) triangle.getOwner().increaseScore();
         }
+        Player.getPlayer(0).updateScore();
+        Player.getPlayer(1).updateScore();
         return false;
     }
 

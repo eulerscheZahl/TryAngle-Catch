@@ -12,10 +12,12 @@ public class TaskManager {
     private Board board;
 
     public void parseTasks(Player player, Board board, String command) {
+        player.setMessage("");
         this.board = board;
         for (String comm : command.split(";")) {
             Task task = Task.parseTask(player, board, comm);
             if (task != null) tasks.add(task);
+            else if (comm.startsWith("MSG ")) player.setMessage(comm.substring(4).trim());
         }
     }
 
