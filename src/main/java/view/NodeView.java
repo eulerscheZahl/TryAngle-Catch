@@ -27,6 +27,7 @@ public class NodeView {
 
     public void updateView(int playerId) {
         unitsViews[playerId].updateAmount(node.units[playerId]);
+        endMove();
     }
 
     public void startMove() {
