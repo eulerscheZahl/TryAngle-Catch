@@ -46,7 +46,7 @@ class Node
     public string Move(Node target)
     {
         if (this == target) return "";
-        return "MOVE " + this.ID + " " + Neighbors.OrderBy(n => n.Dist[target.ID]).First().ID;
+        return "MOVE " + this.ID + " " + Neighbors.OrderBy(n => n.Dist[target.ID]).First().ID + " 1";
     }
 }
 
@@ -187,7 +187,7 @@ class Solution
                 break;
             }
             foreach (Node node in moving) myUnitCells.Remove(node);
-            foreach (Node unit in myUnitCells) solution += ";MOVE " + unit.ID + " " + unit.Neighbors[random.Next(unit.Neighbors.Count)].ID;
+            foreach (Node unit in myUnitCells) solution += ";MOVE " + unit.ID + " " + unit.Neighbors[random.Next(unit.Neighbors.Count)].ID + " 1";
 
             Console.Error.WriteLine("cost: " + bestCost);
             Console.WriteLine(solution);

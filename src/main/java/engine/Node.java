@@ -1,13 +1,11 @@
 package engine;
 
 import com.codingame.game.Player;
-import com.google.inject.internal.cglib.proxy.$UndeclaredThrowableException;
 import view.NodeView;
 
 import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.regex.PatternSyntaxException;
 
 public class Node {
     private int id;
@@ -84,16 +82,17 @@ public class Node {
         return dist[this.id] > 0;
     }
 
-    public boolean moveTo(int id, Node target) {
+    public boolean moveTo(int id, Node target, int amount) {
         if (this == target) return false;
         if (remainingUnits[id] <= 0) return false; // TODO warning
         int[] dist = target.bfs();
+        amount = Math.min(amount, this.remainingUnits[id]);
 
         for (Node next : this.neighbors) {
             if (dist[next.id] < dist[this.id]) {
-                this.units[id]--;
-                this.remainingUnits[id]--;
-                next.units[id]++;
+                this.units[id] -= amount;
+                this.remainingUnits[id] -= amount;
+                next.units[id] += amount;
                 return true;
             }
         }

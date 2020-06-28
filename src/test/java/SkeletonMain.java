@@ -8,7 +8,7 @@ public class SkeletonMain {
         //gameRunner.addAgent(Agent1.class);
 
         // Another way to add a player
-        gameRunner.addAgent("mono /home/eulerschezahl/Documents/Programming/challenges/CodinGame/TryangleCatch/bin/Debug/move.exe");
+        gameRunner.addAgent("mono /home/eulerschezahl/Documents/Programming/challenges/CodinGame/TryangleCatch/bin/Debug/TryangleCatch.exe");
         gameRunner.addAgent("mono /home/eulerschezahl/Documents/Programming/challenges/CodinGame/TryangleCatch/bin/Debug/TryangleCatch.exe");
         gameRunner.start();
     }

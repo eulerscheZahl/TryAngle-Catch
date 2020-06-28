@@ -9,10 +9,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MoveTask extends Task {
-    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>MOVE)\\s+(?<from>\\d+)\\s+(?<to>\\d+)\\s*");
+    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>MOVE)\\s+(?<from>\\d+)\\s+(?<to>\\d+)\\s+(?<amount>\\d+)\\s*");
 
     private Node nodeFrom;
     private Node nodeTo;
+    private int amount;
 
     public MoveTask(Player player, Board board, String command) {
         super(player, board);
@@ -20,6 +21,7 @@ public class MoveTask extends Task {
         matcher.matches();
         int fromId = Integer.parseInt(matcher.group("from"));
         int toId = Integer.parseInt(matcher.group("to"));
+        amount = Integer.parseInt(matcher.group("amount"));
         nodeFrom = this.board.nodes.get(fromId);
         nodeTo = this.board.nodes.get(toId);
     }
@@ -41,7 +43,7 @@ public class MoveTask extends Task {
 
     @Override
     public void apply(Board board) {
-        nodeFrom.moveTo(player.getIndex(), nodeTo);
+        nodeFrom.moveTo(player.getIndex(), nodeTo, amount);
     }
 
     @Override

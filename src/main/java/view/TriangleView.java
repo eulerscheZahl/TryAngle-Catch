@@ -3,7 +3,6 @@ package view;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.Polygon;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
-import com.google.inject.internal.cglib.proxy.$Factory;
 import engine.Triangle;
 
 public class TriangleView {

@@ -4,6 +4,7 @@ import com.codingame.game.Player;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
 import engine.task.MoveTask;
+import engine.task.SpawnTask;
 import engine.task.Task;
 import engine.task.TaskManager;
 import view.BoardView;
@@ -124,10 +125,12 @@ public class Board {
 
     public void applyActions(TaskManager taskManager) {
         boolean move = false;
+        boolean spawn = false;
         for (Task task : taskManager.popTasks()) {
             task.apply(this);
             task.visualize(view);
             move |= task instanceof MoveTask;
+            spawn |= task instanceof SpawnTask;
         }
 
         if (move) {
@@ -135,6 +138,7 @@ public class Board {
             view.animateMoves();
             view.endMove();
         }
+        if (spawn) view.endMove();
     }
 
     public boolean finalizeTurn() {
