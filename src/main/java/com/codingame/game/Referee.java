@@ -11,7 +11,6 @@ import com.codingame.gameengine.module.tooltip.TooltipModule;
 import com.google.inject.Inject;
 import engine.Board;
 import engine.task.TaskManager;
-import view.BoardView;
 
 public class Referee extends AbstractReferee {
     @Inject private MultiplayerGameManager<Player> gameManager;
@@ -64,6 +63,7 @@ public class Referee extends AbstractReferee {
     @Override
     public void onEnd() {
         int[] scores = gameManager.getPlayers().stream().mapToInt(p -> p.getScore()).toArray();
-        endScreenModule.setScores(scores);
+        String[] texts = { String.valueOf(scores[0]), String.valueOf(scores[1]) };
+        endScreenModule.setScores(scores, texts);
     }
 }

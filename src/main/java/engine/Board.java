@@ -123,12 +123,15 @@ public class Board {
         return result;
     }
 
+    private boolean killedSurrounded = false;
     public void applyActions(TaskManager taskManager) {
+        killedSurrounded = false;
         Player.getPlayer(0).updateMessage();
         Player.getPlayer(1).updateMessage();
 
         boolean move = false;
         for (Task task : taskManager.popTasks()) {
+            if (!task.canApply(this)) continue; // double check because of multiple actions per turn
             task.apply(this);
             task.visualize(view);
             move |= task instanceof MoveTask;
@@ -160,6 +163,8 @@ public class Board {
     }
 
     private boolean surroundNodes() {
+        if (killedSurrounded) return false;
+        killedSurrounded = true;
         ArrayList<Node>[] playerAdvantage = new ArrayList[2];
         for (int i = 0; i < 2; i++) {
             playerAdvantage[i] = new ArrayList<>();
