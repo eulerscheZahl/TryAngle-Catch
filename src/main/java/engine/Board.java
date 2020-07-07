@@ -140,8 +140,8 @@ public class Board {
         if (move) {
             view.startMove();
             view.animateMoves();
-            view.endMove();
         }
+        view.endMove();
     }
 
     public boolean finalizeTurn() {

@@ -91,7 +91,6 @@ class Solution
 
     static void Main(string[] args)
     {
-        Random random = new Random(0);
         string[] inputs;
         int nodeCount = int.Parse(ReadLine());
         List<Node> nodes = new List<Node>();
@@ -152,8 +151,9 @@ class Solution
             }
 
             int bestCost = 1000;
-            string solution = "WAIT";
             List<Node> moving = new List<Node>();
+            List<Node> moveFrom = new List<Node>();
+            List<Node> moveTo = new List<Node>();
             foreach (Triangle triangle in triangles.Where(t => t.Owner != 0 && t.MeCanCapture))
             {
                 foreach (List<Node> corners in triangle.CornerPermutations())
@@ -175,11 +175,13 @@ class Solution
                     if (currentScore < bestCost)
                     {
                         bestCost = currentScore;
-                        solution = string.Join(";", Enumerable.Range(0, 3).Select(i => sources[i].Move(corners[i])));
+                        moveFrom = sources.ToList();
+                        moveTo = corners.ToList();
                         moving = sources;
                     }
                 }
             }
+            string solution = Mutate(triangles, myUnitCells, moveFrom, moveTo);
 
             foreach (Triangle triangle in triangles.Where(t => t.Owner == 0))
             {
@@ -190,7 +192,56 @@ class Solution
             foreach (Node unit in myUnitCells) solution += ";MOVE " + unit.ID + " " + unit.Neighbors[random.Next(unit.Neighbors.Count)].ID + " 1";
 
             Console.Error.WriteLine("cost: " + bestCost);
-            Console.WriteLine(solution);
+            Console.WriteLine(solution + ";MSG ladida");
         }
+    }
+
+    static Random random = new Random(0);
+    static string Mutate(List<Triangle> triangles, List<Node> myUnits, List<Node> moveFrom, List<Node> moveTo)
+    {
+        List<Node> targets = new List<Node>();
+        foreach (Node n in myUnits) targets.Add(null);
+        for (int i = 0; i < moveFrom.Count; i++)
+        {
+            for (int j = 0; j < targets.Count; j++)
+            {
+                if (targets[j] == null && myUnits[j] == moveFrom[i])
+                {
+                    targets[j] = moveTo[i];
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < targets.Count; i++)
+        {
+            if (targets[i] == null) targets[i] = myUnits[i].Neighbors[random.Next(myUnits[i].Neighbors.Count)];
+        }
+        double score = Score(triangles, targets);
+        for (int mutation = 0; mutation < 100; mutation++)
+        {
+            int index = random.Next(targets.Count);
+            Node backup = targets[index];
+            Node newNode = myUnits[index].Neighbors[random.Next(myUnits[index].Neighbors.Count)];
+            targets[index] = newNode;
+            double newScore = Score(triangles, targets);
+            if (newScore >= score) score = newScore;
+            else targets[index] = backup;
+        }
+
+        return string.Join(";", Enumerable.Range(0, myUnits.Count).Select(i => myUnits[i].Move(targets[i])));
+    }
+
+    static double Score(List<Triangle> triangles, List<Node> moveTo)
+    {
+        double result = 0;
+        int[] unitCount = new int[50];
+        foreach (Node to in moveTo) unitCount[to.ID]++;
+        foreach (Triangle t in triangles)
+        {
+            if (t.MeCanCapture && unitCount[t.Node1.ID] > 0 && unitCount[t.Node2.ID] > 0 && unitCount[t.Node3.ID] > 0) result++;
+            else if (t.Owner != 0 && !t.MeCanCapture && unitCount[t.Node1.ID] == 0 && unitCount[t.Node2.ID] == 0 && unitCount[t.Node3.ID] == 0) result += 0.5;
+        }
+        return result;
     }
 }
