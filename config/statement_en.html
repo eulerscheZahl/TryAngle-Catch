@@ -7,10 +7,7 @@
       <span>The Goal</span>
     </h1>
     <div class="statement-goal-content">
-      The aim of this game is to win.
-      <br>
-      <br>
-      For this question, you will be asked to output a single line as a solution.
+      Collect more points than your opponent by capturing and defending triangles.
     </div>
   </div>
   <!-- RULES -->
@@ -20,23 +17,60 @@
       <span>Rules</span>
     </h1>
     <div>
-      <div class="statement-rules-content">Your program receives characters.<br>
-        Your actions have an effect.<br>
-        <br>
-        The game zone works as follows:
-        <ul>
-          <li>There are coordinates.</li>
-        </ul>
-        <br>
-        The units work as follows:
-        <ul>
-          <li>They move around.</li>
-        </ul>
-        You <strong>lose</strong> if:
-        <ul>
-          <li>You mess up.</li>
-          <li>You do not supply a valid sequence of actions.</li>
-        </ul>
+      <div class="statement-rules-content">
+        The map consists of nodes, some of which are connected by edges. Nodes are defined by x and y coordinate.
+        Each player starts with <const>3</const> units on one side of the map.
+        You then try to capture a triangle by owning all tree corner nodes of it.
+        You can use a triangle to spawn a new unit, kill all opponent units on a given node, add or remove a connection between two nodes.
+
+        <br><br>
+        <strong>Moving units</strong><br>
+        Units can be moved from a node to one of the direct neighbors each turn.
+
+        <br><br>
+        <strong>Node ownership</strong><br>
+        A node is owned, when the player has strictly more units on it than the opponent player or when all neighboring nodes are owned by that player.
+        
+        <br><br>
+        <strong>Surrounded units</strong><br>
+        When a unit is surrounded by opponent nodes, meaning each neighboring node is owned by the opponent, the unit is killed.
+        
+        <br><br>
+        <strong>Triangles</strong><br>
+        A triangle is defined by three nodes, that are all connected with each other.
+
+        <br><br>
+        <strong>Capturing a triangle</strong><br>
+        To capture a triangle, a player has to own all three corners of it and be eligible to claim the triangle.
+        Initially the players can capture all triangles. This will only change after using them.
+        A captured triangle will remain in the ownership of the player until it's used or captured by the opponent.
+        
+        <br><br>
+        <strong>Using a triangle</strong><br>
+        When owning a triangle, a player can use it to perform one of the actions described below.
+        This will make the triangle neutral again. The player using it can only capture it again after moving away all units from each node or after it got captured by the opponent player. <br>
+        Some usages have an additional cost, meaning that the player loses a certain amount of units on each node of the triangle. If the player doesn't have enough units on each node, the triangle can't be used.
+
+        <br><br>
+        <strong>Spawning a unit</strong><br>
+        One way to use a triangle is to spawn a unit. This will place a unit on one node of the triangle. The player can decide the corner to spawn on. Spawning has no cost.
+
+        <br><br>
+        <strong>Attacking a node</strong><br>
+        A triangle can be used to attack a node, killing all opponent units on it. This action has a cost of <const>1</const>. The attacked node has to be adjacent to at least one node of the used triangle.
+
+        <br><br>
+        <strong>Adding an edge</strong><br>
+        A triangle can be used to create an edge between two nodes. This can possibly create new triangles as well. This action has a cost of <const>1</const>.
+        The new edge must be connected to one node of the used triangle. The edge may not cross any existing edges.
+
+        <br><br>
+        <strong>Removing an edge</strong><br>
+        A triangle can be used to remove an edge between two nodes. This can possibly remove triangles as well. This action has a cost of <const>1</const>.
+        The removed edge must be connected to one node of the used triangle.
+
+
+
       </div>
     </div>
   </div>
@@ -47,9 +81,31 @@
       <span>Expert Rules</span>
     </h1>
     <div class="statement-expert-rules-content">
-      If you're going to run local simulations, you'll need to know this!
+      The game turn works as follows:
+      <ol>
+        <li>Apply attack actions</li>
+        <li>Move units</li>
+        <li>Spawn units</li>
+        <li>Add edges</li>
+        <li>Remove edges</li>
+        <li>Kill surrounded units</li>
+        <li>Change ownership of triangles</li>
+      </ol>
+      Within the same type of action, actions are applied for both players simultaneously, but sequentially of the same player. <br>
+      Example: <br>
+      Player 1 wants to perform two attack actions <const>A1a</const> and <const>A1b</const>.
+      Player 2 wants to perform two attack actions <const>A2a</const> and <const>A2b</const>.
+      First <const>A1a</const> and <const>A2a</const> will be checked for being valid (the triangles in use are owned by the respective players and they have enough units on each node) and applied if possible.
+      Then <const>A1b</const> and <const>A2b</const> will be processed in the same way. It's possible that the first group of actions renders on of them invalid by killing units on a triangle that was supposed to be used later.
+      <br><br>
+      For the addition of new edges, the distance is used as a tie breaking, giving higher priority to shorter distances.
+      This can make another edge addition impossible due to crossing edges. The maps are generated in such a way, that there are no possible edges with identical distances that can cross each other.
     </div>
   </div>
+
+
+
+
   <!-- EXAMPLES -->
   <div class="statement-section statement-examples">
     <h1>
@@ -116,17 +172,6 @@
       <div class="text"><var>...</var> contains between 1 and 500 characters.<br>
         <br>Allotted response time to output
         is ≤ <const>2</const> seconds.</div>
-    </div>
-  </div>
-  <!-- STORY -->
-  <div class="statement-story-background">
-    <div class="statement-story-cover" style="background-size: cover; background-image: url(https://www.codingame.com/servlet/fileservlet?id=2210505809934)">
-      <div class="statement-story">
-        <h1>Title</h1>
-        <div class="story-text">Story
-          <br>
-          Totally optional</div>
-      </div>
     </div>
   </div>
 </div>
