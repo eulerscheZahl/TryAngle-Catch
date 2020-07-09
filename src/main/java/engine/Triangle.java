@@ -49,6 +49,10 @@ public class Triangle {
                 this.node3 == triangle.node3;
     }
 
+    public boolean canCapture(Player player) {
+        return canCapture[player.getIndex()];
+    }
+
     public boolean capture() {
         Player oldOwner = owner;
         if (canCapture[0] && node1.ownedBy(Player.getPlayer(0)) && node2.ownedBy(Player.getPlayer(0)) && node3.ownedBy(Player.getPlayer(0)))
@@ -109,5 +113,9 @@ public class Triangle {
 
     public void delete() {
         view.hide();
+    }
+
+    public void updateOwnerView() {
+        view.update();
     }
 }

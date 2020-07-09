@@ -5,15 +5,18 @@ import com.codingame.gameengine.module.entities.*;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
 import engine.Board;
 import engine.Node;
+import engine.Triangle;
 
 import java.util.ArrayList;
 
 public class BoardView {
     private ArrayList<NodeView> nodeViews = new ArrayList<>();
+    private Board board;
     private GraphicEntityModule graphics;
 
     public BoardView(Board board, GraphicEntityModule graphics, TooltipModule tooltips) {
         this.graphics = graphics;
+        this.board = board;
         graphics.createRectangle().setZIndex(-9).setFillColor(0xffffff).setWidth(graphics.getWorld().getWidth()).setHeight(graphics.getWorld().getHeight());
         for (Node node : board.nodes) {
             nodeViews.add(new NodeView(node, graphics, tooltips));
@@ -79,6 +82,7 @@ public class BoardView {
 
     public void endMove(){
         for (NodeView nodeView : nodeViews) nodeView.endMove();
+        for (Triangle triangle : board.triangles) triangle.updateOwnerView();
     }
 
     private class Move {
