@@ -37,13 +37,14 @@
         
         <br><br>
         <strong>Triangles</strong><br>
-        A triangle is defined by three nodes, that are all connected with each other.
+        A triangle is defined by three nodes, that are all connected with each other.<br>
+        After each turn the players get <const>1</const> point for each triangle they currently own.
 
         <br><br>
         <strong>Capturing a triangle</strong><br>
         To capture a triangle, a player has to own all three corners of it and be eligible to claim the triangle.
         Initially the players can capture all triangles. This will only change after using them.
-        A captured triangle will remain in the ownership of the player until it's used or captured by the opponent.
+        A captured triangle will remain in the ownership of the player until it's used or captured by the opponent. 
         
         <br><br>
         <strong>Using a triangle</strong><br>
@@ -68,12 +69,43 @@
         <strong>Removing an edge</strong><br>
         A triangle can be used to remove an edge between two nodes. This can possibly remove triangles as well. This action has a cost of <const>1</const>.
         The removed edge must be connected to one node of the used triangle.
-
-
-
       </div>
     </div>
   </div>
+
+    <!-- Victory conditions -->
+    <div class="statement-victory-conditions">
+        <div class="icon victory"></div>
+        <div class="blk">
+            <div class="title">Victory Conditions</div>
+            <div class="text">
+                <ul style="padding-bottom: 0;">
+                    <li>
+                        Collect more points than your opponent
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Lose conditions -->
+    <div class="statement-lose-conditions">
+        <div class="icon lose"></div>
+        <div class="blk">
+            <div class="title">Loss Conditions</div>
+            <div class="text">
+                <ul style="padding-bottom: 0;">
+                    <li>
+                        Collect less points than your opponent
+                    </li>
+                    <li>
+                        You do not respond in time or output an unrecognized command.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br>
+
   <!-- EXPERT RULES -->
   <div class="statement-section statement-expertrules">
     <h1>
@@ -103,75 +135,80 @@
     </div>
   </div>
 
+    <!-- PROTOCOL -->
+    <div class="statement-section statement-protocol">
+        <h2>
+            <span class="icon icon-protocol">&nbsp;</span>
+            <span>Game Input</span>
+        </h2>
+        <!-- Protocol block -->
+        <div class="blk">
+            <div class="title">Initial input</div>
+            <div class="text">
 
+                <span class="statement-lineno">First line</span>: <var>nodeCount</var>, the number of nodes on the board
+                <br>
+                <span class="statement-lineno">Next <var>nodeCount</var> lines</span>: <var>nodeId</var> <var>x</var> <var>y</var>, the id and location of each point
+            </div>
+            <br>
+            <br>
+            <div class="title">Input for one game turn</div>
+            <div class="text">
+                <span class="statement-lineno">First line</span>: <var>nodeCount</var> space separated numbers giving <var>myUnits</var> for each node
+                <br>
+                <span class="statement-lineno">Second line</span>: <var>nodeCount</var> space separated numbers giving <var>opponentUnits</var> for each node
+                <br>
+                <span class="statement-lineno">Third line</span>: <var>linkCount</var>, the number of edges
+                <br>
+                <span class="statement-lineno">Next <var>linkCount</var> lines</span>: <var>node1</var> <var>node2</var> indicating a connection between these two nodes
+                <br>
+                <span class="statement-lineno">Next line</span>: <var>triangleCount</var>, the number of triangles
+                <br>
+                <span class="statement-lineno">Next <var>triangleCount</var> lines</span>: <var>node1</var> <var>node2</var> <var>node3</var> <var>owner</var> <var>meCanCapture</var> <var>opponentCanCapture</var>. <br>
+                <var>node1</var> <var>node2</var> <var>node3</var> give the corners of the triangle. <br>
+                <var>owner</var> indicating the owner of the triangle. It will be <const>-1</const> if it's neutral, <const>0</const> if it belongs to you and <const>1</const> if it belongs to your opponent. <br>
+                <var>meCanCapture</var> is <const>1</const> if you can currently capture it, <const>0</const> otherwise
+                <var>opponentCanCapture</var> is <const>1</const> if your opponent can currently capture it, <const>0</const> otherwise <br>
+                <br>
+            </div>
 
+            <div class="title">Output for one game turn</div>
+            <div class="text">
+                You can print an arbitrary amount of commands per turn, separated by <action>;</action>
+                <ul style="padding-bottom: 0;">
+                    <li>
+                        <action>MOVE from to amount</action> move <var>amount</var> units from node <var>from</var> to node <var>to</var>
+                    </li>
+                    <li>
+                        <action>SPAWN node1 node2 node3</action> to spawn a unit on <var>node1</var> using the given triangle. Change the node order to affect the spawning location
+                    </li>
+                    <li>
+                        <action>ATTACK node1 node2 node3 target</action> attack the <var>target</var> node using the given triangle
+                    </li>
+                    <li>
+                        <action>ADD_EDGE node1 node2 node3 target</action> to connect <var>node1</var> with <var>target</var> using the given triangle.
+                    </li>
+                    <li>
+                        <action>REMOVE_EDGE node1 node2 node3 target</action> to disconnect <var>node1</var> from <var>target</var> using the given triangle.
+                    </li>
+                </ul>
 
-  <!-- EXAMPLES -->
-  <div class="statement-section statement-examples">
-    <h1>
-      <span class="icon icon-example">&nbsp;</span>
-      <span>Example</span>
-    </h1>
+            </div>
+        </div>
 
-    <div class="statement-examples-text">
-      A basic situation, an instruction, a result.
+        <!-- Protocol block -->
+        <div class="blk">
+            <div class="title">
+                Constraints
+            </div>
+            <div class="text">
+                <var>nodeCount</var> &le; <const>50</const> <br>
+                <const>0</const> &le; <var>nodeX</var> &lt; <const>1920</const> <br>
+                <const>0</const> &le; <var>nodeY</var> &lt; <const>1080</const> <br>
+                <br>
+                <br> Response time first turn &le; <const>1000</const> ms
+                <br> Response time per turn &le; <const>50</const> ms
+            </div>
+        </div>
     </div>
-
-  </div>
-  <!-- WARNING -->
-  <div class="statement-section statement-warning">
-    <h1>
-      <span class="icon icon-warning">&nbsp;</span>
-      <span>Note</span>
-    </h1>
-    <div class="statement-warning-content">
-      <b>Don’t forget to run the tests by launching them from the “Test cases” window</b>. You can submit at any time
-      to recieve a score against the training validators. <b>You can submit as many times as you like</b>. Your most
-      recent submission will be used for the final ranking.<br>
-      <br>
-      <strong>Warning:</strong> the validation tests used to compute the final score are not the same as the ones used
-      during the event.
-      Harcoded solutions will not score highly.<br>
-      <br>
-      Don't hesitate to change the viewer's options to help debug your code (<img style="opacity:.8;background:#20252a;"
-        height="18" src="https://www.codingame.com/servlet/fileservlet?id=3463235186409" width="18">).
-    </div>
-  </div>
-  <!-- PROTOCOL -->
-  <div class="statement-section statement-protocol">
-    <h1>
-      <span class="icon icon-protocol">&nbsp;</span>
-      <span>Game Input</span>
-    </h1>
-    <!-- Protocol block -->
-    <div class="blk">
-      <div class="text">The program must first read the initialization data from standard input. Then, provide to the
-        standard output one line with ...</div>
-    </div>
-
-    <!-- Protocol block -->
-    <div class="blk">
-      <div class="title">Input</div>
-      <div class="text">
-        <p><span class="statement-lineno">Line 1: </span>one string <var>...</var>, the ...</p>
-      </div>
-    </div>
-
-    <!-- Protocol block -->
-    <div class="blk">
-      <div class="title">Output</div>
-      <div class="text">
-        <span class="statement-lineno">A single line</span> containing ...
-        <br>
-      </div>
-    </div>
-
-    <!-- Protocol block -->
-    <div class="blk">
-      <div class="title">Constraints</div>
-      <div class="text"><var>...</var> contains between 1 and 500 characters.<br>
-        <br>Allotted response time to output
-        is ≤ <const>2</const> seconds.</div>
-    </div>
-  </div>
 </div>
