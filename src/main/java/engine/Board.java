@@ -2,6 +2,7 @@ package engine;
 
 import com.codingame.game.Player;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
+import com.codingame.gameengine.module.toggle.ToggleModule;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
 import engine.task.MoveTask;
 import engine.task.Task;
@@ -25,10 +26,12 @@ public class Board {
     private BoardView view;
     private GraphicEntityModule graphicEntityModule;
     private TooltipModule tooltipModule;
+    private ToggleModule toggleModule;
 
-    public Board(Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule) {
+    public Board(Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, ToggleModule toggleModule) {
         this.graphicEntityModule = graphicEntityModule;
         this.tooltipModule = tooltipModule;
+        this.toggleModule = toggleModule;
 
         int tries = 0;
         HashSet<Integer> nodeDistances = new HashSet<>();
@@ -73,7 +76,7 @@ public class Board {
         }
         updateTriangles();
 
-        view = new BoardView(this, graphicEntityModule, tooltipModule);
+        view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule);
         finalizeTurn();
     }
 

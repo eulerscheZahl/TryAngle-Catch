@@ -7,6 +7,7 @@ import com.codingame.gameengine.core.AbstractReferee;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.endscreen.EndScreenModule;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
+import com.codingame.gameengine.module.toggle.ToggleModule;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
 import com.google.inject.Inject;
 import engine.Board;
@@ -17,6 +18,7 @@ public class Referee extends AbstractReferee {
     @Inject private GraphicEntityModule graphicEntityModule;
     @Inject private TooltipModule tooltipModule;
     @Inject private EndScreenModule endScreenModule;
+    @Inject private ToggleModule toggleModule;
 
     private Board board;
     private TaskManager taskManager;
@@ -26,7 +28,7 @@ public class Referee extends AbstractReferee {
         Player.registerPlayer(gameManager.getPlayer(0));
         Player.registerPlayer(gameManager.getPlayer(1));
 
-        board = new Board(random, graphicEntityModule, tooltipModule);
+        board = new Board(random, graphicEntityModule, tooltipModule, toggleModule);
         taskManager = new TaskManager();
         gameManager.setMaxTurns(50);
     }
