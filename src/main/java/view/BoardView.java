@@ -24,7 +24,7 @@ public class BoardView {
         Sprite background = graphics.createSprite().setImage("background.png").setZIndex(-9);
         toggleModule.displayOnToggleState(background, "debug", false);
         for (Node node : board.nodes) {
-            nodeViews.add(new NodeView(node, graphics, tooltips));
+            nodeViews.add(new NodeView(node, graphics, tooltips, toggleModule));
             for (Node n : node.neighbors) {
                 connect(node, n);
             }
