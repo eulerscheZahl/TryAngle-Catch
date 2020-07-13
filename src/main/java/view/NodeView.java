@@ -20,15 +20,15 @@ public class NodeView {
         mainCircle = graphics.createCircle().setX(node.getX()).setY(node.getY()).setRadius(35).setFillColor(0).setLineWidth(10).setLineColor(0).setZIndex(8);
         toggleModule.displayOnToggleState(mainCircle, "debug", true);
         Group group = graphics.createGroup().setX(node.getX() - 30).setY(node.getY() - 40).setScale(0.1).setZIndex(8);
-        Sprite house = graphics.createSprite().setImage("b1.png");
-        roof = graphics.createSprite().setImage("b2.png");
+        Sprite house = graphics.createSprite().setImage("s1.png");
+        roof = graphics.createSprite().setImage("s2.png");
         group.add(house, roof);
         graphics.createText().setX(node.getX()).setY(node.getY()).setAnchor(0.5).setText(String.valueOf(node.getId()))
                 .setFillColor(0xffffff).setZIndex(8);
         toggleModule.displayOnToggleState(group, "debug", false);
 
         for (int i = 0; i < 2; i++) {
-            unitsViews[i] = new UnitView(Player.getPlayer(i), node, 0, graphics);
+            unitsViews[i] = new UnitView(Player.getPlayer(i), node, 0, graphics, toggleModule);
         }
         endMove();
     }

@@ -138,7 +138,7 @@ public class BoardView {
             for (UnitView view : unitViews) {
                 if (view.getPlayer() == move.player && (view.getNode() == move.from || current == null)) current = view;
             }
-            if (current == null) current = new UnitView(move.player, move.from, move.count, graphics);
+            if (current == null) current = new UnitView(move.player, move.from, move.count, graphics, toggleModule);
             inUse.add(current);
             unitViews.remove(current);
 
