@@ -21,7 +21,7 @@ public class BoardView {
         this.toggleModule = toggleModule;
         this.board = board;
         graphics.createRectangle().setZIndex(-9).setFillColor(0xffffff).setWidth(graphics.getWorld().getWidth()).setHeight(graphics.getWorld().getHeight());
-        Sprite background = graphics.createSprite().setImage("background.png").setZIndex(-9);
+        Sprite background = graphics.createSprite().setImage("background.png").setZIndex(-9).setAlpha(0.7);
         toggleModule.displayOnToggleState(background, "debug", false);
         for (Node node : board.nodes) {
             nodeViews.add(new NodeView(node, graphics, tooltips, toggleModule));

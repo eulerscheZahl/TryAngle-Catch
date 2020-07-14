@@ -24,7 +24,7 @@ public class NodeView {
         roof = graphics.createSprite().setImage("s2.png");
         group.add(house, roof);
         graphics.createText().setX(node.getX()).setY(node.getY()).setAnchor(0.5).setText(String.valueOf(node.getId()))
-                .setFillColor(0xffffff).setZIndex(8);
+                .setFillColor(0xffffff).setStrokeThickness(4).setZIndex(8);
         toggleModule.displayOnToggleState(group, "debug", false);
 
         for (int i = 0; i < 2; i++) {

@@ -23,10 +23,11 @@ public class UnitView {
         Circle circle = graphics.createCircle().setRadius(25).setFillColor(player.getColor()).setLineWidth(1);
         toggleModule.displayOnToggleState(circle, "debug", true);
         sprite = graphics.createSprite().setScale(0.1).setAnchor(0.5);
+        if (player.getIndex() == 1) sprite.setScaleX(-0.1);
         toggleModule.displayOnToggleState(sprite, "debug", false);
         selectSpriteImage();
 
-        text = graphics.createText().setText(String.valueOf(amount)).setFillColor(0xffffff).setAnchor(0.5);
+        text = graphics.createText().setText(String.valueOf(amount)).setFillColor(0xffffff).setStrokeThickness(4).setAnchor(0.5);
         group.add(circle, text, sprite);
         graphics.commitEntityState(0, circle, sprite);
         if (amount == 0) group.setVisible(false);
