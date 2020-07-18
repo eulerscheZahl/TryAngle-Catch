@@ -43,6 +43,11 @@ public class AttackTask extends Task {
     }
 
     @Override
+    public int getRequiredLeague() {
+        return 2;
+    }
+
+    @Override
     public boolean canApply(Board board) {
         return triangle != null && triangle.canUse(player, 1) && triangle.hasNeighbor(target);
     }

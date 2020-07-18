@@ -41,6 +41,11 @@ public class SpawnTask extends Task {
     }
 
     @Override
+    public int getRequiredLeague() {
+        return 1;
+    }
+
+    @Override
     public boolean canApply(Board board) {
         return triangle != null && triangle.canUse(player, 0);
     }

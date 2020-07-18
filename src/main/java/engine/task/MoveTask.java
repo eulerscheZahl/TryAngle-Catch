@@ -37,6 +37,11 @@ public class MoveTask extends Task {
     }
 
     @Override
+    public int getRequiredLeague() {
+        return 1;
+    }
+
+    @Override
     public boolean canApply(Board board) {
         return nodeFrom.canMoveTo(player.getIndex(), nodeTo);
     }

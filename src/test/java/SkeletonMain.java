@@ -4,8 +4,7 @@ public class SkeletonMain {
     public static void main(String[] args) {
         MultiplayerGameRunner gameRunner = new MultiplayerGameRunner();
         gameRunner.setSeed(2728688809873374816L);
-        //gameRunner.addAgent(Agent1.class);
-        //gameRunner.addAgent(Agent1.class);
+        gameRunner.setLeagueLevel(3);
 
         // Another way to add a player
         gameRunner.addAgent("mono /home/eulerschezahl/Documents/Programming/challenges/CodinGame/TryangleCatch/bin/Debug/TryangleCatch.exe", "eulerscheZahl", "https://static.codingame.com/servlet/fileservlet?id=43135502422075&format=profile_avatar");

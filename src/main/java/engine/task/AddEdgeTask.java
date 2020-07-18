@@ -44,6 +44,11 @@ public class AddEdgeTask extends Task {
     }
 
     @Override
+    public int getRequiredLeague() {
+        return 3;
+    }
+
+    @Override
     public int getTaskCost() {
         return from.dist2(to);
     }

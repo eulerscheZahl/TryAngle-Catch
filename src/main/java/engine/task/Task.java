@@ -19,27 +19,31 @@ public abstract class Task {
         return player;
     }
 
-    public static Task parseTask(Player player, Board board, String command) {
+    public static Task parseTask(Player player, Board board, String command, int league) {
+        Task task = null;
         try {
             if (MoveTask.pattern.matcher(command).matches())
-                return new MoveTask(player, board, command);
+                task = new MoveTask(player, board, command);
             if (SpawnTask.pattern.matcher(command).matches())
-                return new SpawnTask(player, board, command);
+                task = new SpawnTask(player, board, command);
             if (AttackTask.pattern.matcher(command).matches())
-                return new AttackTask(player, board, command);
+                task = new AttackTask(player, board, command);
             if (AddEdgeTask.pattern.matcher(command).matches())
-                return new AddEdgeTask(player, board, command);
+                task = new AddEdgeTask(player, board, command);
             if (RemoveEdgeTask.pattern.matcher(command).matches())
-                return new RemoveEdgeTask(player, board, command);
+                task = new RemoveEdgeTask(player, board, command);
         } catch (Exception ex) {
             return null;
         }
-        return null;
+        if (task != null && task.getRequiredLeague() > league) return null;
+        return task;
     }
 
     public abstract boolean allowMultiplePerFrame();
 
     public abstract int getTaskPriority();
+
+    public abstract int getRequiredLeague();
 
     public int getTaskCost() {
         return 0;

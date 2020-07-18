@@ -44,6 +44,11 @@ public class RemoveEdgeTask extends Task {
     }
 
     @Override
+    public int getRequiredLeague() {
+        return 3;
+    }
+
+    @Override
     public boolean canApply(Board board) {
         return triangle != null && triangle.canUse(player, 1) && from.neighbors.contains(to) && !triangle.hasNode(to);
     }

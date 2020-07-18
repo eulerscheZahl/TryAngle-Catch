@@ -11,11 +11,11 @@ public class TaskManager {
     private ArrayList<Task> tasks = new ArrayList<>();
     private Board board;
 
-    public void parseTasks(Player player, Board board, String command) {
+    public void parseTasks(Player player, Board board, String command, int league) {
         player.setMessage("");
         this.board = board;
         for (String comm : command.split(";")) {
-            Task task = Task.parseTask(player, board, comm);
+            Task task = Task.parseTask(player, board, comm, league);
             if (task != null) tasks.add(task);
             else if (comm.startsWith("MSG ")) player.setMessage(comm.substring(4).trim());
         }
