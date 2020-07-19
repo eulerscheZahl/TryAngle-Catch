@@ -20,10 +20,10 @@ public class RemoveEdgeTask extends Task {
         super(player, board);
         Matcher matcher = pattern.matcher(command);
         matcher.matches();
-        int nodeFromId = Integer.parseInt(matcher.group("node1"));
+        int nodeFromId = Integer.parseInt(matcher.group("nodeFrom"));
         int node2Id = Integer.parseInt(matcher.group("node2"));
         int node3Id = Integer.parseInt(matcher.group("node3"));
-        int nodeToId = Integer.parseInt(matcher.group("target"));
+        int nodeToId = Integer.parseInt(matcher.group("nodeTo"));
         from = board.nodes.get(nodeFromId);
         Node node2 = board.nodes.get(node2Id);
         Node node3 = board.nodes.get(node3Id);

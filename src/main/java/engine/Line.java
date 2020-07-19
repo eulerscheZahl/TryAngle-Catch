@@ -29,6 +29,12 @@ public class Line {
         n2.neighbors.add(n1);
     }
 
+    public void unmakeNeighbors()
+    {
+        n1.neighbors.remove(n2);
+        n2.neighbors.remove(n1);
+    }
+
     private static boolean ccw(Node a, Node b, Node c)
     {
         return (c.getY() - a.getY()) * (b.getX() - a.getX()) > (b.getY() - a.getY()) * (c.getX() - a.getX());

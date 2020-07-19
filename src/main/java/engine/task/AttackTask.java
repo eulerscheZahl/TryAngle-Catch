@@ -56,6 +56,7 @@ public class AttackTask extends Task {
     public void apply(Board board) {
         triangle.use(1);
         target.units[player.getOpponent().getIndex()] = 0;
+        target.remainingUnits[player.getOpponent().getIndex()] = 0;
         target.updateView(player.getOpponent().getIndex());
     }
 

@@ -36,7 +36,7 @@
             <!-- END -->
     </span>
 <!-- BEGIN level1 level2 -->
-        To have a look at the final rules, go <a href="https://www.codingame.com/ide/demo/843364c35de5a48f4e0de3a6e0720b74d11b1a">here</a> and switch leagues at the top right corner.
+        <br>To have a look at the final rules, go <a href="https://www.codingame.com/ide/demo/843364c35de5a48f4e0de3a6e0720b74d11b1a">here</a> and switch leagues at the top right corner.
         <!-- END -->
     </div>
     <!-- END -->

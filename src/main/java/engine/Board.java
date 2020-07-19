@@ -19,6 +19,9 @@ public class Board {
     public static final int HEIGHT = 1080 - TOP_BORDER - BOTTOM_BORDER;
     public static final int NODE_COUNT = 50;
     public static final int NODE_MIN_DIST = 140;
+    public static final double SPARSE_MIN = 0.1;
+    public static final double SPARSE_MAX = 0.3;
+    public static final int MIN_TRIANGLE_COUNT = 20;
 
     public ArrayList<Node> nodes = new ArrayList<>();
     public ArrayList<Triangle> triangles = new ArrayList<>();
@@ -66,6 +69,31 @@ public class Board {
                 exsitingLines.add(lines.get(i));
             }
         }
+        int removeEdgeCount = (int) (exsitingLines.size() * (random.nextDouble() * (SPARSE_MAX - SPARSE_MIN) + SPARSE_MIN));
+        while (removeEdgeCount > 0) {
+            removeEdgeCount -= 2;
+            Line toDisconnect = exsitingLines.get(random.nextInt(exsitingLines.size()));
+            Node mirror1 = getMirror(toDisconnect.getN1());
+            Node mirror2 = getMirror(toDisconnect.getN2());
+            Line partner = null;
+            for (Line line : exsitingLines) {
+                if (line.getN1() == mirror1 && line.getN2() == mirror2 || line.getN1() == mirror2 && line.getN2() == mirror1) partner = line;
+            }
+
+            updateTriangles();
+            int triangleCount = triangles.size();
+            toDisconnect.unmakeNeighbors();
+            partner.unmakeNeighbors();
+            updateTriangles();
+            if (triangleCount - 4 == triangles.size()) {
+                exsitingLines.remove(toDisconnect);
+                exsitingLines.remove(partner);
+                if (triangles.size() - 4 < MIN_TRIANGLE_COUNT) break;
+            } else  {
+                toDisconnect.makeNeighbors();
+                partner.makeNeighbors();
+            }
+        }
 
         ArrayList<Node> nodesByX = new ArrayList<Node>(nodes);
         Collections.sort(nodesByX, Comparator.comparingInt(Node::getX));
@@ -108,8 +136,11 @@ public class Board {
             if (old == null) triangles.add(t);
             else triangles.add(old); // keep triangle stats like the owner
         }
-        for (Triangle old : oldTriangles) {
-            if (!triangles.contains(old)) old.delete();
+
+        if (view != null) {
+            for (Triangle old : oldTriangles) {
+                if (!triangles.contains(old)) old.delete();
+            }
         }
     }
 
