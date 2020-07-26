@@ -26,6 +26,8 @@ public class NodeView {
         graphics.createText().setX(node.getX()).setY(node.getY()).setAnchor(0.5).setText(String.valueOf(node.getId()))
                 .setFillColor(0xffffff).setStrokeThickness(4).setZIndex(8);
         toggleModule.displayOnToggleState(group, "debug", false);
+        tooltips.setTooltipText(group, "x=" + node.getX() + "\ny=" + node.getY());
+        tooltips.setTooltipText(mainCircle, "x=" + node.getX() + "\ny=" + node.getY());
 
         for (int i = 0; i < 2; i++) {
             unitsViews[i] = new UnitView(Player.getPlayer(i), node, 0, graphics, toggleModule);

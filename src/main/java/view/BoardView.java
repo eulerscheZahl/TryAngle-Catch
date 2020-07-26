@@ -15,6 +15,8 @@ public class BoardView {
     private Board board;
     private GraphicEntityModule graphics;
     private ToggleModule toggleModule;
+    private Text textTurn;
+    private Text textType;
 
     public BoardView(Board board, GraphicEntityModule graphics, TooltipModule tooltips, ToggleModule toggleModule) {
         this.graphics = graphics;
@@ -31,6 +33,16 @@ public class BoardView {
         }
         Player.getPlayer(0).initView(graphics);
         Player.getPlayer(1).initView(graphics);
+
+        textTurn = graphics.createText().setX(graphics.getWorld().getWidth()/2).setY(30).setAnchorX(0.5).setFontSize(50);
+        textType = graphics.createText().setX(graphics.getWorld().getWidth()/2).setY(100).setAnchorX(0.5).setFontSize(50);
+    }
+
+    public void updateTurn(int turn, String type) {
+        String turnString = "Turn " + turn;
+        if (!turnString.equals(textTurn.getText())) textTurn.setText("Turn " + turn);
+        if (!type.equals(textType.getText())) textType.setText(type);
+        graphics.commitEntityState(0, textTurn, textType);
     }
 
     class Connection {

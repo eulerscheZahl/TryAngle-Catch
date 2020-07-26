@@ -15,11 +15,11 @@ public class PlayerView {
     public PlayerView(Player player, GraphicEntityModule graphicEntityModule) {
         this.player = player;
         this.graphicEntityModule = graphicEntityModule;
-        Group group = graphicEntityModule.createGroup().setX(player.getIndex() * graphicEntityModule.getWorld().getWidth() / 2 + 30).setY(30);
+        Group group = graphicEntityModule.createGroup().setX(player.getIndex() * (graphicEntityModule.getWorld().getWidth() / 2 + 200) + 30).setY(30);
         Text nickname = graphicEntityModule.createText().setText(player.getNicknameToken()).setX(150).setFillColor(player.getColor()).setFontSize(50);
         Sprite avatar = graphicEntityModule.createSprite().setImage(player.getAvatarToken()).setBaseHeight(110).setBaseWidth(110);
         messageText = graphicEntityModule.createText().setX(150).setY(80).setFillColor(player.getColor()).setFontSize(30);
-        scoreText = graphicEntityModule.createText().setX(600).setFillColor(player.getColor()).setFontSize(80).setText("0");
+        scoreText = graphicEntityModule.createText().setX(700).setFillColor(player.getColor()).setFontSize(80).setText("0").setAnchorX(1);
         group.add(nickname, avatar, messageText, scoreText);
     }
 
@@ -31,7 +31,9 @@ public class PlayerView {
     }
 
     public void updateScore() {
-        if (!scoreText.getText().equals(String.valueOf(player.getScore())))
+        if (!scoreText.getText().equals(String.valueOf(player.getScore()))) {
             scoreText.setText(String.valueOf(player.getScore()));
+            graphicEntityModule.commitEntityState(0, scoreText);
+        }
     }
 }

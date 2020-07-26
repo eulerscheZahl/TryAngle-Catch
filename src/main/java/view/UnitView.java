@@ -22,8 +22,7 @@ public class UnitView {
         group = graphics.createGroup().setX(node.getX() - 40 + 80 * player.getIndex()).setY(node.getY() - 40).setZIndex(9);
         Circle circle = graphics.createCircle().setRadius(25).setFillColor(player.getColor()).setLineWidth(1);
         toggleModule.displayOnToggleState(circle, "debug", true);
-        sprite = graphics.createSprite().setScale(0.1).setAnchor(0.5);
-        if (player.getIndex() == 1) sprite.setScaleX(-0.1);
+        sprite = graphics.createSprite().setScale(0.1).setAnchor(0.5).setTint(player.getColor());
         toggleModule.displayOnToggleState(sprite, "debug", false);
         selectSpriteImage();
 

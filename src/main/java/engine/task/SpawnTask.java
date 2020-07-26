@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SpawnTask extends Task {
-    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>SPAWN)\\s+(?<spawn>\\d+)\\s+(?<node2>\\d+)\\s+(?<node3>\\d+)\\s*");
+    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>SPAWN)\\s+(?<spawn>\\d+)\\s+(?<node2>\\d+)\\s+(?<node3>\\d+)\\s*$");
 
     private Node nodeSpawn;
     private Triangle triangle;
@@ -60,5 +60,10 @@ public class SpawnTask extends Task {
     @Override
     public void visualize(BoardView view) {
 
+    }
+
+    @Override
+    public String getName() {
+        return "SPAWN";
     }
 }

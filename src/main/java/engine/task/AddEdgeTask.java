@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AddEdgeTask extends Task {
-    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>ADD_EDGE)\\s+(?<nodeFrom>\\d+)\\s+(?<node2>\\d+)\\s+(?<node3>\\d+)\\s+(?<nodeTo>\\d+)\\s*");
+    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>ADD_EDGE)\\s+(?<nodeFrom>\\d+)\\s+(?<node2>\\d+)\\s+(?<node3>\\d+)\\s+(?<nodeTo>\\d+)\\s*$");
 
     private Node from;
     private Node to;
@@ -69,5 +69,10 @@ public class AddEdgeTask extends Task {
     @Override
     public void visualize(BoardView view) {
 
+    }
+
+    @Override
+    public String getName() {
+        return "ADD_EDGE";
     }
 }

@@ -20,6 +20,7 @@ public abstract class Task {
     }
 
     public static Task parseTask(Player player, Board board, String command, int league) {
+        if (command.trim().equals("")) return null;
         Task task = null;
         try {
             if (MoveTask.pattern.matcher(command).matches())
@@ -33,9 +34,18 @@ public abstract class Task {
             if (RemoveEdgeTask.pattern.matcher(command).matches())
                 task = new RemoveEdgeTask(player, board, command);
         } catch (Exception ex) {
+            player.addError(new InputError("Unknown command: " + command, true));
             return null;
         }
-        if (task != null && task.getRequiredLeague() > league) return null;
+        if (task == null) {
+            player.addError(new InputError("Unknown command: " + command, true));
+            return null;
+        }
+        if (task.getRequiredLeague() > league) {
+            player.addError(new InputError("Command not available in your league: " + command, false));
+            return null;
+        }
+        if (!task.canApply(board)) player.addError(new InputError("Task can't be applied: " + command, false));
         return task;
     }
 
@@ -54,4 +64,6 @@ public abstract class Task {
     public abstract void apply(Board board);
 
     public abstract void visualize(BoardView view);
+
+    public abstract String getName();
 }

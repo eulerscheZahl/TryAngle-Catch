@@ -2,13 +2,17 @@ package com.codingame.game;
 import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.Group;
+import engine.task.InputError;
 import view.PlayerView;
+
+import java.util.ArrayList;
 
 public class Player extends AbstractMultiplayerPlayer {
 
     private static int[] colors = {0xff4040, 0x4040ff};
     private String message;
     private PlayerView view;
+    private ArrayList<InputError> errors = new ArrayList<>();
 
     public static int getColor(int id) {
         return colors[id];
@@ -60,5 +64,15 @@ public class Player extends AbstractMultiplayerPlayer {
 
     public void updateScore() {
         view.updateScore();
+    }
+
+    public ArrayList<InputError> popErrors() {
+        ArrayList<InputError> result = errors;
+        errors = new ArrayList<>();
+        return result;
+    }
+
+    public void addError(InputError error) {
+        errors.add(error);
     }
 }

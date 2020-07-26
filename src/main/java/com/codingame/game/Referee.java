@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
 import com.codingame.gameengine.core.AbstractReferee;
+import com.codingame.gameengine.core.GameManager;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.endscreen.EndScreenModule;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
@@ -11,17 +12,24 @@ import com.codingame.gameengine.module.toggle.ToggleModule;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
 import com.google.inject.Inject;
 import engine.Board;
+import engine.task.InputError;
 import engine.task.TaskManager;
 
 public class Referee extends AbstractReferee {
-    @Inject private MultiplayerGameManager<Player> gameManager;
-    @Inject private GraphicEntityModule graphicEntityModule;
-    @Inject private TooltipModule tooltipModule;
-    @Inject private EndScreenModule endScreenModule;
-    @Inject private ToggleModule toggleModule;
+    @Inject
+    private MultiplayerGameManager<Player> gameManager;
+    @Inject
+    private GraphicEntityModule graphicEntityModule;
+    @Inject
+    private TooltipModule tooltipModule;
+    @Inject
+    private EndScreenModule endScreenModule;
+    @Inject
+    private ToggleModule toggleModule;
 
     private Board board;
     private TaskManager taskManager;
+
     @Override
     public void init() {
         Random random = new Random(gameManager.getSeed());
@@ -36,13 +44,18 @@ public class Referee extends AbstractReferee {
     @Override
     public void gameTurn(int turn) {
         if (!taskManager.hasTasks()) {
-            if (board.finalizeTurn()){
+            if (board.finalizeTurn()) {
                 gameManager.setMaxTurns(gameManager.getMaxTurns() + 1);
                 return;
             }
             for (Player player : gameManager.getActivePlayers()) {
                 player.sendInputLine(board.getInput(turn == 1, player));
                 player.execute();
+
+                for (InputError error : player.popErrors()) {
+                    if (error.isCritical()) player.deactivate(error.getMessage());
+                    else gameManager.addToGameSummary("[" +player.getNicknameToken() + "] " + error.getMessage());
+                }
             }
 
             for (Player player : gameManager.getActivePlayers()) {
@@ -65,7 +78,7 @@ public class Referee extends AbstractReferee {
     @Override
     public void onEnd() {
         int[] scores = gameManager.getPlayers().stream().mapToInt(p -> p.getScore()).toArray();
-        String[] texts = { String.valueOf(scores[0]), String.valueOf(scores[1]) };
+        String[] texts = {String.valueOf(scores[0]), String.valueOf(scores[1])};
         endScreenModule.setScores(scores, texts);
     }
 }

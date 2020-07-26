@@ -158,6 +158,7 @@ public class Board {
     }
 
     private boolean killedSurrounded = false;
+    private int gameTurn = 0;
     public void applyActions(TaskManager taskManager) {
         killedSurrounded = false;
         Player.getPlayer(0).updateMessage();
@@ -165,6 +166,7 @@ public class Board {
 
         boolean move = false;
         for (Task task : taskManager.popTasks()) {
+            view.updateTurn(gameTurn, task.getName());
             if (!task.canApply(this)) continue; // double check because of multiple actions per turn
             task.apply(this);
             task.visualize(view);
@@ -231,6 +233,8 @@ public class Board {
     }
 
     public String getInput(boolean initial, Player player) {
+        if (player.getIndex() == 0) gameTurn++;
+
         StringBuilder sb = new StringBuilder();
         if (initial) {
             sb.append(nodes.size() + "\n");

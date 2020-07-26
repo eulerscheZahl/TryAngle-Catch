@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MoveTask extends Task {
-    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>MOVE)\\s+(?<from>\\d+)\\s+(?<to>\\d+)\\s+(?<amount>\\d+)\\s*");
+    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>MOVE)\\s+(?<from>\\d+)\\s+(?<to>\\d+)\\s+(?<amount>\\d+)\\s*$");
 
     private Node nodeFrom;
     private Node nodeTo;
@@ -54,5 +54,10 @@ public class MoveTask extends Task {
     @Override
     public void visualize(BoardView view) {
         view.cacheMove(player, nodeFrom, nodeTo);
+    }
+
+    @Override
+    public String getName() {
+        return "MOVE";
     }
 }

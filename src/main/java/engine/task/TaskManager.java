@@ -2,7 +2,6 @@ package engine.task;
 
 import com.codingame.game.Player;
 import engine.Board;
-import io.undertow.server.handlers.accesslog.JBossLoggingAccessLogReceiver;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,9 +14,12 @@ public class TaskManager {
         player.setMessage("");
         this.board = board;
         for (String comm : command.split(";")) {
+            if (comm.toUpperCase().startsWith("MSG ")) {
+                player.setMessage(comm.substring(4).trim());
+                continue;
+            }
             Task task = Task.parseTask(player, board, comm, league);
             if (task != null) tasks.add(task);
-            else if (comm.startsWith("MSG ")) player.setMessage(comm.substring(4).trim());
         }
     }
 

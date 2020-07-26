@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AttackTask extends Task {
-    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>ATTACK)\\s+(?<node1>\\d+)\\s+(?<node2>\\d+)\\s+(?<node3>\\d+)\\s+(?<target>\\d+)\\s*");
+    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>ATTACK)\\s+(?<node1>\\d+)\\s+(?<node2>\\d+)\\s+(?<node3>\\d+)\\s+(?<target>\\d+)\\s*$");
 
     private Node target;
     private Triangle triangle;
@@ -63,5 +63,10 @@ public class AttackTask extends Task {
     @Override
     public void visualize(BoardView view) {
 
+    }
+
+    @Override
+    public String getName() {
+        return "ATTACK";
     }
 }
