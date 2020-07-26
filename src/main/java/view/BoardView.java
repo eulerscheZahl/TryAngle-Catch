@@ -35,7 +35,7 @@ public class BoardView {
         Player.getPlayer(1).initView(graphics);
 
         textTurn = graphics.createText().setX(graphics.getWorld().getWidth()/2).setY(30).setAnchorX(0.5).setFontSize(50);
-        textType = graphics.createText().setX(graphics.getWorld().getWidth()/2).setY(100).setAnchorX(0.5).setFontSize(50);
+        textType = graphics.createText().setX(graphics.getWorld().getWidth()/2).setY(90).setAnchorX(0.5).setFontSize(50);
     }
 
     public void updateTurn(int turn, String type) {

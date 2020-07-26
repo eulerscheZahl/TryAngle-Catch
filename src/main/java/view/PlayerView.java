@@ -16,10 +16,10 @@ public class PlayerView {
         this.player = player;
         this.graphicEntityModule = graphicEntityModule;
         Group group = graphicEntityModule.createGroup().setX(player.getIndex() * (graphicEntityModule.getWorld().getWidth() / 2 + 200) + 30).setY(30);
-        Text nickname = graphicEntityModule.createText().setText(player.getNicknameToken()).setX(150).setFillColor(player.getColor()).setFontSize(50);
+        Text nickname = graphicEntityModule.createText().setText(player.getNicknameToken()).setX(150).setFillColor(player.getColor()).setFontSize(50).setStrokeThickness(2).setMaxWidth(400);
         Sprite avatar = graphicEntityModule.createSprite().setImage(player.getAvatarToken()).setBaseHeight(110).setBaseWidth(110);
-        messageText = graphicEntityModule.createText().setX(150).setY(80).setFillColor(player.getColor()).setFontSize(30);
-        scoreText = graphicEntityModule.createText().setX(700).setFillColor(player.getColor()).setFontSize(80).setText("0").setAnchorX(1);
+        messageText = graphicEntityModule.createText().setX(150).setY(80).setFillColor(player.getColor()).setFontSize(30).setStrokeThickness(2).setMaxWidth(400);
+        scoreText = graphicEntityModule.createText().setX(700).setFillColor(player.getColor()).setFontSize(80).setText("0").setAnchorX(1).setStrokeThickness(2);
         group.add(nickname, avatar, messageText, scoreText);
     }
 
