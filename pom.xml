@@ -42,11 +42,5 @@
             <artifactId>module-endscreen</artifactId>
             <version>${gameengine.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.codingame.gameengine</groupId>
-            <artifactId>module-toggle</artifactId>
-            <version>${gameengine.version}</version>
-        </dependency>
     </dependencies>
 </project>

@@ -2,8 +2,8 @@ package view;
 
 import com.codingame.game.Player;
 import com.codingame.gameengine.module.entities.*;
-import com.codingame.gameengine.module.toggle.ToggleModule;
 import engine.Node;
+import view.modules.TinyToggleModule;
 
 public class UnitView {
     private Node node;
@@ -14,16 +14,16 @@ public class UnitView {
     private Text text;
     private Sprite sprite;
 
-    public UnitView(Player player, Node node, int amount, GraphicEntityModule graphics, ToggleModule toggleModule) {
+    public UnitView(Player player, Node node, int amount, GraphicEntityModule graphics, TinyToggleModule toggleModule) {
         this.node = node;
         this.player = player;
         this.amount = amount;
 
         group = graphics.createGroup().setX(node.getX() - 40 + 80 * player.getIndex()).setY(node.getY() - 40).setZIndex(9);
         Circle circle = graphics.createCircle().setRadius(25).setFillColor(player.getColor()).setLineWidth(1);
-        toggleModule.displayOnToggleState(circle, "debug", true);
+        toggleModule.displayOnToggleState(circle, "d", true);
         sprite = graphics.createSprite().setScale(0.1).setAnchor(0.5).setTint(player.getColor());
-        toggleModule.displayOnToggleState(sprite, "debug", false);
+        toggleModule.displayOnToggleState(sprite, "d", false);
         selectSpriteImage();
 
         text = graphics.createText().setText(String.valueOf(amount)).setFillColor(0xffffff).setStrokeThickness(4).setAnchor(0.5);

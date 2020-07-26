@@ -2,11 +2,11 @@ package view;
 
 import com.codingame.game.Player;
 import com.codingame.gameengine.module.entities.*;
-import com.codingame.gameengine.module.toggle.ToggleModule;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
 import engine.Board;
 import engine.Node;
 import engine.Triangle;
+import view.modules.TinyToggleModule;
 
 import java.util.ArrayList;
 
@@ -14,17 +14,17 @@ public class BoardView {
     private ArrayList<NodeView> nodeViews = new ArrayList<>();
     private Board board;
     private GraphicEntityModule graphics;
-    private ToggleModule toggleModule;
+    private TinyToggleModule toggleModule;
     private Text textTurn;
     private Text textType;
 
-    public BoardView(Board board, GraphicEntityModule graphics, TooltipModule tooltips, ToggleModule toggleModule) {
+    public BoardView(Board board, GraphicEntityModule graphics, TooltipModule tooltips, TinyToggleModule toggleModule) {
         this.graphics = graphics;
         this.toggleModule = toggleModule;
         this.board = board;
         graphics.createRectangle().setZIndex(-9).setFillColor(0xffffff).setWidth(graphics.getWorld().getWidth()).setHeight(graphics.getWorld().getHeight());
         Sprite background = graphics.createSprite().setImage("background.png").setZIndex(-9).setAlpha(0.7);
-        toggleModule.displayOnToggleState(background, "debug", false);
+        toggleModule.displayOnToggleState(background, "d", false);
         for (Node node : board.nodes) {
             nodeViews.add(new NodeView(node, graphics, tooltips, toggleModule));
             for (Node n : node.neighbors) {
@@ -70,14 +70,14 @@ public class BoardView {
             if (line != null) return;
             line = graphics.createLine().setX(n1.getX()).setY(n1.getY()).setX2(n2.getX()).setY2(n2.getY())
                     .setLineWidth(5).setFillColor(0).setZIndex(1);
-            toggleModule.displayOnToggleState(line, "debug", true);
+            toggleModule.displayOnToggleState(line, "d", true);
             int length = 50 * (int) Math.round(n1.dist(n2) / 50);
             double dx = n2.getX() - n1.getX();
             double dy = n2.getY() - n1.getY();
             sprite = graphics.createSprite().setImage("p" + length + ".png");
             sprite.setX((n1.getX() + n2.getX()) / 2).setY((n1.getY() + n2.getY()) / 2).setAnchor(0.5)
                     .setRotation(Math.atan2(dy, dx)).setZIndex(1);
-            toggleModule.displayOnToggleState(sprite, "debug", false);
+            toggleModule.displayOnToggleState(sprite, "d", false);
         }
 
         public void hideLine() {

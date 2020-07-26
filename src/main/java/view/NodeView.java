@@ -2,9 +2,9 @@ package view;
 
 import com.codingame.game.Player;
 import com.codingame.gameengine.module.entities.*;
-import com.codingame.gameengine.module.toggle.ToggleModule;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
 import engine.Node;
+import view.modules.TinyToggleModule;
 
 public class NodeView {
     private Node node;
@@ -13,19 +13,19 @@ public class NodeView {
     private Circle mainCircle;
     private Sprite roof;
 
-    public NodeView(Node node, GraphicEntityModule graphics, TooltipModule tooltips, ToggleModule toggleModule) {
+    public NodeView(Node node, GraphicEntityModule graphics, TooltipModule tooltips, TinyToggleModule toggleModule) {
         this.graphics = graphics;
         this.node = node;
         node.view = this;
         mainCircle = graphics.createCircle().setX(node.getX()).setY(node.getY()).setRadius(35).setFillColor(0).setLineWidth(10).setLineColor(0).setZIndex(8);
-        toggleModule.displayOnToggleState(mainCircle, "debug", true);
+        toggleModule.displayOnToggleState(mainCircle, "d", true);
         Group group = graphics.createGroup().setX(node.getX() - 30).setY(node.getY() - 40).setScale(0.1).setZIndex(8);
         Sprite house = graphics.createSprite().setImage("s1.png");
         roof = graphics.createSprite().setImage("s2.png");
         group.add(house, roof);
         graphics.createText().setX(node.getX()).setY(node.getY()).setAnchor(0.5).setText(String.valueOf(node.getId()))
                 .setFillColor(0xffffff).setStrokeThickness(4).setZIndex(8);
-        toggleModule.displayOnToggleState(group, "debug", false);
+        toggleModule.displayOnToggleState(group, "d", false);
         tooltips.setTooltipText(group, "x=" + node.getX() + "\ny=" + node.getY());
         tooltips.setTooltipText(mainCircle, "x=" + node.getX() + "\ny=" + node.getY());
 

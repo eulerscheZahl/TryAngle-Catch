@@ -1,6 +1,7 @@
 package view.modules;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import com.codingame.gameengine.core.AbstractPlayer;
@@ -73,7 +74,12 @@ public class TinyToggleModule implements Module {
     }
 
     private void sendFrameData() {
-        Object[] data = {newRegistration};
+        HashMap<String, String> data = new HashMap<>();
+        for (int d : newRegistration.keySet()) {
+            String key = newRegistration.get(d).name;
+            if (!data.containsKey(key)) data.put(key, "");
+            data.put(key, data.get(key) + d + (newRegistration.get(d).state ? "+" : "-"));
+        }
         gameManager.setViewData("toggles", data);
 
         newRegistration.clear();

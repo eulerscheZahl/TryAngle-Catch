@@ -2,12 +2,12 @@ package engine;
 
 import com.codingame.game.Player;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
-import com.codingame.gameengine.module.toggle.ToggleModule;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
 import engine.task.MoveTask;
 import engine.task.Task;
 import engine.task.TaskManager;
 import view.BoardView;
+import view.modules.TinyToggleModule;
 
 import java.util.*;
 
@@ -29,9 +29,9 @@ public class Board {
     private BoardView view;
     private GraphicEntityModule graphicEntityModule;
     private TooltipModule tooltipModule;
-    private ToggleModule toggleModule;
+    private TinyToggleModule toggleModule;
 
-    public Board(Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, ToggleModule toggleModule) {
+    public Board(Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, TinyToggleModule toggleModule) {
         this.graphicEntityModule = graphicEntityModule;
         this.tooltipModule = tooltipModule;
         this.toggleModule = toggleModule;
