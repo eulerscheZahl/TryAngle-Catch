@@ -7,6 +7,7 @@ export class TinyToggleModule {
   constructor (assets) {
     this.previousFrame = {}
     this.missingToggles = {}
+    TinyToggleModule.instance = this
 
     TinyToggleModule.refreshContent = () => {
       if (!this.currentFrame) {
@@ -28,6 +29,10 @@ export class TinyToggleModule {
     }
 
     pushDuplicateErrors()
+  }
+
+  registerToggle(entity, name, state) {
+  	this.previousFrame.registered[entity.id] = {"name":name, "state":state}
   }
 
   static refreshContent () {}
@@ -77,6 +82,7 @@ export class TinyToggleModule {
   }
 }
 
+TinyToggleModule.instance = null;
 TinyToggleModule.toggles = {}
 TinyToggleModule.optionValues = {}
 

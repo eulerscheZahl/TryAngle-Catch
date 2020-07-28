@@ -3,9 +3,13 @@ package view;
 import com.codingame.game.Player;
 import com.codingame.gameengine.module.entities.*;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
+import com.google.inject.Inject;
+
 import engine.Board;
 import engine.Node;
 import engine.Triangle;
+import view.modules.MoveModule;
+import view.modules.NodeModule;
 import view.modules.TinyToggleModule;
 
 import java.util.ArrayList;
@@ -14,18 +18,21 @@ public class BoardView {
     private ArrayList<NodeView> nodeViews = new ArrayList<>();
     private Board board;
     private GraphicEntityModule graphics;
+    private MoveModule moveModule;
     private TinyToggleModule toggleModule;
     private Text textTurn;
     private Text textType;
 
-    public BoardView(Board board, GraphicEntityModule graphics, TooltipModule tooltips, TinyToggleModule toggleModule) {
+    public BoardView(Board board, GraphicEntityModule graphics, TooltipModule tooltips, TinyToggleModule toggleModule, NodeModule boardModule, MoveModule moveModule) {
         this.graphics = graphics;
+        this.moveModule = moveModule;
         this.toggleModule = toggleModule;
         this.board = board;
         graphics.createRectangle().setZIndex(-9).setFillColor(0xffffff).setWidth(graphics.getWorld().getWidth()).setHeight(graphics.getWorld().getHeight());
         Sprite background = graphics.createSprite().setImage("background.png").setZIndex(-9).setAlpha(0.7);
         toggleModule.displayOnToggleState(background, "d", false);
         for (Node node : board.nodes) {
+            boardModule.registerNode(node);
             nodeViews.add(new NodeView(node, graphics, tooltips, toggleModule));
             for (Node n : node.neighbors) {
                 connect(node, n);
@@ -112,17 +119,17 @@ public class BoardView {
         for (Triangle triangle : board.triangles) triangle.updateOwnerView();
     }
 
-    private class Move {
+    public class Move {
         public Player player;
         public Node from;
         public Node to;
         public int count;
 
-        public Move(Player player, Node from, Node to) {
+        public Move(Player player, Node from, Node to, int amount) {
             this.player = player;
             this.from = from;
             this.to = to;
-            count = 1;
+            this.count = amount;
         }
     }
 
@@ -132,35 +139,19 @@ public class BoardView {
         moves.clear();
     }
 
-    public void cacheMove(Player player, Node from, Node to) {
+    public void cacheMove(Player player, Node from, Node to, int amount) {
         for (Move move : moves) {
             if (move.player == player && move.from == from && move.to == to) {
-                move.count++;
+                move.count += amount;
                 return;
             }
         }
-        moves.add(new Move(player, from, to));
+        moves.add(new Move(player, from, to, amount));
     }
 
-    private ArrayList<UnitView> unitViews = new ArrayList<>();
     public void animateMoves() {
-        ArrayList<UnitView> inUse = new ArrayList<>();
         for (Move move : moves) {
-            UnitView current = null;
-            for (UnitView view : unitViews) {
-                if (view.getPlayer() == move.player && (view.getNode() == move.from || current == null)) current = view;
-            }
-            if (current == null) current = new UnitView(move.player, move.from, move.count, graphics, toggleModule);
-            inUse.add(current);
-            unitViews.remove(current);
-
-            current.moveTo(move.from);
-            current.updateAmount(move.count);
-            current.show();
-            current.commit(graphics, 0);
-            current.moveTo(move.to);
-            current.hide();
+            moveModule.registerMove(move);
         }
-        unitViews.addAll(inUse);
     }
 }

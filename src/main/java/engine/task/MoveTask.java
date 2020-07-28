@@ -53,7 +53,7 @@ public class MoveTask extends Task {
 
     @Override
     public void visualize(BoardView view) {
-        view.cacheMove(player, nodeFrom, nodeTo);
+        view.cacheMove(player, nodeFrom, nodeTo, amount);
     }
 
     @Override

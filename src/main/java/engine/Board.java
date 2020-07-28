@@ -7,6 +7,8 @@ import engine.task.MoveTask;
 import engine.task.Task;
 import engine.task.TaskManager;
 import view.BoardView;
+import view.modules.MoveModule;
+import view.modules.NodeModule;
 import view.modules.TinyToggleModule;
 
 import java.util.*;
@@ -31,7 +33,7 @@ public class Board {
     private TooltipModule tooltipModule;
     private TinyToggleModule toggleModule;
 
-    public Board(Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, TinyToggleModule toggleModule) {
+    public Board(Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, TinyToggleModule toggleModule, NodeModule boardModule, MoveModule moveModule) {
         this.graphicEntityModule = graphicEntityModule;
         this.tooltipModule = tooltipModule;
         this.toggleModule = toggleModule;
@@ -104,7 +106,7 @@ public class Board {
         }
         updateTriangles();
 
-        view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule);
+        view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, boardModule, moveModule);
         finalizeTurn();
     }
 

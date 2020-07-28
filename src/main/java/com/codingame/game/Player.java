@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Player extends AbstractMultiplayerPlayer {
 
-    private static int[] colors = {0xff4040, 0x4040ff};
+    private static int[] colors = {0xff4040, 0x4040ff}; // 0xFF1D5C, 0x22A1E4
     private String message;
     private PlayerView view;
     private ArrayList<InputError> errors = new ArrayList<>();

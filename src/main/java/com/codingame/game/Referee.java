@@ -4,7 +4,6 @@ import java.util.Random;
 
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
 import com.codingame.gameengine.core.AbstractReferee;
-import com.codingame.gameengine.core.GameManager;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.endscreen.EndScreenModule;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
@@ -13,6 +12,8 @@ import com.google.inject.Inject;
 import engine.Board;
 import engine.task.InputError;
 import engine.task.TaskManager;
+import view.modules.MoveModule;
+import view.modules.NodeModule;
 import view.modules.TinyToggleModule;
 
 public class Referee extends AbstractReferee {
@@ -26,6 +27,11 @@ public class Referee extends AbstractReferee {
     private EndScreenModule endScreenModule;
     @Inject
     private TinyToggleModule toggleModule;
+    @Inject
+    private NodeModule boardModule;
+    @Inject
+    private MoveModule moveModule;
+
 
     private Board board;
     private TaskManager taskManager;
@@ -36,9 +42,9 @@ public class Referee extends AbstractReferee {
         Player.registerPlayer(gameManager.getPlayer(0));
         Player.registerPlayer(gameManager.getPlayer(1));
 
-        board = new Board(random, graphicEntityModule, tooltipModule, toggleModule);
+        board = new Board(random, graphicEntityModule, tooltipModule, toggleModule, boardModule, moveModule);
         taskManager = new TaskManager();
-        gameManager.setMaxTurns(50);
+        gameManager.setMaxTurns(100);
     }
 
     @Override
