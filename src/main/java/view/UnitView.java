@@ -34,7 +34,7 @@ public class UnitView {
 
     private void selectSpriteImage() {
         if (amount == 0) return;
-        String image = player.getIndex() == 0?"r":"b";
+        String image = player.getIndex() == 0 ? "r" : "b";
         image += Math.min(amount, 5) + ".png";
         if (image.equals(sprite.getImage())) return;
         sprite.setImage(image);
@@ -51,9 +51,9 @@ public class UnitView {
     public void updateAmount(int unit) {
         if (unit == amount) return;
         amount = unit;
-        if (amount == 0) group.setVisible(false);
+        if (amount == 0) hide();
         else {
-            group.setVisible(true);
+            show();
             text.setText(String.valueOf(amount));
             selectSpriteImage();
         }
@@ -63,18 +63,12 @@ public class UnitView {
         graphics.commitEntityState(t, group, text, sprite);
     }
 
-    public void moveTo(Node node) {
-        if (this.node == node) return;
-        this.node = node;
-        group.setX(node.getX() - 40 + 80 * player.getIndex()).setY(node.getY() - 40);
-    }
-
     public void show() {
-        group.setVisible(true);
+        if (!group.isVisible()) group.setVisible(true);
     }
 
     public void hide() {
-        group.setVisible(false);
+        if (group.isVisible()) group.setVisible(false);
     }
 
     public void commitAmount(GraphicEntityModule graphics, int unit) {

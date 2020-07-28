@@ -41,8 +41,8 @@ public class BoardView {
         Player.getPlayer(0).initView(graphics);
         Player.getPlayer(1).initView(graphics);
 
-        textTurn = graphics.createText().setX(graphics.getWorld().getWidth()/2).setY(30).setAnchorX(0.5).setFontSize(50);
-        textType = graphics.createText().setX(graphics.getWorld().getWidth()/2).setY(90).setAnchorX(0.5).setFontSize(50);
+        textTurn = graphics.createText().setX(graphics.getWorld().getWidth() / 2).setY(30).setAnchorX(0.5).setFontSize(50);
+        textType = graphics.createText().setX(graphics.getWorld().getWidth() / 2).setY(90).setAnchorX(0.5).setFontSize(50);
     }
 
     public void updateTurn(int turn, String type) {
@@ -69,7 +69,7 @@ public class BoardView {
 
         @Override
         public boolean equals(Object other) {
-            Connection conn = (Connection)other;
+            Connection conn = (Connection) other;
             return this.n1 == conn.n1 && this.n2 == conn.n2;
         }
 
@@ -94,6 +94,7 @@ public class BoardView {
     }
 
     private ArrayList<Connection> connections = new ArrayList<>();
+
     public void connect(Node n1, Node n2) {
         Connection connection = new Connection(n1, n2);
         if (!connections.contains(connection)) {
@@ -110,11 +111,11 @@ public class BoardView {
         connections.remove(connection);
     }
 
-    public void startMove(){
+    public void startMove() {
         for (NodeView nodeView : nodeViews) nodeView.startMove();
     }
 
-    public void endMove(){
+    public void endMove() {
         for (NodeView nodeView : nodeViews) nodeView.endMove();
         for (Triangle triangle : board.triangles) triangle.updateOwnerView();
     }

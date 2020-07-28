@@ -32,7 +32,8 @@
       In Wood 1 you can now ATTACK nodes
             <!-- END -->
             <!-- BEGIN level3 -->
-      In Bronze you can now ADD and REMOVE edges.
+      In Bronze you can now ADD and REMOVE edges. <br>
+      There will be no additional rules in higher leagues.
             <!-- END -->
     </span>
 <!-- BEGIN level1 level2 -->

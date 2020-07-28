@@ -53,8 +53,8 @@ public class NodeView {
         int lineColor = 0;
         if (node.ownedBy(Player.getPlayer(0))) lineColor = Player.getColor(0);
         if (node.ownedBy(Player.getPlayer(1))) lineColor = Player.getColor(1);
-        mainCircle.setLineColor(lineColor);
-        if (lineColor == 0) roof.setTint(0xffffff);
-        else roof.setTint(lineColor);
+        if (mainCircle.getLineColor() != lineColor) mainCircle.setLineColor(lineColor);
+        int roofColor = lineColor == 0 ? 0xffffff : lineColor;
+        if (roof.getTint() != roofColor) roof.setTint(roofColor);
     }
 }
