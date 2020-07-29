@@ -15,6 +15,7 @@ export class TinyToggleModule {
       }
       for (const registeredEntity in this.currentFrame.registered) {
         const entity = entityModule.entities.get(parseInt(registeredEntity))
+        if (!entity) continue
         const toggleInfo = this.currentFrame.registered[registeredEntity]
         const toggleState = TinyToggleModule.toggles[toggleInfo.name]
 

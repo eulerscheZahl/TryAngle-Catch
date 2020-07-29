@@ -33,7 +33,7 @@ public class Board {
     private TooltipModule tooltipModule;
     private TinyToggleModule toggleModule;
 
-    public Board(Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, TinyToggleModule toggleModule, NodeModule boardModule, MoveModule moveModule) {
+    public Board(Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, TinyToggleModule toggleModule, NodeModule nodeModule, MoveModule moveModule) {
         this.graphicEntityModule = graphicEntityModule;
         this.tooltipModule = tooltipModule;
         this.toggleModule = toggleModule;
@@ -106,7 +106,7 @@ public class Board {
         }
         updateTriangles();
 
-        view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, boardModule, moveModule);
+        view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, nodeModule, moveModule);
         finalizeTurn();
     }
 
@@ -219,6 +219,7 @@ public class Board {
                     node.units[i] = 0;
                     node.updateView(i);
                     surrounded = true;
+                    view.updateTurn(gameTurn, "SURROUND");
                 }
             }
         }
@@ -231,6 +232,7 @@ public class Board {
         for (Triangle triangle : triangles) {
             result |= triangle.capture();
         }
+        if (result) view.updateTurn(gameTurn, "CAPTURE");
         return result;
     }
 

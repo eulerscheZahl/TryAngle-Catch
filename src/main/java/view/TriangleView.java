@@ -21,7 +21,7 @@ public class TriangleView {
     Polygon region = null;
     public void update() {
         if (region == null) {
-            region = graphicEntityModule.createPolygon().setZIndex(-1)
+            region = graphicEntityModule.createPolygon().setZIndex(-1).setAlpha(0)
                     .addPoint(triangle.getNode1().getX(), triangle.getNode1().getY())
                     .addPoint(triangle.getNode2().getX(), triangle.getNode2().getY())
                     .addPoint(triangle.getNode3().getX(), triangle.getNode3().getY());

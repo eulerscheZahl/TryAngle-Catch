@@ -3,7 +3,6 @@ package view;
 import com.codingame.game.Player;
 import com.codingame.gameengine.module.entities.*;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
-import com.google.inject.Inject;
 
 import engine.Board;
 import engine.Node;
@@ -23,7 +22,7 @@ public class BoardView {
     private Text textTurn;
     private Text textType;
 
-    public BoardView(Board board, GraphicEntityModule graphics, TooltipModule tooltips, TinyToggleModule toggleModule, NodeModule boardModule, MoveModule moveModule) {
+    public BoardView(Board board, GraphicEntityModule graphics, TooltipModule tooltips, TinyToggleModule toggleModule, NodeModule nodeModule, MoveModule moveModule) {
         this.graphics = graphics;
         this.moveModule = moveModule;
         this.toggleModule = toggleModule;
@@ -32,8 +31,8 @@ public class BoardView {
         Sprite background = graphics.createSprite().setImage("background.png").setZIndex(-9).setAlpha(0.7);
         toggleModule.displayOnToggleState(background, "d", false);
         for (Node node : board.nodes) {
-            boardModule.registerNode(node);
-            nodeViews.add(new NodeView(node, graphics, tooltips, toggleModule));
+            nodeModule.registerNode(node);
+            nodeViews.add(new NodeView(node, nodeModule));
             for (Node n : node.neighbors) {
                 connect(node, n);
             }

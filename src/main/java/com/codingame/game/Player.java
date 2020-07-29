@@ -1,7 +1,6 @@
 package com.codingame.game;
 import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
-import com.codingame.gameengine.module.entities.Group;
 import engine.task.InputError;
 import view.PlayerView;
 
@@ -10,7 +9,7 @@ import java.util.ArrayList;
 public class Player extends AbstractMultiplayerPlayer {
 
     private static int[] colors = {0xff4040, 0x4040ff}; // 0xFF1D5C, 0x22A1E4
-    private String message;
+    private String message = "";
     private PlayerView view;
     private ArrayList<InputError> errors = new ArrayList<>();
 
@@ -51,7 +50,7 @@ public class Player extends AbstractMultiplayerPlayer {
 
     public void setMessage(String message) {
         this.message = message;
-        if (this.message.length() > 30) this.message = this.message.substring(0, 30);
+        if (this.message.length() > 50) this.message = this.message.substring(0, 50);
     }
 
     public void initView(GraphicEntityModule graphics) {

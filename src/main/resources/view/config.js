@@ -2,12 +2,12 @@ import { GraphicEntityModule } from './entity-module/GraphicEntityModule.js';
 import { TinyToggleModule } from './modules/TinyToggleModule.js'
 import { NodeModule } from './modules/NodeModule.js'
 import { MoveModule } from './modules/MoveModule.js'
-import { TooltipModule } from './tooltip-module/TooltipModule.js'
+import { FooltipModule } from './modules/FooltipModule.js'
 import { EndScreenModule } from './endscreen-module/EndScreenModule.js';
 
 export const playerColors = [
-  '#ff4040',
-  '#4040ff',
+  '#FF1D5C', //'#ff4040',
+  '#22A1E4', //'#4040ff',
 ];
 
 export const graphicsHelper = {
@@ -16,7 +16,7 @@ export const graphicsHelper = {
 	defaults: {
 		sprite: { alpha:1, anchorX:0, anchorY:0, baseHeight:null, baseWidth:null, blendMode:0, curve:{}, image:null, mask:-1, rotation:0, scaleMode:"LINEAR", scaleX:1, scaleY:1, skewX:0, skewY:0, t:0, tint:0xFFFFFF, visible:true, x:0, y:0, zIndex:0, },
 		circle: { alpha: 1, blendMode: 0, curve: {}, fillAlpha: 1, fillColor: 0xFFFFFF, lineAlpha: 1, lineColor: 0, lineWidth: 1, mask: -1, radius: 25, rotation: 0, scaleX: 1, scaleY: 1, skewX: 0, skewY: 0, t: 0, visible: true, x: 0, y: 0, zIndex: 0, },
-    	group: { children:[], visible:true, x:0, y:0, zIndex:0, maskId:-1, },
+    	group: { alpha: 1, children: [], mask: -1, rotation: 0, scaleX: 1, scaleY: 1, skewX: 0, skewY: 0, visible: true, x: 0, y: 0, zIndex: 0, },
     	text: { alpha: 1, anchorX: 0, anchorY: 0, blendMode: 0, fillColor: 0, fontFamily: "Lato", fontSize: 26, fontWeight: "normal", mask: -1, maxWidth: 0, rotation: 0, scaleX: 1, scaleY: 1, skewX: 0, skewY: 0, strokeColor: 0, strokeThickness: 0, text: "", textAlign: "left", tint: 16777215, visible: true, x: 0, y: 0, zIndex: 0, },
 	}	
 }
@@ -25,7 +25,7 @@ export const graphicsHelper = {
 export const modules = [
 	GraphicEntityModule,
 	TinyToggleModule,
-	TooltipModule,
+	FooltipModule,
 	NodeModule,
 	MoveModule,
     EndScreenModule,

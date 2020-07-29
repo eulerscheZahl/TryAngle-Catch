@@ -2,16 +2,11 @@ package view.modules;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
-import com.codingame.game.Player;
 import com.codingame.gameengine.core.AbstractPlayer;
 import com.codingame.gameengine.core.GameManager;
 import com.codingame.gameengine.core.Module;
-import com.codingame.gameengine.module.entities.Entity;
-import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -22,8 +17,6 @@ import view.BoardView.Move;
 public class MoveModule implements Module {
 
     GameManager<AbstractPlayer> gameManager;
-    @Inject
-    GraphicEntityModule entityModule;
     List<Move> registered, newRegistration;
 
     class Toggle {
