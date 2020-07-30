@@ -23,7 +23,7 @@ public class NodeView {
     // for spawn events
     public void updateView(int playerId) {
         unitsViews[playerId].updateAmount(node.units[playerId], true);
-        endMove();
+        //endMove();
     }
 
     public void startMove() {

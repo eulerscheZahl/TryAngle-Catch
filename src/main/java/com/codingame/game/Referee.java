@@ -44,7 +44,7 @@ public class Referee extends AbstractReferee {
 
         board = new Board(random, graphicEntityModule, tooltipModule, toggleModule, boardModule, moveModule);
         taskManager = new TaskManager();
-        gameManager.setMaxTurns(100);
+        gameManager.setMaxTurns(200);
     }
 
     @Override
@@ -57,11 +57,6 @@ public class Referee extends AbstractReferee {
             for (Player player : gameManager.getActivePlayers()) {
                 player.sendInputLine(board.getInput(turn == 1, player));
                 player.execute();
-
-                for (InputError error : player.popErrors()) {
-                    if (error.isCritical()) player.deactivate(error.getMessage());
-                    else gameManager.addToGameSummary("[" +player.getNicknameToken() + "] " + error.getMessage());
-                }
             }
 
             for (Player player : gameManager.getActivePlayers()) {
@@ -73,7 +68,16 @@ public class Referee extends AbstractReferee {
                     player.setScore(-1);
                     gameManager.endGame();
                 }
-            }
+
+                for (InputError error : player.popErrors()) {
+                    if (error.isCritical()) {
+                    	player.deactivate(error.getMessage());
+                    	player.setScore(-1);
+                    	gameManager.endGame();
+                    }
+                    else gameManager.addToGameSummary("[" +player.getNicknameToken() + "] " + error.getMessage());
+                }
+           }
         } else {
             gameManager.setMaxTurns(gameManager.getMaxTurns() + 1);
         }

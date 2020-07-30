@@ -44,9 +44,9 @@ public class Triangle {
     @Override
     public boolean equals(Object other) {
         Triangle triangle = (Triangle) other;
-        return this.node1 == triangle.node1 &&
-                this.node2 == triangle.node2 &&
-                this.node3 == triangle.node3;
+        return this.hasNode(triangle.node1) &&
+                this.hasNode(triangle.node2) &&
+                this.hasNode(triangle.node3);
     }
 
     public boolean canCapture(Player player) {
@@ -70,10 +70,10 @@ public class Triangle {
         node2.remainingUnits[owner.getIndex()] -= units;
         node3.remainingUnits[owner.getIndex()] -= units;
         canCapture[owner.getIndex()] = false;
+        node1.updateView(owner.getIndex());
+        node2.updateView(owner.getIndex());
+        node3.updateView(owner.getIndex());
         owner = null;
-        //node1.updateView(owner.getIndex());
-        //node2.updateView(owner.getIndex());
-        //node3.updateView(owner.getIndex());
         view.update();
     }
 

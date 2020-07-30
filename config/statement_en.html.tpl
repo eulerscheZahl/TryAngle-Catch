@@ -143,7 +143,7 @@
                     A triangle can be used to create an edge between two nodes. This can possibly create new triangles
                     as well. This action has a cost of <const>1</const>.
                     The new edge must be connected to one node of the used triangle. The edge may not cross any existing
-                    edges.
+                    edges or have a length greater than <const>400</const>.
 
                     <br><br>
                     <strong>Removing an edge</strong><br>
@@ -367,6 +367,7 @@
                 <br>
                 <br> Response time first turn &le; <const>1000</const> ms
                 <br> Response time per turn &le; <const>50</const> ms
+                <br> The game ends after <const>200</const> turns
             </div>
         </div>
     </div>
