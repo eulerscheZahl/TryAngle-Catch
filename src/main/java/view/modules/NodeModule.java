@@ -13,30 +13,30 @@ import engine.Node;
 
 @Singleton
 public class NodeModule implements Module {
-	
-	private class UnitState {
-		public Player player;
-		public boolean turnStart;
-		public Node node;
-		public int amount;
-		
-		public UnitState(Player player, boolean turnStart, Node node, int amount) {
-			this.player = player;
-			this.turnStart = turnStart;
-			this.node = node;
-			this.amount = amount;
-		}
-	}
-	
-	private class NodeState {
-		public Node node;
-		public Player owner;
-		
-		public NodeState(Node node, Player owner) {
-			this.node = node;
-			this.owner = owner;
-		}
-	}
+
+    private class UnitState {
+        public Player player;
+        public boolean turnStart;
+        public Node node;
+        public int amount;
+
+        public UnitState(Player player, boolean turnStart, Node node, int amount) {
+            this.player = player;
+            this.turnStart = turnStart;
+            this.node = node;
+            this.amount = amount;
+        }
+    }
+
+    private class NodeState {
+        public Node node;
+        public Player owner;
+
+        public NodeState(Node node, Player owner) {
+            this.node = node;
+            this.owner = owner;
+        }
+    }
 
     GameManager<AbstractPlayer> gameManager;
     private List<Node> newNodeRegistration;
@@ -71,41 +71,41 @@ public class NodeModule implements Module {
         for (Node node : newNodeRegistration) {
             s += node.getX() + "/" + node.getY() + " ";
         }
-        
+
         String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String p0Start = "00=";
         String p0End = "01=";
         String p1Start = "10=";
         String p1End = "11=";
         for (UnitState state : unitStates) {
-        	String add = "" + alphabet.charAt(state.node.getId());
-        	if (state.amount != (state.turnStart ? 0 : 1)) add += state.amount;
-        	if (state.player.getIndex() == 0 && state.turnStart) p0Start += add;
-        	if (state.player.getIndex() == 0 && !state.turnStart) p0End += add;
-        	if (state.player.getIndex() == 1 && state.turnStart) p1Start += add;
-        	if (state.player.getIndex() == 1 && !state.turnStart) p1End += add;
+            String add = "" + alphabet.charAt(state.node.getId());
+            if (state.amount != (state.turnStart ? 0 : 1)) add += state.amount;
+            if (state.player.getIndex() == 0 && state.turnStart) p0Start += add;
+            if (state.player.getIndex() == 0 && !state.turnStart) p0End += add;
+            if (state.player.getIndex() == 1 && state.turnStart) p1Start += add;
+            if (state.player.getIndex() == 1 && !state.turnStart) p1End += add;
         }
         if (p0Start.length() > 3) s += p0Start + " ";
         if (p0End.length() > 3) s += p0End + " ";
         if (p1Start.length() > 3) s += p1Start + " ";
-        if (p1End.length() > 3) s += p1End+ " ";
-        
+        if (p1End.length() > 3) s += p1End + " ";
+
         String owners = "X";
         Player committed = null;
-        Player[] playerOrder = new Player[] { null, Player.getPlayer(0), Player.getPlayer(1) };
+        Player[] playerOrder = new Player[]{null, Player.getPlayer(0), Player.getPlayer(1)};
         for (Player owner : playerOrder) {
-	        for (NodeState state : nodeStates) {
-	        	if (state.owner == owner) {
-	        		if (committed != owner) {
-	        			committed = owner;
-	        			owners += owner.getIndex();
-	        		}
-	        		owners += alphabet.charAt(state.node.getId());
-	        	}
-	        }
+            for (NodeState state : nodeStates) {
+                if (state.owner == owner) {
+                    if (committed != owner) {
+                        committed = owner;
+                        owners += owner.getIndex();
+                    }
+                    owners += alphabet.charAt(state.node.getId());
+                }
+            }
         }
         if (owners.length() > 1) s += owners;
-        
+
         s = s.trim();
         if (s.length() > 0) gameManager.setViewData("nodes", s);
 
@@ -115,14 +115,14 @@ public class NodeModule implements Module {
     }
 
     public void registerNode(Node node) {
-    	newNodeRegistration.add(node);
+        newNodeRegistration.add(node);
     }
 
-	public void updateUnits(Player player, boolean turnStart, Node node, int amount) {
-		unitStates.add(new UnitState(player, turnStart, node, amount));
-	}
+    public void updateUnits(Player player, boolean turnStart, Node node, int amount) {
+        unitStates.add(new UnitState(player, turnStart, node, amount));
+    }
 
-	public void updateOwner(Node node, Player owner) {
-		nodeStates.add(new NodeState(node, owner));
-	}
+    public void updateOwner(Node node, Player owner) {
+        nodeStates.add(new NodeState(node, owner));
+    }
 }

@@ -4,11 +4,10 @@ import com.codingame.game.Player;
 import engine.Board;
 import view.BoardView;
 
-import java.util.regex.Pattern;
-
 public abstract class Task {
     protected Player player;
     protected Board board;
+    protected String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     protected Task(Player player, Board board) {
         this.player = player;
@@ -63,7 +62,13 @@ public abstract class Task {
 
     public abstract void apply(Board board);
 
-    public abstract void visualize(BoardView view);
+    public void visualize(BoardView view) {
+        view.animateTask(this);
+    }
 
     public abstract String getName();
+
+    public abstract String getSerializeKey();
+
+    public abstract String serialize();
 }

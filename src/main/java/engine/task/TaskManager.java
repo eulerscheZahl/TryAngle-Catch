@@ -34,7 +34,7 @@ public class TaskManager {
     }
 
     private ArrayList<Task> peekTasks() {
-        for (int i = tasks.size() -1; i >= 0; i--) {
+        for (int i = tasks.size() - 1; i >= 0; i--) {
             if (!tasks.get(i).canApply(board)) tasks.remove(i);
         }
 

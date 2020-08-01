@@ -4,7 +4,6 @@ import com.codingame.game.Player;
 import engine.Board;
 import engine.Node;
 import engine.Triangle;
-import view.BoardView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,16 +53,25 @@ public class SpawnTask extends Task {
     public void apply(Board board) {
         triangle.use(0);
         nodeSpawn.units[player.getIndex()]++;
-        nodeSpawn.updateView(player.getIndex());
-    }
-
-    @Override
-    public void visualize(BoardView view) {
-
+        nodeSpawn.updateView(player.getIndex(), false);
     }
 
     @Override
     public String getName() {
         return "SPAWN";
+    }
+
+    @Override
+    public String getSerializeKey() {
+        return "S";
+    }
+
+    @Override
+    public String serialize() {
+        String result = "" + alphabet.charAt(nodeSpawn.getId());
+        if (triangle.getNode1() != nodeSpawn) result += alphabet.charAt(triangle.getNode1().getId());
+        if (triangle.getNode2() != nodeSpawn) result += alphabet.charAt(triangle.getNode2().getId());
+        if (triangle.getNode3() != nodeSpawn) result += alphabet.charAt(triangle.getNode3().getId());
+        return result;
     }
 }

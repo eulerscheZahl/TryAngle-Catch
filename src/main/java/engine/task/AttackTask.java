@@ -4,7 +4,6 @@ import com.codingame.game.Player;
 import engine.Board;
 import engine.Node;
 import engine.Triangle;
-import view.BoardView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -57,16 +56,26 @@ public class AttackTask extends Task {
         triangle.use(1);
         target.units[player.getOpponent().getIndex()] = 0;
         target.remainingUnits[player.getOpponent().getIndex()] = 0;
-        target.updateView(player.getOpponent().getIndex());
-    }
-
-    @Override
-    public void visualize(BoardView view) {
-
+        target.updateView(player.getOpponent().getIndex(), true);
     }
 
     @Override
     public String getName() {
         return "ATTACK";
+    }
+
+    @Override
+    public String getSerializeKey() {
+        return "E";
+    }
+
+    @Override
+    public String serialize() {
+        String result = "";
+        result += alphabet.charAt(triangle.getNode1().getId());
+        result += alphabet.charAt(triangle.getNode2().getId());
+        result += alphabet.charAt(triangle.getNode3().getId());
+        result += alphabet.charAt(target.getId());
+        return result;
     }
 }

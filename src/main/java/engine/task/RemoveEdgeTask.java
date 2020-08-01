@@ -4,7 +4,6 @@ import com.codingame.game.Player;
 import engine.Board;
 import engine.Node;
 import engine.Triangle;
-import view.BoardView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,12 +59,22 @@ public class RemoveEdgeTask extends Task {
     }
 
     @Override
-    public void visualize(BoardView view) {
-
+    public String getName() {
+        return "REMOVE_EDGE";
     }
 
     @Override
-    public String getName() {
-        return "REMOVE_EDGE";
+    public String getSerializeKey() {
+        return "R";
+    }
+
+    @Override
+    public String serialize() {
+        String result = "" + alphabet.charAt(from.getId());
+        if (triangle.getNode1() != to) result += alphabet.charAt(triangle.getNode1().getId());
+        if (triangle.getNode2() != to) result += alphabet.charAt(triangle.getNode2().getId());
+        if (triangle.getNode3() != to) result += alphabet.charAt(triangle.getNode3().getId());
+        result += alphabet.charAt(to.getId());
+        return result;
     }
 }

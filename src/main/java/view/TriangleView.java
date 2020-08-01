@@ -19,6 +19,7 @@ public class TriangleView {
     }
 
     Polygon region = null;
+
     public void update() {
         if (region == null) {
             region = graphicEntityModule.createPolygon().setZIndex(-1).setAlpha(0)
@@ -39,5 +40,11 @@ public class TriangleView {
 
     public void hide() {
         region.setVisible(false);
+    }
+
+    public void use() {
+        triangle.getNode1().updateView(triangle.getOwner().getIndex(), true);
+        triangle.getNode2().updateView(triangle.getOwner().getIndex(), true);
+        triangle.getNode3().updateView(triangle.getOwner().getIndex(), true);
     }
 }

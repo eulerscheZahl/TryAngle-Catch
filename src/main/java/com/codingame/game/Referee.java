@@ -12,8 +12,8 @@ import com.google.inject.Inject;
 import engine.Board;
 import engine.task.InputError;
 import engine.task.TaskManager;
-import view.modules.MoveModule;
 import view.modules.NodeModule;
+import view.modules.TaskModule;
 import view.modules.TinyToggleModule;
 
 public class Referee extends AbstractReferee {
@@ -28,9 +28,9 @@ public class Referee extends AbstractReferee {
     @Inject
     private TinyToggleModule toggleModule;
     @Inject
-    private NodeModule boardModule;
+    private NodeModule nodeModule;
     @Inject
-    private MoveModule moveModule;
+    private TaskModule taskModule;
 
 
     private Board board;
@@ -42,7 +42,7 @@ public class Referee extends AbstractReferee {
         Player.registerPlayer(gameManager.getPlayer(0));
         Player.registerPlayer(gameManager.getPlayer(1));
 
-        board = new Board(random, graphicEntityModule, tooltipModule, toggleModule, boardModule, moveModule);
+        board = new Board(random, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule);
         taskManager = new TaskManager();
         gameManager.setMaxTurns(200);
     }
@@ -71,13 +71,12 @@ public class Referee extends AbstractReferee {
 
                 for (InputError error : player.popErrors()) {
                     if (error.isCritical()) {
-                    	player.deactivate(error.getMessage());
-                    	player.setScore(-1);
-                    	gameManager.endGame();
-                    }
-                    else gameManager.addToGameSummary("[" +player.getNicknameToken() + "] " + error.getMessage());
+                        player.deactivate(error.getMessage());
+                        player.setScore(-1);
+                        gameManager.endGame();
+                    } else gameManager.addToGameSummary("[" + player.getNicknameToken() + "] " + error.getMessage());
                 }
-           }
+            }
         } else {
             gameManager.setMaxTurns(gameManager.getMaxTurns() + 1);
         }

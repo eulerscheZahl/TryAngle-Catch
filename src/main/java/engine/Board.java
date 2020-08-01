@@ -7,8 +7,8 @@ import engine.task.MoveTask;
 import engine.task.Task;
 import engine.task.TaskManager;
 import view.BoardView;
-import view.modules.MoveModule;
 import view.modules.NodeModule;
+import view.modules.TaskModule;
 import view.modules.TinyToggleModule;
 
 import java.util.*;
@@ -35,7 +35,7 @@ public class Board {
     private TooltipModule tooltipModule;
     private TinyToggleModule toggleModule;
 
-    public Board(Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, TinyToggleModule toggleModule, NodeModule nodeModule, MoveModule moveModule) {
+    public Board(Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, TinyToggleModule toggleModule, NodeModule nodeModule, TaskModule taskModule) {
         this.graphicEntityModule = graphicEntityModule;
         this.tooltipModule = tooltipModule;
         this.toggleModule = toggleModule;
@@ -51,12 +51,12 @@ public class Board {
                     nodeDistances.contains(n1.dist2(n2)) ||
                     nodes.stream().anyMatch(n -> nodeDistances.contains(n.dist2(n1)))) continue;
             if (obtuseAngle(nodes, n1, n2)) continue;
-             nodeDistances.add(n1.dist2(n2));
+            nodeDistances.add(n1.dist2(n2));
             for (Node n : nodes) nodeDistances.add(n.dist2(n1));
             nodes.add(n1);
             nodes.add(n2);
         }
-        
+
         // add edges to create triangles
         ArrayList<Line> lines = new ArrayList<Line>();
         for (int i = 0; i < nodes.size(); i++) {
@@ -77,7 +77,7 @@ public class Board {
                 exsitingLines.add(lines.get(i));
             }
         }
-        
+
         // randomly remove some edges again
         int removeEdgeCount = (int) (exsitingLines.size() * (random.nextDouble() * (SPARSE_MAX - SPARSE_MIN) + SPARSE_MIN));
         while (removeEdgeCount > 0) {
@@ -87,7 +87,8 @@ public class Board {
             Node mirror2 = getMirror(toDisconnect.getN2());
             Line partner = null;
             for (Line line : exsitingLines) {
-                if (line.getN1() == mirror1 && line.getN2() == mirror2 || line.getN1() == mirror2 && line.getN2() == mirror1) partner = line;
+                if (line.getN1() == mirror1 && line.getN2() == mirror2 || line.getN1() == mirror2 && line.getN2() == mirror1)
+                    partner = line;
             }
 
             updateTriangles();
@@ -99,7 +100,7 @@ public class Board {
                 exsitingLines.remove(toDisconnect);
                 exsitingLines.remove(partner);
                 if (triangles.size() - 4 < MIN_TRIANGLE_COUNT) break;
-            } else  {
+            } else {
                 toDisconnect.makeNeighbors();
                 partner.makeNeighbors();
             }
@@ -114,33 +115,33 @@ public class Board {
         }
         updateTriangles();
 
-        view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, nodeModule, moveModule);
+        view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule);
         finalizeTurn();
     }
 
     private boolean obtuseAngle(ArrayList<Node> nodes, Node n1, Node n2) {
-    	ArrayList<Node> list = new ArrayList<Node>(nodes);
-    	list.add(n1);
-    	list.add(n2);
-    	for (int i1 = 0; i1 < list.size(); i1++) {
-    		for (int i2 = i1+1; i2 < list.size(); i2++) {
-    			for (int i3 = i2+1; i3 < list.size(); i3++) {
-    				double a = list.get(i1).dist(list.get(i2));
-    				double b = list.get(i1).dist(list.get(i3));
-    				double c = list.get(i2).dist(list.get(i3));
-    				if (a > MAX_PATH_LENGTH || b > MAX_PATH_LENGTH || c > MAX_PATH_LENGTH) continue;
-    				double alpha = Math.toDegrees(Math.acos((b*b+c*c-a*a)/(2*b*c)));
-    				double beta = Math.toDegrees(Math.acos((a*a+c*c-b*b)/(2*a*c)));
-    				double gamma = Math.toDegrees(Math.acos((a*a+b*b-c*c)/(2*a*b)));
-    				if (alpha > MAX_ANGLE || beta > MAX_ANGLE || gamma > MAX_ANGLE) 
-    					return true;
-    			}
-    		}
-    	}
-    	return false;
-	}
+        ArrayList<Node> list = new ArrayList<Node>(nodes);
+        list.add(n1);
+        list.add(n2);
+        for (int i1 = 0; i1 < list.size(); i1++) {
+            for (int i2 = i1 + 1; i2 < list.size(); i2++) {
+                for (int i3 = i2 + 1; i3 < list.size(); i3++) {
+                    double a = list.get(i1).dist(list.get(i2));
+                    double b = list.get(i1).dist(list.get(i3));
+                    double c = list.get(i2).dist(list.get(i3));
+                    if (a > MAX_PATH_LENGTH || b > MAX_PATH_LENGTH || c > MAX_PATH_LENGTH) continue;
+                    double alpha = Math.toDegrees(Math.acos((b * b + c * c - a * a) / (2 * b * c)));
+                    double beta = Math.toDegrees(Math.acos((a * a + c * c - b * b) / (2 * a * c)));
+                    double gamma = Math.toDegrees(Math.acos((a * a + b * b - c * c) / (2 * a * b)));
+                    if (alpha > MAX_ANGLE || beta > MAX_ANGLE || gamma > MAX_ANGLE)
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	public boolean canConnect(Node from, Node to) {
+    public boolean canConnect(Node from, Node to) {
         ArrayList<Line> exsitingLines = new ArrayList<>();
         for (Node n1 : nodes) {
             for (Node n2 : n1.neighbors) {
@@ -182,7 +183,7 @@ public class Board {
             for (Node node2 : node1.neighbors) {
                 for (Node node3 : node2.neighbors) {
                     if (node1.getId() < node2.getId() && node2.getId() < node3.getId() && node1.neighbors.contains(node3) &&
-                    		!nodes.stream().anyMatch(n -> isInside(n, node1, node2, node3)))
+                            !nodes.stream().anyMatch(n -> isInside(n, node1, node2, node3)))
                         result.add(new Triangle(node1, node2, node3, graphicEntityModule, tooltipModule));
                 }
             }
@@ -191,19 +192,20 @@ public class Board {
     }
 
     private boolean isInside(Node n, Node a, Node b, Node c) {
-		if (n == a || n == b || n == c) return false;
-		boolean ccw1 = Line.ccw(n, a, b);
-	    boolean ccw2 = Line.ccw(n, b, c);
-	    boolean ccw3 = Line.ccw(n, c, a);
-		
-	    boolean has_neg = !ccw1 || !ccw2 || !ccw3;
-	    boolean has_pos = ccw1 || ccw2 || ccw3;
+        if (n == a || n == b || n == c) return false;
+        boolean ccw1 = Line.ccw(n, a, b);
+        boolean ccw2 = Line.ccw(n, b, c);
+        boolean ccw3 = Line.ccw(n, c, a);
 
-	    return !(has_neg && has_pos);
-	}
+        boolean has_neg = !ccw1 || !ccw2 || !ccw3;
+        boolean has_pos = ccw1 || ccw2 || ccw3;
 
-	private boolean killedSurrounded = false;
+        return !(has_neg && has_pos);
+    }
+
+    private boolean killedSurrounded = false;
     private int gameTurn = 0;
+
     public void applyActions(TaskManager taskManager) {
         killedSurrounded = false;
         Player.getPlayer(0).updateMessage();
@@ -260,7 +262,7 @@ public class Board {
                 int opponentIndex = (i + 1) % 2;
                 if (node.units[i] > 0 && node.neighbors.stream().allMatch(n -> playerAdvantage[opponentIndex].contains(n))) {
                     node.units[i] = 0;
-                    node.updateView(i);
+                    node.updateView(i, true);
                     surrounded = true;
                     view.updateTurn(gameTurn, "SURROUND");
                 }

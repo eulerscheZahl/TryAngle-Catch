@@ -7,8 +7,9 @@ import com.codingame.gameengine.module.tooltip.TooltipModule;
 import engine.Board;
 import engine.Node;
 import engine.Triangle;
-import view.modules.MoveModule;
+import engine.task.*;
 import view.modules.NodeModule;
+import view.modules.TaskModule;
 import view.modules.TinyToggleModule;
 
 import java.util.ArrayList;
@@ -17,15 +18,15 @@ public class BoardView {
     private ArrayList<NodeView> nodeViews = new ArrayList<>();
     private Board board;
     private GraphicEntityModule graphics;
-    private MoveModule moveModule;
     private TinyToggleModule toggleModule;
+    private TaskModule taskModule;
     private Text textTurn;
     private Text textType;
 
-    public BoardView(Board board, GraphicEntityModule graphics, TooltipModule tooltips, TinyToggleModule toggleModule, NodeModule nodeModule, MoveModule moveModule) {
+    public BoardView(Board board, GraphicEntityModule graphics, TooltipModule tooltips, TinyToggleModule toggleModule, NodeModule nodeModule, TaskModule taskModule) {
         this.graphics = graphics;
-        this.moveModule = moveModule;
         this.toggleModule = toggleModule;
+        this.taskModule = taskModule;
         this.board = board;
         graphics.createRectangle().setZIndex(-9).setFillColor(0xffffff).setWidth(graphics.getWorld().getWidth()).setHeight(graphics.getWorld().getHeight());
         Sprite background = graphics.createSprite().setImage("background.png").setZIndex(-9).setAlpha(0.7);
@@ -151,7 +152,11 @@ public class BoardView {
 
     public void animateMoves() {
         for (Move move : moves) {
-            moveModule.registerMove(move);
+            animateTask(new MoveTask(move.player, move.from, move.to, move.count));
         }
+    }
+
+    public void animateTask(Task task) {
+        taskModule.registerTask(task);
     }
 }

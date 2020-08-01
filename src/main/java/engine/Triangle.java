@@ -70,9 +70,7 @@ public class Triangle {
         node2.remainingUnits[owner.getIndex()] -= units;
         node3.remainingUnits[owner.getIndex()] -= units;
         canCapture[owner.getIndex()] = false;
-        node1.updateView(owner.getIndex());
-        node2.updateView(owner.getIndex());
-        node3.updateView(owner.getIndex());
+        view.use();
         owner = null;
         view.update();
     }

@@ -1,7 +1,7 @@
 import { api as entityModule } from '../entity-module/GraphicEntityModule.js'
 import { EntityFactory } from '../entity-module/EntityFactory.js'
 import { TinyToggleModule } from './TinyToggleModule.js'
-import { graphicsHelper } from '../config.js'
+import { graphicsHelper } from './TaskModule.js'
 import { FooltipModule } from './FooltipModule.js'
 
 export class NodeModule {

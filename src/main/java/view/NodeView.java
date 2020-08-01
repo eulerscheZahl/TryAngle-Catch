@@ -21,8 +21,8 @@ public class NodeView {
     }
 
     // for spawn events
-    public void updateView(int playerId) {
-        unitsViews[playerId].updateAmount(node.units[playerId], true);
+    public void updateView(int playerId, boolean startTurn) {
+        unitsViews[playerId].updateAmount(node.units[playerId], startTurn);
         //endMove();
     }
 
@@ -36,7 +36,7 @@ public class NodeView {
         for (int i = 0; i < 2; i++) {
             unitsViews[i].updateAmount(node.units[i], false);
         }
-       Player currentOwner = null;
+        Player currentOwner = null;
         if (node.ownedBy(Player.getPlayer(0))) currentOwner = Player.getPlayer(0);
         if (node.ownedBy(Player.getPlayer(1))) currentOwner = Player.getPlayer(1);
         if (currentOwner != owner) nodeModule.updateOwner(node, currentOwner);

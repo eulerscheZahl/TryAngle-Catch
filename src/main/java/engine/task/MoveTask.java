@@ -26,6 +26,13 @@ public class MoveTask extends Task {
         nodeTo = this.board.nodes.get(toId);
     }
 
+    public MoveTask(Player player, Node from, Node to, int count) {
+        super(player, null);
+        this.nodeFrom = from;
+        this.nodeTo = to;
+        this.amount = count;
+    }
+
     @Override
     public boolean allowMultiplePerFrame() {
         return true;
@@ -53,11 +60,22 @@ public class MoveTask extends Task {
 
     @Override
     public void visualize(BoardView view) {
+        // use own serialization and don't call super.visualize()
         view.cacheMove(player, nodeFrom, nodeTo, amount);
     }
 
     @Override
     public String getName() {
         return "MOVE";
+    }
+
+    @Override
+    public String getSerializeKey() {
+        return "M";
+    }
+
+    @Override
+    public String serialize() {
+        return "" + alphabet.charAt(nodeFrom.getId()) + alphabet.charAt(nodeTo.getId());
     }
 }

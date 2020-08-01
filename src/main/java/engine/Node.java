@@ -71,20 +71,20 @@ public class Node {
         return dist;
     }
 
-    public void updateView(int playerId) {
-        view.updateView(playerId);
+    public void updateView(int playerId, boolean startTurn) {
+        view.updateView(playerId, startTurn);
     }
 
     public boolean canMoveTo(int id, Node target) {
         if (this == target) return false;
-        if (remainingUnits[id] <= 0) return false; // TODO warning
+        if (remainingUnits[id] <= 0) return false;
         int[] dist = target.bfs();
         return dist[this.id] > 0;
     }
 
     public boolean moveTo(int id, Node target, int amount) {
         if (this == target) return false;
-        if (remainingUnits[id] <= 0) return false; // TODO warning
+        if (remainingUnits[id] <= 0) return false;
         int[] dist = target.bfs();
         amount = Math.min(amount, this.remainingUnits[id]);
 
@@ -97,7 +97,6 @@ public class Node {
             }
         }
 
-        // TODO warning, no valid move
         return false;
     }
 
