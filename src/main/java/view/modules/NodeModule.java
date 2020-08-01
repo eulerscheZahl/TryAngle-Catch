@@ -1,6 +1,7 @@
 package view.modules;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import com.codingame.game.Player;
@@ -77,7 +78,11 @@ public class NodeModule implements Module {
         String p0End = "01=";
         String p1Start = "10=";
         String p1End = "11=";
+        HashSet<String> processed = new HashSet<>();
         for (UnitState state : unitStates) {
+            String hash = state.player + "_" + state.node + "_" + state.turnStart;
+            if (processed.contains(hash)) continue; // avoid double commits
+            processed.add(hash);
             String add = "" + alphabet.charAt(state.node.getId());
             if (state.amount != (state.turnStart ? 0 : 1)) add += state.amount;
             if (state.player.getIndex() == 0 && state.turnStart) p0Start += add;
@@ -119,7 +124,7 @@ public class NodeModule implements Module {
     }
 
     public void updateUnits(Player player, boolean turnStart, Node node, int amount) {
-        unitStates.add(new UnitState(player, turnStart, node, amount));
+        unitStates.add(0, new UnitState(player, turnStart, node, amount));
     }
 
     public void updateOwner(Node node, Player owner) {

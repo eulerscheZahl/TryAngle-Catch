@@ -53,9 +53,9 @@ export class TaskModule {
     const offsetX = -40 + 80 * task.player
     const offsetY = -40
     const to = { x:task.triangle.x + offsetX, y:task.triangle.y + offsetY }
-    this.performMove(frameInfo, task.player, { x:task.node1.x, y:task.node1.y }, to, 1)
-    this.performMove(frameInfo, task.player, { x:task.node2.x, y:task.node2.y }, to, 1)
-    this.performMove(frameInfo, task.player, { x:task.node3.x, y:task.node3.y }, to, 1)
+    this.performMove(frameInfo, task.player, { x:task.node1.x + offsetX, y:task.node1.y + offsetY }, to, 1)
+    this.performMove(frameInfo, task.player, { x:task.node2.x + offsetX, y:task.node2.y + offsetY }, to, 1)
+    this.performMove(frameInfo, task.player, { x:task.node3.x + offsetX, y:task.node3.y + offsetY }, to, 1)
   }
 
   performMove(frameInfo, player, from, to, amount) {

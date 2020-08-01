@@ -71,9 +71,9 @@ public class RemoveEdgeTask extends Task {
     @Override
     public String serialize() {
         String result = "" + alphabet.charAt(from.getId());
-        if (triangle.getNode1() != to) result += alphabet.charAt(triangle.getNode1().getId());
-        if (triangle.getNode2() != to) result += alphabet.charAt(triangle.getNode2().getId());
-        if (triangle.getNode3() != to) result += alphabet.charAt(triangle.getNode3().getId());
+        if (triangle.getNode1() != from) result += alphabet.charAt(triangle.getNode1().getId());
+        if (triangle.getNode2() != from) result += alphabet.charAt(triangle.getNode2().getId());
+        if (triangle.getNode3() != from) result += alphabet.charAt(triangle.getNode3().getId());
         result += alphabet.charAt(to.getId());
         return result;
     }
