@@ -3,6 +3,7 @@ import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import engine.task.InputError;
 import view.PlayerView;
+import view.modules.TinyToggleModule;
 
 import java.util.ArrayList;
 
@@ -53,8 +54,8 @@ public class Player extends AbstractMultiplayerPlayer {
         if (this.message.length() > 50) this.message = this.message.substring(0, 50);
     }
 
-    public void initView(GraphicEntityModule graphics) {
-        view = new PlayerView(this, graphics);
+    public void initView(GraphicEntityModule graphics, TinyToggleModule toggleModule) {
+        view = new PlayerView(this, graphics, toggleModule);
     }
 
     public void updateMessage() {

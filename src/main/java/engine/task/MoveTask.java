@@ -76,6 +76,8 @@ public class MoveTask extends Task {
 
     @Override
     public String serialize() {
-        return "" + alphabet.charAt(nodeFrom.getId()) + alphabet.charAt(nodeTo.getId());
+        String result = "" + alphabet.charAt(nodeFrom.getId()) + alphabet.charAt(nodeTo.getId());
+        if (amount != 1) result += amount;
+        return result;
     }
 }

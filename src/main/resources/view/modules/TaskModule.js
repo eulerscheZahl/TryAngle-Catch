@@ -33,32 +33,42 @@ export class TaskModule {
   updateScene (previousData, currentData, progress) {
   }
 
-  generateMoveAnimation(frameInfo, move) {
-    const offsetX = -40 + 80 * move.player
+  getOffsetNode(node, player) {
+    const offsetX = -40 + 80 * player
     const offsetY = -40
-    const from = { x:move.from.x + offsetX, y:move.from.y + offsetY }
-    const to = { x:move.to.x + offsetX, y:move.to.y + offsetY }
+    return {x:node.x+offsetX, y:node.y+offsetY}
+  }
+
+  generateMoveAnimation(frameInfo, move) {
+    const from = this.getOffsetNode(move.from, move.player)
+    const to = this.getOffsetNode(move.to, move.player)
     this.performMove(frameInfo, move.player, from, to, move.amount)
   }
 
   generateSpawnAnimation(frameInfo, spawn) {
-    const offsetX = -40 + 80 * spawn.player
-    const offsetY = -40
-    const from = { x:spawn.from.x, y:spawn.from.y }
-    const to = { x:spawn.to.x + offsetX, y:spawn.to.y + offsetY }
+    const from = this.getOffsetNode(spawn.from, spawn.player)
+    const to = this.getOffsetNode(spawn.to, spawn.player)
     this.performMove(frameInfo, spawn.player, from, to, 1)
   }
 
   generateTaskAnimation(frameInfo, task) {
-    const offsetX = -40 + 80 * task.player
-    const offsetY = -40
-    const to = { x:task.triangle.x + offsetX, y:task.triangle.y + offsetY }
-    this.performMove(frameInfo, task.player, { x:task.node1.x + offsetX, y:task.node1.y + offsetY }, to, 1)
-    this.performMove(frameInfo, task.player, { x:task.node2.x + offsetX, y:task.node2.y + offsetY }, to, 1)
-    this.performMove(frameInfo, task.player, { x:task.node3.x + offsetX, y:task.node3.y + offsetY }, to, 1)
+    this.performMove(frameInfo, task.player, this.getOffsetNode(task.node1, task.player), task.triangle, 1)
+    this.performMove(frameInfo, task.player, this.getOffsetNode(task.node2, task.player), task.triangle, 1)
+    this.performMove(frameInfo, task.player, this.getOffsetNode(task.node3, task.player), task.triangle, 1)
+
+
+    if (task.type === "A" && task.amount > 0) {
+        const to = this.getOffsetNode(task.target, 1-task.player)
+        this.performMove(frameInfo, (1-task.player), to, to, task.amount, {alpha:0})
+    }
   }
 
-  performMove(frameInfo, player, from, to, amount) {
+  generateDisappearAnimation(frameInfo, task) {
+    const to = this.getOffsetNode(task.target, task.player)
+    this.performMove(frameInfo, task.player, to, to, task.amount, {alpha:0})
+  }
+
+  performMove(frameInfo, player, from, to, amount, finalArgs={}) {
     // create group with sprites (or load from cache)
     if (this.knightCache.length > 0) {
         var group = this.knightCache.pop()
@@ -89,16 +99,16 @@ export class TaskModule {
     var circleParams = { ...graphicsHelper.defaults.circle, x:from.x, y:from.y,
                   fillColor:graphicsHelper.playerColors[player], zIndex:9 }
     circle.addState(0, {values: circleParams, curve:{}}, frameInfo.number, frameInfo)
-    var textParams = { ...graphicsHelper.defaults.text, x:from.x, y:from.y, text:"1",
+    var textParams = { ...graphicsHelper.defaults.text, x:from.x, y:from.y, text:""+amount,
                   zIndex:10, anchorX:0.5, anchorY:0.5, strokeThickness:4, fillColor:0xFFFFFF }
     text.addState(0, {values: textParams, curve:{}}, frameInfo.number, frameInfo)
 
     // move and hide
-    var knightMoveParams = { ...knightParams, x:to.x, y:to.y, t:1, visible:false }
+    var knightMoveParams = { ...knightParams, x:to.x, y:to.y, t:1, visible:false, ...finalArgs }
     knight.addState(1, {values: knightMoveParams, curve:{}}, frameInfo.number, frameInfo)
-    var circleMoveParams = { ...circleParams, x:to.x, y:to.y, t:1, visible:false }
+    var circleMoveParams = { ...circleParams, x:to.x, y:to.y, t:1, visible:false, ...finalArgs }
     circle.addState(1, {values: circleMoveParams, curve:{}}, frameInfo.number, frameInfo)
-    var textMoveParams = { ...textParams, x:to.x, y:to.y, t:1, visible:false }
+    var textMoveParams = { ...textParams, x:to.x, y:to.y, t:1, visible:false, ...finalArgs }
     text.addState(1, {values: textMoveParams, curve:{}}, frameInfo.number, frameInfo)
 
     this.turnCache.push(group)
@@ -114,30 +124,33 @@ export class TaskModule {
     var parts = data.split(';')
     for (var player = 0; player < parts.length; player++) {
         if (!parts[player]) continue
+        var task = {player:player, type:type}
         if (type == 'M') { // spawn
             parts[player].match(/\w\w\d*/g).forEach(s => {
-                var move = {}
-                move.from = NodeModule.nodes[alphabet.indexOf(s[0])]
-                move.to = NodeModule.nodes[alphabet.indexOf(s[1])]
-                move.amount = 1
-                if (s.length > 2) move.amount = parseInt(s.substr(2))
-                move.player = player;
-                this.generateMoveAnimation(frameInfo, move)
+                task.from = NodeModule.nodes[alphabet.indexOf(s[0])]
+                task.to = NodeModule.nodes[alphabet.indexOf(s[1])]
+                task.amount = 1
+                if (s.length > 2) task.amount = parseInt(s.substr(2))
+                this.generateMoveAnimation(frameInfo, task)
             })
         } else if (type == 'S') { // spawn
-            parts[player].match(/\w\w\w/g).forEach(s => {
-                var spawn = {}
-                var node1 = NodeModule.nodes[alphabet.indexOf(s[0])]
-                var node2 = NodeModule.nodes[alphabet.indexOf(s[1])]
-                var node3 = NodeModule.nodes[alphabet.indexOf(s[2])]
-                spawn.from = {"x":(node1.x+node2.x+node3.x)/3, "y":(node1.y+node2.y+node3.y)/3}
-                spawn.to = node1
-                spawn.player = player
-                this.generateSpawnAnimation(frameInfo, spawn)
+                      parts[player].match(/\w\w\w/g).forEach(s => {
+                          var node1 = NodeModule.nodes[alphabet.indexOf(s[0])]
+                          var node2 = NodeModule.nodes[alphabet.indexOf(s[1])]
+                          var node3 = NodeModule.nodes[alphabet.indexOf(s[2])]
+                          task.from = {"x":(node1.x+node2.x+node3.x)/3, "y":(node1.y+node2.y+node3.y)/3}
+                          task.to = node1
+                          this.generateSpawnAnimation(frameInfo, task)
+                      })
+        } else if (type == 'X') { // surround
+            parts[player].match(/\w\d*/g).forEach(s => {
+                task.target = NodeModule.nodes[alphabet.indexOf(s[0])]
+                task.amount = 1
+                if (s.length > 1) task.amount = parseInt(s.substr(1))
+                this.generateDisappearAnimation(frameInfo, task)
             })
         } else {
-            parts[player].match(/\w\w\w\w/g).forEach(s => {
-                var task = {}
+            parts[player].match(/\w\w\w\w\d*/g).forEach(s => {
                 var node1 = NodeModule.nodes[alphabet.indexOf(s[0])]
                 var node2 = NodeModule.nodes[alphabet.indexOf(s[1])]
                 var node3 = NodeModule.nodes[alphabet.indexOf(s[2])]
@@ -147,8 +160,8 @@ export class TaskModule {
                 task.node3 = node3
                 task.triangle = {"x":(node1.x+node2.x+node3.x)/3, "y":(node1.y+node2.y+node3.y)/3}
                 task.target = target
-                task.player = player
-                task.type = type
+                task.amount = 1
+                if (s.length > 4) task.amount = parseInt(s.substr(4))
                 this.generateTaskAnimation(frameInfo, task)
             })
         }

@@ -21,7 +21,6 @@ public class BoardView {
     private TinyToggleModule toggleModule;
     private TaskModule taskModule;
     private Text textTurn;
-    private Text textType;
 
     public BoardView(Board board, GraphicEntityModule graphics, TooltipModule tooltips, TinyToggleModule toggleModule, NodeModule nodeModule, TaskModule taskModule) {
         this.graphics = graphics;
@@ -38,18 +37,17 @@ public class BoardView {
                 connect(node, n);
             }
         }
-        Player.getPlayer(0).initView(graphics);
-        Player.getPlayer(1).initView(graphics);
+        Player.getPlayer(0).initView(graphics, toggleModule);
+        Player.getPlayer(1).initView(graphics, toggleModule);
 
-        textTurn = graphics.createText().setX(graphics.getWorld().getWidth() / 2).setY(30).setAnchorX(0.5).setFontSize(50);
-        textType = graphics.createText().setX(graphics.getWorld().getWidth() / 2).setY(90).setAnchorX(0.5).setFontSize(50);
+        Sprite scoreBox = graphics.createSprite().setX(graphics.getWorld().getWidth() / 2).setAnchorX(0.5).setY(900).setImage("decor_4.png").setScaleX(1.8).setScaleY(1.5);
+        toggleModule.displayOnToggleState(scoreBox, "d", false);
+        textTurn = graphics.createText().setX(graphics.getWorld().getWidth() / 2 - 5).setY(990).setAnchorX(0.5).setFontSize(30).setText("Tryangle catch");
     }
 
     public void updateTurn(int turn, String type) {
-        String turnString = "Turn " + turn;
-        if (!turnString.equals(textTurn.getText())) textTurn.setText("Turn " + turn);
-        if (!type.equals(textType.getText())) textType.setText(type);
-        graphics.commitEntityState(0, textTurn, textType);
+        textTurn.setText(turn + ": " + type);
+        graphics.commitEntityState(0, textTurn);
     }
 
     class Connection {

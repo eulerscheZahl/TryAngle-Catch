@@ -13,6 +13,7 @@ public class AttackTask extends Task {
 
     private Node target;
     private Triangle triangle;
+    private int amount;
 
     public AttackTask(Player player, Board board, String command) {
         super(player, board);
@@ -54,6 +55,7 @@ public class AttackTask extends Task {
     @Override
     public void apply(Board board) {
         triangle.use(1);
+        amount = target.units[player.getOpponent().getIndex()];
         target.units[player.getOpponent().getIndex()] = 0;
         target.remainingUnits[player.getOpponent().getIndex()] = 0;
         target.updateView(player.getOpponent().getIndex(), true);
@@ -66,7 +68,7 @@ public class AttackTask extends Task {
 
     @Override
     public String getSerializeKey() {
-        return "E";
+        return "A";
     }
 
     @Override
@@ -76,6 +78,7 @@ public class AttackTask extends Task {
         result += alphabet.charAt(triangle.getNode2().getId());
         result += alphabet.charAt(triangle.getNode3().getId());
         result += alphabet.charAt(target.getId());
+        if (amount != 1) result += amount;
         return result;
     }
 }

@@ -3,6 +3,7 @@ package engine;
 import com.codingame.game.Player;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
+import engine.task.SurroundTask;
 import engine.task.MoveTask;
 import engine.task.Task;
 import engine.task.TaskManager;
@@ -14,8 +15,8 @@ import view.modules.TinyToggleModule;
 import java.util.*;
 
 public class Board {
-    public static final int TOP_BORDER = 200;
-    public static final int BOTTOM_BORDER = 60;
+    public static final int TOP_BORDER = 80;
+    public static final int BOTTOM_BORDER = 180;
     public static final int SIDE_BORDER = 80;
     public static final int WIDTH = 1920 - 2 * SIDE_BORDER;
     public static final int HEIGHT = 1080 - TOP_BORDER - BOTTOM_BORDER;
@@ -261,6 +262,7 @@ public class Board {
             for (Node node : nodes) {
                 int opponentIndex = (i + 1) % 2;
                 if (node.units[i] > 0 && node.neighbors.stream().allMatch(n -> playerAdvantage[opponentIndex].contains(n))) {
+                    view.animateTask(new SurroundTask(node, Player.getPlayer(i), node.units[i]));
                     node.units[i] = 0;
                     node.updateView(i, true);
                     surrounded = true;

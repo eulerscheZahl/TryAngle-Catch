@@ -208,12 +208,16 @@ class Solution
                 {
                     Triangle attackSource = myTriangles.OrderByDescending(t => t.Neighbors.Max(n => n.OpponentUnits)).First();
                     Node attack = attackSource.Neighbors.OrderByDescending(n => n.OpponentUnits).First();
-                    //if (attack.OpponentUnits > 0) solution += ";ATTACK " + attackSource + " " + attack.ID + ";MSG ATTACK!";
+                    if (attack.OpponentUnits > 1)
+                    {
+                        solution = "ATTACK " + attackSource + " " + attack.ID + ";MSG ATTACK!;";
+                    }
                     Node removeEdge = attackSource.Neighbors.Except(attackSource.Corners).OrderByDescending(n => n.OpponentUnits).First();
                     //if (attack.OpponentUnits > 0) solution = ";REMOVE_EDGE " + attackSource + " " + removeEdge.ID + ";MSG ATTACK!";
                     //if (attackSource.ToString() == "14 23 38") solution = "ADD_EDGE 38 14 23 5";
                     foreach (Node corner in attackSource.Corners)
                     {
+                        if (solution != "") break;
                         foreach (Node partner in nodes.Where(n => n.Dist[corner.ID] == 2))
                         {
                             if (corner.CanConnect(partner, nodes))
@@ -227,8 +231,7 @@ class Solution
                                 break;
                             }
                         }
-                        if (solution != "") break;
-                    }
+                     }
                 }
             }
 

@@ -5,6 +5,7 @@ import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.Group;
 import com.codingame.gameengine.module.entities.Sprite;
 import com.codingame.gameengine.module.entities.Text;
+import view.modules.TinyToggleModule;
 
 public class PlayerView {
     private Player player;
@@ -12,14 +13,15 @@ public class PlayerView {
     private Text messageText;
     private GraphicEntityModule graphicEntityModule;
 
-    public PlayerView(Player player, GraphicEntityModule graphicEntityModule) {
+    public PlayerView(Player player, GraphicEntityModule graphicEntityModule, TinyToggleModule toggleModule) {
         this.player = player;
         this.graphicEntityModule = graphicEntityModule;
-        Group group = graphicEntityModule.createGroup().setX(player.getIndex() * (graphicEntityModule.getWorld().getWidth() / 2 + 200) + 30).setY(30);
+        Group group = graphicEntityModule.createGroup().setX(player.getIndex() * (graphicEntityModule.getWorld().getWidth() / 2 + 150) + 30).setY(950);
+
         Text nickname = graphicEntityModule.createText().setText(player.getNicknameToken()).setX(150).setFillColor(player.getColor()).setFontSize(50).setStrokeThickness(2).setMaxWidth(400);
         Sprite avatar = graphicEntityModule.createSprite().setImage(player.getAvatarToken()).setBaseHeight(110).setBaseWidth(110);
         messageText = graphicEntityModule.createText("").setX(150).setY(80).setFillColor(player.getColor()).setFontSize(30).setStrokeThickness(2).setMaxWidth(400);
-        scoreText = graphicEntityModule.createText("0").setX(700).setFillColor(player.getColor()).setFontSize(80).setText("0").setAnchorX(1).setStrokeThickness(2);
+        scoreText = graphicEntityModule.createText("0").setX(750).setFillColor(player.getColor()).setFontSize(80).setText("0").setAnchorX(1).setStrokeThickness(2);
         group.add(nickname, avatar, messageText, scoreText);
     }
 
