@@ -15,8 +15,8 @@ import view.modules.TinyToggleModule;
 import java.util.*;
 
 public class Board {
-    public static final int TOP_BORDER = 80;
-    public static final int BOTTOM_BORDER = 180;
+    public static final int TOP_BORDER = 70;
+    public static final int BOTTOM_BORDER = 190;
     public static final int SIDE_BORDER = 80;
     public static final int WIDTH = 1920 - 2 * SIDE_BORDER;
     public static final int HEIGHT = 1080 - TOP_BORDER - BOTTOM_BORDER;
@@ -209,8 +209,8 @@ public class Board {
 
     public void applyActions(TaskManager taskManager) {
         killedSurrounded = false;
-        Player.getPlayer(0).updateMessage();
-        Player.getPlayer(1).updateMessage();
+        Player.getPlayer(0).updateView();
+        Player.getPlayer(1).updateView();
 
         boolean move = false;
         for (Task task : taskManager.popTasks()) {
@@ -225,7 +225,21 @@ public class Board {
             view.startMove();
             view.animateMoves();
         }
+        makeStats();
         view.endMove();
+    }
+
+    private void makeStats() {
+        for (int playerIndex = 0; playerIndex < 2; playerIndex++) {
+            Player player = Player.getPlayer(playerIndex);
+            player.setTriangles(0);
+            player.setUnits(0);
+            for (Node node : nodes) player.setUnits(player.getUnits() + node.units[playerIndex]);
+            for (Triangle triangle : triangles) {
+                if (triangle.getOwner() == player) player.setTriangles(player.getTriangles() + 1);
+            }
+            player.updateView();
+        }
     }
 
     public boolean finalizeTurn() {
@@ -235,14 +249,15 @@ public class Board {
         for (Triangle triangle : triangles) {
             triangle.updateAllowedCaptures();
         }
-        if (surroundNodes() || captureTriangles())
+        if (surroundNodes() || captureTriangles()) {
+            makeStats();
             return true;
+        }
 
         for (Triangle triangle : triangles) {
             if (triangle.getOwner() != null) triangle.getOwner().increaseScore();
         }
-        Player.getPlayer(0).updateScore();
-        Player.getPlayer(1).updateScore();
+        makeStats();
         return false;
     }
 

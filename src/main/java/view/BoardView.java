@@ -40,9 +40,15 @@ public class BoardView {
         Player.getPlayer(0).initView(graphics, toggleModule);
         Player.getPlayer(1).initView(graphics, toggleModule);
 
-        Sprite scoreBox = graphics.createSprite().setX(graphics.getWorld().getWidth() / 2).setAnchorX(0.5).setY(900).setImage("decor_4.png").setScaleX(1.8).setScaleY(1.5);
-        toggleModule.displayOnToggleState(scoreBox, "d", false);
-        textTurn = graphics.createText().setX(graphics.getWorld().getWidth() / 2 - 5).setY(990).setAnchorX(0.5).setFontSize(30).setText("Tryangle catch");
+        Sprite stone1 = graphics.createSprite().setImage("stones_1.png").setX(-60).setY(40).setScale(2.5).setZIndex(1);
+        Sprite stone2 = graphics.createSprite().setImage("stones_3.png").setX(1340).setY(90).setScaleX(-2.2).setScaleY(2.2).setZIndex(1).setRotation(0.4);
+       //Sprite stone3 = graphics.createSprite().setImage("stones_4.png").setX(1650).setY(0).setScale(2.5);
+       //Sprite stone4 = graphics.createSprite().setImage("stones_2.png").setX(100).setY(40).setScale(2.5);
+        Sprite scoreBox = graphics.createSprite().setX(graphics.getWorld().getWidth() / 2).setAnchorX(0.5).setImage("decor_4.png").setScaleX(1.8).setScaleY(1.5).setZIndex(2);
+
+        Group decor = graphics.createGroup(stone1, stone2, scoreBox).setY(900);
+        toggleModule.displayOnToggleState(decor, "d", false);
+        textTurn = graphics.createText().setX(graphics.getWorld().getWidth() / 2 - 5).setY(990).setAnchorX(0.5).setFontSize(30).setText("Tryangle catch").setZIndex(2);
     }
 
     public void updateTurn(int turn, String type) {
@@ -74,20 +80,23 @@ public class BoardView {
         public void drawLine() {
             if (line != null) return;
             line = graphics.createLine().setX(n1.getX()).setY(n1.getY()).setX2(n2.getX()).setY2(n2.getY())
-                    .setLineWidth(5).setFillColor(0).setZIndex(1);
+                    .setLineWidth(5).setFillColor(0).setZIndex(1).setAlpha(0);
             toggleModule.displayOnToggleState(line, "d", true);
             int length = 50 * (int) Math.round(n1.dist(n2) / 50);
             double dx = n2.getX() - n1.getX();
             double dy = n2.getY() - n1.getY();
-            sprite = graphics.createSprite().setImage("p" + length + ".png");
+            sprite = graphics.createSprite().setImage("p" + length + ".png").setAlpha(0);
             sprite.setX((n1.getX() + n2.getX()) / 2).setY((n1.getY() + n2.getY()) / 2).setAnchor(0.5)
                     .setRotation(Math.atan2(dy, dx)).setZIndex(1);
             toggleModule.displayOnToggleState(sprite, "d", false);
+            graphics.commitEntityState(0, sprite, line);
+            line.setAlpha(1);
+            sprite.setAlpha(1);
         }
 
         public void hideLine() {
-            line.setVisible(false);
-            sprite.setVisible(false);
+            line.setAlpha(0);
+            sprite.setAlpha(0);
         }
     }
 

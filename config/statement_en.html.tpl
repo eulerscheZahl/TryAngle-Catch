@@ -63,8 +63,8 @@
                 The map consists of nodes, some of which are connected by edges. Nodes are defined by x and y
                 coordinate.
                 Each player starts with <const>3</const> units on one side of the map.
-                You then try to capture a triangle by owning all tree corner nodes of it.
-                You can use a triangle to spawn a new unit, kill all opponent units on a given node, add or remove a
+                Then the players try to capture a triangle by owning all three corner nodes of it.
+                They can use a triangle to spawn a new unit, kill all opponent units on a given node, add or remove a
                 connection between two nodes.
 
                 <br><br>
@@ -98,7 +98,7 @@
                 <strong>Using a triangle</strong><br>
                 When owning a triangle, a player can use it to perform one of the actions described below.
                 This will make the triangle neutral again. The player using it can only capture it again after moving
-                away all units from each node or after it got captured by the opponent player. <br>
+                all units away from each node or after it got captured by the opponent player. <br>
                 <!-- BEGIN level2 -->
                 <div style="color: #7cc576; background-color: rgba(124, 197, 118,.1); padding: 2px;">
                     <!-- END -->
@@ -232,7 +232,7 @@
                 Player 2 wants to perform two attack actions <const>A2a</const> and <const>A2b</const>.
                 First <const>A1a</const> and <const>A2a</const> will be checked for being valid (the triangles in use are owned by the respective players and they have
                 enough units on each node) and applied if possible.
-                Then <const>A1b</const> and <const>A2b</const> will be processed in the same way. It's possible that the first group of actions renders on of them
+                Then <const>A1b</const> and <const>A2b</const> will be processed in the same way. It's possible that the first group of actions renders one of them
                 invalid by killing units on a triangle that was supposed to be used later.
                 <br><br> <!-- END -->
                 <!-- BEGIN level2 -->

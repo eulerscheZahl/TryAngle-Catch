@@ -11,6 +11,8 @@ public class Player extends AbstractMultiplayerPlayer {
 
     private static int[] colors = {0xff4040, 0x4040ff}; // 0xFF1D5C, 0x22A1E4
     private String message = "";
+    private int units;
+    private int triangles;
     private PlayerView view;
     private ArrayList<InputError> errors = new ArrayList<>();
 
@@ -58,12 +60,24 @@ public class Player extends AbstractMultiplayerPlayer {
         view = new PlayerView(this, graphics, toggleModule);
     }
 
-    public void updateMessage() {
-        view.updateMessage();
+    public void updateView() {
+        view.update();
     }
 
-    public void updateScore() {
-        view.updateScore();
+    public int getTriangles() {
+        return triangles;
+    }
+
+    public void setTriangles(int triangles) {
+        this.triangles = triangles;
+    }
+
+    public int getUnits() {
+        return units;
+    }
+
+    public void setUnits(int units) {
+        this.units = units;
     }
 
     public ArrayList<InputError> popErrors() {
