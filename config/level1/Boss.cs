@@ -154,37 +154,41 @@ class Solution
             int bestCost = 1000;
             string solution = "WAIT";
             List<Node> moving = new List<Node>();
-            foreach (Triangle triangle in triangles.Where(t => t.Owner != 0 && t.MeCanCapture))
-            {
-                foreach (List<Node> corners in triangle.CornerPermutations())
+            if (myUnitCells.Count >= 3) {
+                foreach (Triangle triangle in triangles.Where(t => t.Owner != 0 && t.MeCanCapture))
                 {
-                    List<Node> sources = new List<Node>();
-                    List<Node> free = myUnitCells.ToList();
-                    int currentScore = 0;
-                    foreach (Node target in corners)
+                    foreach (List<Node> corners in triangle.CornerPermutations())
                     {
-                        int index = 0;
-                        for (int i = 1; i < free.Count; i++)
+                        List<Node> sources = new List<Node>();
+                        List<Node> free = myUnitCells.ToList();
+                        int currentScore = 0;
+                        foreach (Node target in corners)
                         {
-                            if (target.Dist[free[i].ID] < target.Dist[free[index].ID]) index = i;
+                            int index = 0;
+                            for (int i = 1; i < free.Count; i++)
+                            {
+                                if (target.Dist[free[i].ID] < target.Dist[free[index].ID]) index = i;
+                            }
+                            sources.Add(free[index]);
+                            free.RemoveAt(index);
+                            currentScore = Math.Max(currentScore, sources.Last().Dist[target.ID]);
                         }
-                        sources.Add(free[index]);
-                        free.RemoveAt(index);
-                        currentScore = Math.Max(currentScore, sources.Last().Dist[target.ID]);
-                    }
-                    if (currentScore < bestCost)
-                    {
-                        bestCost = currentScore;
-                        solution = string.Join(";", Enumerable.Range(0, 3).Select(i => sources[i].Move(corners[i])));
-                        moving = sources;
+                        if (currentScore < bestCost)
+                        {
+                            bestCost = currentScore;
+                            solution = string.Join(";", Enumerable.Range(0, 3).Select(i => sources[i].Move(corners[i])));
+                            moving = sources;
+                        }
                     }
                 }
             }
 
-            foreach (Triangle triangle in triangles.Where(t => t.Owner == 0))
-            {
-                solution += ";SPAWN " + triangle.Node1.ID + " " + triangle.Node2.ID + " " + triangle.Node3.ID;
-                break;
+            if (myUnitCells.Count < nodes.Count) {
+                foreach (Triangle triangle in triangles.Where(t => t.Owner == 0))
+                {
+                    solution += ";SPAWN " + triangle.Node1.ID + " " + triangle.Node2.ID + " " + triangle.Node3.ID;
+                    break;
+                }
             }
             foreach (Node node in moving) myUnitCells.Remove(node);
             foreach (Node unit in myUnitCells) solution += ";MOVE " + unit.ID + " " + unit.Neighbors[random.Next(unit.Neighbors.Count)].ID + " 1";

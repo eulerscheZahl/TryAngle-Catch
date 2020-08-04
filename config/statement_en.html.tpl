@@ -166,7 +166,7 @@
             <div class="text">
                 <ul style="padding-bottom: 0;">
                     <li>
-                        Collect more points than your opponent
+                        You collect more points than your opponent
                     </li>
                 </ul>
             </div>
@@ -180,7 +180,10 @@
             <div class="text">
                 <ul style="padding-bottom: 0;">
                     <li>
-                        Collect less points than your opponent
+                        You collect less points than your opponent
+                    </li>
+                    <li>
+                        You have no triangles and no units left
                     </li>
                     <li>
                         You do not respond in time or output an unrecognized command.

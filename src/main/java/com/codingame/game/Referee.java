@@ -64,24 +64,28 @@ public class Referee extends AbstractReferee {
                     List<String> outputs = player.getOutputs();
                     taskManager.parseTasks(player, board, outputs.get(0), gameManager.getLeagueLevel());
                 } catch (TimeoutException e) {
-                    player.deactivate(String.format("$%d timeout!", player.getIndex()));
-                    player.setScore(-1);
-                    gameManager.endGame();
+                    killPlayer(player, "timeout");
                 }
 
                 for (InputError error : player.popErrors()) {
                     if (error.isCritical()) {
-                        player.deactivate(error.getMessage());
-                        player.setScore(-1);
-                        gameManager.endGame();
+                        killPlayer(player, "invalid command");
                     } else gameManager.addToGameSummary("[" + player.getNicknameToken() + "] " + error.getMessage());
                 }
+                if (player.getUnits() == 0 && player.getTriangles() == 0) killPlayer(player, "no units or triangles left");
             }
         } else {
             gameManager.setMaxTurns(gameManager.getMaxTurns() + 1);
         }
 
         board.applyActions(taskManager);
+    }
+
+    private void killPlayer(Player player, String message) {
+        if (!player.isActive()) return;
+        player.deactivate(String.format("$%d %s!", player.getIndex(), message));
+        player.setScore(-1);
+        gameManager.endGame();
     }
 
     @Override

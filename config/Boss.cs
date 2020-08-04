@@ -231,7 +231,7 @@ class Solution
                                 break;
                             }
                         }
-                     }
+                    }
                 }
             }
 
@@ -239,30 +239,33 @@ class Solution
             List<Node> moving = new List<Node>();
             List<Node> moveFrom = new List<Node>();
             List<Node> moveTo = new List<Node>();
-            foreach (Triangle triangle in triangles.Where(t => t.Owner != 0 && t.MeCanCapture))
+            if (myUnitCells.Count >= 3)
             {
-                foreach (List<Node> corners in triangle.CornerPermutations())
+                foreach (Triangle triangle in triangles.Where(t => t.Owner != 0 && t.MeCanCapture))
                 {
-                    List<Node> sources = new List<Node>();
-                    List<Node> free = myUnitCells.ToList();
-                    int currentScore = 0;
-                    foreach (Node target in corners)
+                    foreach (List<Node> corners in triangle.CornerPermutations())
                     {
-                        int index = 0;
-                        for (int i = 1; i < free.Count; i++)
+                        List<Node> sources = new List<Node>();
+                        List<Node> free = myUnitCells.ToList();
+                        int currentScore = 0;
+                        foreach (Node target in corners)
                         {
-                            if (target.Dist[free[i].ID] < target.Dist[free[index].ID]) index = i;
+                            int index = 0;
+                            for (int i = 1; i < free.Count; i++)
+                            {
+                                if (target.Dist[free[i].ID] < target.Dist[free[index].ID]) index = i;
+                            }
+                            sources.Add(free[index]);
+                            free.RemoveAt(index);
+                            currentScore = Math.Max(currentScore, sources.Last().Dist[target.ID]);
                         }
-                        sources.Add(free[index]);
-                        free.RemoveAt(index);
-                        currentScore = Math.Max(currentScore, sources.Last().Dist[target.ID]);
-                    }
-                    if (currentScore < bestCost)
-                    {
-                        bestCost = currentScore;
-                        moveFrom = sources.ToList();
-                        moveTo = corners.ToList();
-                        moving = sources;
+                        if (currentScore < bestCost)
+                        {
+                            bestCost = currentScore;
+                            moveFrom = sources.ToList();
+                            moveTo = corners.ToList();
+                            moving = sources;
+                        }
                     }
                 }
             }
