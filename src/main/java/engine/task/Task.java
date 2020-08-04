@@ -20,6 +20,7 @@ public abstract class Task {
 
     public static Task parseTask(Player player, Board board, String command, int league) {
         if (command.trim().equals("")) return null;
+        if (command.trim().toUpperCase().equals("WAIT")) return null;
         Task task = null;
         try {
             if (MoveTask.pattern.matcher(command).matches())

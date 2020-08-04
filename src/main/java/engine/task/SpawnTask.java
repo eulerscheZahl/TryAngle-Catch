@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SpawnTask extends Task {
-    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>SPAWN)\\s+(?<spawn>\\d+)\\s+(?<node2>\\d+)\\s+(?<node3>\\d+)\\s*$");
+    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>SPAWN)\\s+(?<spawn>\\d+)\\s+(?<node2>\\d+)\\s+(?<node3>\\d+)\\s*$", Pattern.CASE_INSENSITIVE);
 
     private Node nodeSpawn;
     private Triangle triangle;

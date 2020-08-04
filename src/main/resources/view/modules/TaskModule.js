@@ -18,7 +18,9 @@ export class TaskModule {
 
   constructor (assets) {
   this.knightCache = []
-  this.turnCache = []
+  this.knightTurnCache = []
+  this.spriteCache = []
+  this.spriteTurnCache = []
 
     TaskModule.refreshContent = () => {
     }
@@ -59,16 +61,38 @@ export class TaskModule {
 
     if (task.type === "A" && task.amount > 0) {
         const to = this.getOffsetNode(task.target, 1-task.player)
-        this.performMove(frameInfo, (1-task.player), to, to, task.amount, {alpha:0})
+        this.performMove(frameInfo, (1-task.player), to, to, task.amount, {}, {alpha:0})
+        this.animateAttack(frameInfo, task.player, task.triangle, to)
     }
+  }
+
+  animateAttack(frameInfo, player, from, to) {
+    if (this.spriteCache.length > 0) {
+        var sprite = this.spriteCache.pop()
+    }
+    else {
+        var sprite = EntityFactory.create("S")
+        sprite.id = ++graphicsHelper.runtimeId
+        entityModule.entities.set(sprite.id, sprite)
+        TinyToggleModule.instance.registerToggle(sprite, "d", false)
+    }
+
+    var spriteParams = { ...graphicsHelper.defaults.sprite, x:from.x, y:from.y, zIndex:9,
+                  image:"x" + "rb"[player] + ".png", t:0.5,
+                  scaleX:0.1, scaleY:0.1, anchorX:0.5, anchorY:0.5 }
+    sprite.addState(0.5, {values: spriteParams, curve:{}}, frameInfo.number, frameInfo)
+    var spriteMoveParams = { ...spriteParams, x:to.x, y:to.y, t:1, rotation:180, visible:false }
+    sprite.addState(1, {values: spriteMoveParams, curve:{}}, frameInfo.number, frameInfo)
+
+    this.spriteTurnCache.push(sprite)
   }
 
   generateDisappearAnimation(frameInfo, task) {
     const to = this.getOffsetNode(task.target, task.player)
-    this.performMove(frameInfo, task.player, to, to, task.amount, {alpha:0})
+    this.performMove(frameInfo, task.player, to, to, task.amount, {}, {scaleX:0, scaleY:0, alpha:0})
   }
 
-  performMove(frameInfo, player, from, to, amount, finalArgs={}) {
+  performMove(frameInfo, player, from, to, amount, initialArgs={}, finalArgs={}) {
     // create group with sprites (or load from cache)
     if (this.knightCache.length > 0) {
         var group = this.knightCache.pop()
@@ -91,27 +115,30 @@ export class TaskModule {
         var group = { knight:knight, circle:circle, text:text }
     }
 
+    var t0 = initialArgs.t || 0
+    var t1 = finalArgs.t || 1
+    var knightOffset = 10 - 20*player
     // set initial location
-    var knightParams = { ...graphicsHelper.defaults.sprite, x:from.x, y:from.y, zIndex:9,
+    var knightParams = { ...graphicsHelper.defaults.sprite, x:from.x+knightOffset, y:from.y, zIndex:9, t:t0,
                   image:"rb"[player] + Math.min(5, amount) + ".png", tint:graphicsHelper.playerColors[player],
                   scaleX:0.1, scaleY:0.1, anchorX:0.5, anchorY:0.5 }
-    knight.addState(0, {values: knightParams, curve:{}}, frameInfo.number, frameInfo)
-    var circleParams = { ...graphicsHelper.defaults.circle, x:from.x, y:from.y,
+    knight.addState(t0, {values: knightParams, curve:{}}, frameInfo.number, frameInfo)
+    var circleParams = { ...graphicsHelper.defaults.circle, x:from.x, y:from.y, t:t0,
                   fillColor:graphicsHelper.playerColors[player], zIndex:9 }
-    circle.addState(0, {values: circleParams, curve:{}}, frameInfo.number, frameInfo)
-    var textParams = { ...graphicsHelper.defaults.text, x:from.x, y:from.y, text:""+amount,
+    circle.addState(t0, {values: circleParams, curve:{}}, frameInfo.number, frameInfo)
+    var textParams = { ...graphicsHelper.defaults.text, x:from.x, y:from.y, text:""+amount, t:t0,
                   zIndex:10, anchorX:0.5, anchorY:0.5, strokeThickness:4, fillColor:0xFFFFFF }
-    text.addState(0, {values: textParams, curve:{}}, frameInfo.number, frameInfo)
+    text.addState(t0, {values: textParams, curve:{}}, frameInfo.number, frameInfo)
 
     // move and hide
-    var knightMoveParams = { ...knightParams, x:to.x, y:to.y, t:1, visible:false, ...finalArgs }
-    knight.addState(1, {values: knightMoveParams, curve:{}}, frameInfo.number, frameInfo)
-    var circleMoveParams = { ...circleParams, x:to.x, y:to.y, t:1, visible:false, ...finalArgs }
-    circle.addState(1, {values: circleMoveParams, curve:{}}, frameInfo.number, frameInfo)
-    var textMoveParams = { ...textParams, x:to.x, y:to.y, t:1, visible:false, ...finalArgs }
-    text.addState(1, {values: textMoveParams, curve:{}}, frameInfo.number, frameInfo)
+    var knightMoveParams = { ...knightParams, x:to.x+knightOffset, y:to.y, t:t1, visible:false, ...finalArgs }
+    knight.addState(t1, {values: knightMoveParams, curve:{}}, frameInfo.number, frameInfo)
+    var circleMoveParams = { ...circleParams, x:to.x, y:to.y, t:t1, visible:false, ...finalArgs }
+    circle.addState(t1, {values: circleMoveParams, curve:{}}, frameInfo.number, frameInfo)
+    var textMoveParams = { ...textParams, x:to.x, y:to.y, t:t1, visible:false, ...finalArgs }
+    text.addState(t1, {values: textMoveParams, curve:{}}, frameInfo.number, frameInfo)
 
-    this.turnCache.push(group)
+    this.knightTurnCache.push(group)
   }
 
   handleFrameData (frameInfo, data) {
@@ -167,8 +194,10 @@ export class TaskModule {
         }
     }
 
-    this.knightCache.push(...this.turnCache)
-    this.turnCache = []
+    this.knightCache.push(...this.knightTurnCache)
+    this.knightTurnCache = []
+    this.spriteCache.push(...this.spriteTurnCache)
+    this.spriteTurnCache = []
     return {}
   }
 

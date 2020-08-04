@@ -40,13 +40,13 @@ public class BoardView {
         Player.getPlayer(0).initView(graphics, toggleModule);
         Player.getPlayer(1).initView(graphics, toggleModule);
 
-        Sprite stone1 = graphics.createSprite().setImage("stones_1.png").setX(-60).setY(40).setScale(2.5).setZIndex(1);
-        Sprite stone2 = graphics.createSprite().setImage("stones_3.png").setX(1340).setY(90).setScaleX(-2.2).setScaleY(2.2).setZIndex(1).setRotation(0.4);
-       //Sprite stone3 = graphics.createSprite().setImage("stones_4.png").setX(1650).setY(0).setScale(2.5);
-       //Sprite stone4 = graphics.createSprite().setImage("stones_2.png").setX(100).setY(40).setScale(2.5);
-        Sprite scoreBox = graphics.createSprite().setX(graphics.getWorld().getWidth() / 2).setAnchorX(0.5).setImage("decor_4.png").setScaleX(1.8).setScaleY(1.5).setZIndex(2);
+        Sprite scoreBox = graphics.createSprite().setX(graphics.getWorld().getWidth() / 2).setY(-45).setAnchorX(0.5).setImage("decor_4.png").setScaleX(1.8).setScaleY(1.5).setZIndex(2);
+        Rectangle rect = graphics.createRectangle().setWidth(graphics.getWorld().getWidth()).setHeight(200).setFillColor(0xFFFFFF).setZIndex(1);
+        Sprite wall1 = graphics.createSprite().setImage("w.png").setScale(2).setZIndex(1).setAlpha(0.6);
+        Sprite wall2 = graphics.createSprite().setX(682).setImage("w.png").setScale(2).setZIndex(1).setAlpha(0.6);
+        Sprite wall3 = graphics.createSprite().setX(682 * 2).setImage("w.png").setScale(2).setZIndex(1).setAlpha(0.6);
 
-        Group decor = graphics.createGroup(stone1, stone2, scoreBox).setY(900);
+        Group decor = graphics.createGroup(rect, wall1, wall2, wall3, scoreBox).setY(945);
         toggleModule.displayOnToggleState(decor, "d", false);
         textTurn = graphics.createText().setX(graphics.getWorld().getWidth() / 2 - 5).setY(990).setAnchorX(0.5).setFontSize(30).setText("Tryangle catch").setZIndex(2);
     }

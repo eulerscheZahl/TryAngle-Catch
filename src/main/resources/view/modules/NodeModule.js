@@ -30,10 +30,13 @@ export class NodeModule {
 	    node.roof = EntityFactory.create("S")
 	    node.roof.id = ++graphicsHelper.runtimeId
 		entityModule.entities.set(node.roof.id, node.roof)
-	    node.circle = EntityFactory.create("C")
-	    node.circle.id = ++graphicsHelper.runtimeId
-		entityModule.entities.set(node.circle.id, node.circle)
-	    node.text = EntityFactory.create("T")
+	    node.baseCircle = EntityFactory.create("C")
+        node.baseCircle.id = ++graphicsHelper.runtimeId
+        entityModule.entities.set(node.baseCircle.id, node.baseCircle)
+        node.circle = EntityFactory.create("C")
+        node.circle.id = ++graphicsHelper.runtimeId
+        entityModule.entities.set(node.circle.id, node.circle)
+        node.text = EntityFactory.create("T")
 	    node.text.id = ++graphicsHelper.runtimeId
 		entityModule.entities.set(node.text.id, node.text)
   	
@@ -51,10 +54,14 @@ export class NodeModule {
 				  image:"s2.png", scaleX:0.1, scaleY:0.1, }
     node.roof.addState(0, {values: roofParams, curve:{}}, frameInfo.number, frameInfo)
     
-	var circleParams = { ...graphicsHelper.defaults.circle, x:node.x, y:node.y, zIndex:8,
+	var baseCircleParams = { ...graphicsHelper.defaults.circle, x:node.x, y:node.y, zIndex:8,
 				  radius:35, fillColor:0,lineWidth:10, lineColor:0  }
-    node.circle.addState(0, {values: circleParams, curve:{}}, frameInfo.number, frameInfo)
+    node.baseCircle.addState(0, {values: baseCircleParams, curve:{}}, frameInfo.number, frameInfo)
     
+	var circleParams = { ...graphicsHelper.defaults.circle, x:node.x, y:node.y, zIndex:8,
+				  radius:31, fillColor:0,lineWidth:10, lineColor:0  }
+    node.circle.addState(0, {values: circleParams, curve:{}}, frameInfo.number, frameInfo)
+
 	var textParams = { ...graphicsHelper.defaults.text, x:node.x, y:node.y, zIndex:8,
 				  text:""+node.id, strokeThickness:4, fillColor:0xffffff, anchorX:0.5, anchorY:0.5, }
     node.text.addState(0, {values: textParams, curve:{}}, frameInfo.number, frameInfo)
@@ -66,14 +73,14 @@ export class NodeModule {
 					  image:"s2.png", scaleX:0.1, scaleY:0.1, t:1, }
 	    node.roof.addState(1, {values: roofParams, curve:{}}, frameInfo.number, frameInfo)
    		var circleParams = { ...graphicsHelper.defaults.circle, x:node.x, y:node.y, zIndex:8,
-				  radius:35, fillColor:0, lineWidth:10, lineColor:0, t:1  }
+				  radius:31, fillColor:0, lineWidth:10, lineColor:0, t:1  }
     	node.circle.addState(1, {values: circleParams, curve:{}}, frameInfo.number, frameInfo)
   	} else {
 		var roofParams = { ...graphicsHelper.defaults.sprite, x:node.x-30, y:node.y-40, zIndex:8, t:1,
 					  image:"s2.png", scaleX:0.1, scaleY:0.1, tint:graphicsHelper.playerColors[player] }
 	    node.roof.addState(1, {values: roofParams, curve:{}}, frameInfo.number, frameInfo)
    		var circleParams = { ...graphicsHelper.defaults.circle, x:node.x, y:node.y, zIndex:8, t:1,
-				  radius:35, fillColor:0, lineWidth:10, lineColor:graphicsHelper.playerColors[player]  }
+				  radius:31, fillColor:0, lineWidth:10, lineColor:graphicsHelper.playerColors[player]  }
     	node.circle.addState(1, {values: circleParams, curve:{}}, frameInfo.number, frameInfo)
   	}
   }
@@ -82,9 +89,10 @@ export class NodeModule {
   	const view = node.unitView[player]
 	const offsetX = -40 + 80*player
 	const offsetY = -40
+	const knightOffset = 10 - 20*player
   	var circleParams = { ...graphicsHelper.defaults.circle, x:node.x+offsetX, y:node.y+offsetY,
   					  fillColor:graphicsHelper.playerColors[player], zIndex:9 }
-  	var knightParams = { ...graphicsHelper.defaults.sprite, x:node.x+offsetX, y:node.y+offsetY,
+  	var knightParams = { ...graphicsHelper.defaults.sprite, x:node.x+offsetX+knightOffset, y:node.y+offsetY,
   					  tint:graphicsHelper.playerColors[player], zIndex:9,
   					  scaleX:0.1, scaleY:0.1, anchorX:0.5, anchorY:0.5 }
   	var textParams = { ...graphicsHelper.defaults.text, x:node.x+offsetX, y:node.y+offsetY,

@@ -25,7 +25,7 @@ public class PlayerView {
         Sprite troopsSprite = graphicEntityModule.createSprite().setX(490).setY(70).setImage("rb".charAt(player.getIndex()) + "5.png").setScale(0.05).setTint(player.getColor());
         troopsText = graphicEntityModule.createText().setText("3").setX(560).setY(70).setFillColor(player.getColor()).setFontSize(30).setStrokeThickness(2);
         Polygon triangle = graphicEntityModule.createPolygon().setX(660).setY(75).addPoint(10, 0).addPoint(0,20).addPoint(30,30).addPoint(10,0).setFillColor(player.getColor()).setLineWidth(2);
-        trianglesText = graphicEntityModule.createText().setText("0").setX(710).setY(70).setFillColor(player.getColor()).setFontSize(30).setStrokeThickness(2);
+        trianglesText = graphicEntityModule.createText().setText("0").setX(750).setY(70).setAnchorX(1).setFillColor(player.getColor()).setFontSize(30).setStrokeThickness(2);
         group.add(nickname, avatar, messageText, scoreText, troopsSprite, troopsText, triangle, trianglesText);
         group.setZIndex(2);
     }

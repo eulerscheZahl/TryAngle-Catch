@@ -346,6 +346,7 @@
                         <action>REMOVE_EDGE node1 node2 node3 target</action>
                         to disconnect <var>node1</var> from <var>target</var> using the given triangle.
                     </li>
+                    <li><action>WAIT</action> to do nothing.</li>
                     <!-- END -->
                 </ul>
 
@@ -378,5 +379,7 @@
     <a href="https://craftpix.net/freebies/2d-fantasy-knight-free-sprite-sheets/">https://craftpix.net/freebies/2d-fantasy-knight-free-sprite-sheets/</a>
     <br>
     <a href="https://craftpix.net/freebies/free-zombie-tds-tilesets-buildings-and-furniture/">https://craftpix.net/freebies/free-zombie-tds-tilesets-buildings-and-furniture/</a>
+    <br>
+    <a href="https://craftpix.net/freebies/free-different-sci-fi-item-icons/">https://craftpix.net/freebies/free-different-sci-fi-item-icons</a>
     <br>
 </div>
