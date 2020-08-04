@@ -19,18 +19,16 @@ public class MoveTask extends Task {
         super(player, board);
         Matcher matcher = pattern.matcher(command);
         matcher.matches();
-        int fromId = Integer.parseInt(matcher.group("from"));
-        int toId = Integer.parseInt(matcher.group("to"));
+        nodeFrom = getNode(board, matcher.group("from"));
+        nodeTo = getNode(board, matcher.group("to"));
         amount = Integer.parseInt(matcher.group("amount"));
-        nodeFrom = this.board.nodes.get(fromId);
-        nodeTo = this.board.nodes.get(toId);
     }
 
-    public MoveTask(Player player, Node from, Node to, int count) {
+    public MoveTask(Player player, Node from, Node to, int amount) {
         super(player, null);
         this.nodeFrom = from;
         this.nodeTo = to;
-        this.amount = count;
+        this.amount = amount;
     }
 
     @Override
@@ -50,7 +48,7 @@ public class MoveTask extends Task {
 
     @Override
     public boolean canApply(Board board) {
-        return nodeFrom.canMoveTo(player.getIndex(), nodeTo);
+        return nodeFrom != null && nodeTo != null && nodeFrom.canMoveTo(player.getIndex(), nodeTo);
     }
 
     @Override

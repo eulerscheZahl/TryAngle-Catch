@@ -19,17 +19,11 @@ public class AddEdgeTask extends Task {
         super(player, board);
         Matcher matcher = pattern.matcher(command);
         matcher.matches();
-        int nodeFromId = Integer.parseInt(matcher.group("nodeFrom"));
-        int node2Id = Integer.parseInt(matcher.group("node2"));
-        int node3Id = Integer.parseInt(matcher.group("node3"));
-        int nodeToId = Integer.parseInt(matcher.group("nodeTo"));
-        from = board.nodes.get(nodeFromId);
-        Node node2 = board.nodes.get(node2Id);
-        Node node3 = board.nodes.get(node3Id);
-        this.to = board.nodes.get(nodeToId);
-        for (Triangle t : board.triangles) {
-            if (t.hasNode(from) && t.hasNode(node2) && t.hasNode(node3)) this.triangle = t;
-        }
+        this.from = getNode(board, matcher.group("nodeFrom"));
+        Node node2 = getNode(board, matcher.group("node2"));
+        Node node3 = getNode(board, matcher.group("node3"));
+        this.to = getNode(board, matcher.group("nodeTo"));
+        this.triangle = getTriangle(board, from, node2, node3);
     }
 
     @Override

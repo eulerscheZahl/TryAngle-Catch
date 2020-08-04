@@ -131,13 +131,13 @@ public class BoardView {
         public Player player;
         public Node from;
         public Node to;
-        public int count;
+        public int amount;
 
         public Move(Player player, Node from, Node to, int amount) {
             this.player = player;
             this.from = from;
             this.to = to;
-            this.count = amount;
+            this.amount = amount;
         }
     }
 
@@ -150,7 +150,7 @@ public class BoardView {
     public void cacheMove(Player player, Node from, Node to, int amount) {
         for (Move move : moves) {
             if (move.player == player && move.from == from && move.to == to) {
-                move.count += amount;
+                move.amount += amount;
                 return;
             }
         }
@@ -159,7 +159,7 @@ public class BoardView {
 
     public void animateMoves() {
         for (Move move : moves) {
-            animateTask(new MoveTask(move.player, move.from, move.to, move.count));
+            animateTask(new MoveTask(move.player, move.from, move.to, move.amount));
         }
     }
 

@@ -55,6 +55,10 @@ public class Referee extends AbstractReferee {
                 return;
             }
             for (Player player : gameManager.getActivePlayers()) {
+                if (player.getUnits() == 0 && player.getTriangles() == 0) {
+                    killPlayer(player, "no units or triangles left");
+                    continue;
+                }
                 player.sendInputLine(board.getInput(turn == 1, player));
                 player.execute();
             }
@@ -72,7 +76,6 @@ public class Referee extends AbstractReferee {
                         killPlayer(player, "invalid command");
                     } else gameManager.addToGameSummary("[" + player.getNicknameToken() + "] " + error.getMessage());
                 }
-                if (player.getUnits() == 0 && player.getTriangles() == 0) killPlayer(player, "no units or triangles left");
             }
         } else {
             gameManager.setMaxTurns(gameManager.getMaxTurns() + 1);

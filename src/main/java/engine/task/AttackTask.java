@@ -19,17 +19,11 @@ public class AttackTask extends Task {
         super(player, board);
         Matcher matcher = pattern.matcher(command);
         matcher.matches();
-        int node1Id = Integer.parseInt(matcher.group("node1"));
-        int node2Id = Integer.parseInt(matcher.group("node2"));
-        int node3Id = Integer.parseInt(matcher.group("node3"));
-        int targetId = Integer.parseInt(matcher.group("target"));
-        Node node1 = board.nodes.get(node1Id);
-        Node node2 = board.nodes.get(node2Id);
-        Node node3 = board.nodes.get(node3Id);
-        this.target = board.nodes.get(targetId);
-        for (Triangle t : board.triangles) {
-            if (t.hasNode(node1) && t.hasNode(node2) && t.hasNode(node3)) this.triangle = t;
-        }
+        Node node1 = getNode(board, matcher.group("node1"));
+        Node node2 = getNode(board, matcher.group("node2"));
+        Node node3 = getNode(board, matcher.group("node3"));
+        this.target = getNode(board, matcher.group("target"));
+        this.triangle = getTriangle(board, node1, node2, node3);
     }
 
     @Override

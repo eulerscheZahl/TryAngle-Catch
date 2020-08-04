@@ -18,15 +18,10 @@ public class SpawnTask extends Task {
         super(player, board);
         Matcher matcher = pattern.matcher(command);
         matcher.matches();
-        int spawnId = Integer.parseInt(matcher.group("spawn"));
-        int node2Id = Integer.parseInt(matcher.group("node2"));
-        int node3Id = Integer.parseInt(matcher.group("node3"));
-        nodeSpawn = board.nodes.get(spawnId);
-        Node node2 = board.nodes.get(node2Id);
-        Node node3 = board.nodes.get(node3Id);
-        for (Triangle t : board.triangles) {
-            if (t.hasNode(nodeSpawn) && t.hasNode(node2) && t.hasNode(node3)) triangle = t;
-        }
+        this.nodeSpawn = getNode(board, matcher.group("spawn"));
+        Node node2 = getNode(board, matcher.group("node2"));
+        Node node3 = getNode(board, matcher.group("node3"));
+        this.triangle = getTriangle(board, nodeSpawn, node2, node3);
     }
 
     @Override
