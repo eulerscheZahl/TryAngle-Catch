@@ -10,6 +10,7 @@ public class Triangle {
     private Node node2;
     private Node node3;
     private Player owner;
+    private Player initialOwner;
     private boolean[] canCapture = new boolean[]{true, true};
     private TriangleView view;
 
@@ -49,6 +50,10 @@ public class Triangle {
                 this.hasNode(triangle.node3);
     }
 
+    public void finalizeTurn() {
+        this.initialOwner = this.owner;
+    }
+
     public boolean canCapture(Player player) {
         return canCapture[player.getIndex()];
     }
@@ -76,7 +81,7 @@ public class Triangle {
     }
 
     public boolean canUse(Player player, int units) {
-        return owner == player &&
+        return owner == player && initialOwner == player &&
                 node1.remainingUnits[player.getIndex()] >= units &&
                 node2.remainingUnits[player.getIndex()] >= units &&
                 node3.remainingUnits[player.getIndex()] >= units;

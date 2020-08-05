@@ -82,22 +82,26 @@ public class Node {
         return dist[this.id] > 0;
     }
 
-    public boolean moveTo(int id, Node target, int amount) {
-        if (this == target) return false;
-        if (remainingUnits[id] <= 0) return false;
+    public int getMoveAmount(int playerId, int plannedAmount) {
+        return Math.min(plannedAmount, this.remainingUnits[playerId]);
+    }
+
+    public Node moveTo(int playerId, Node target, int amount) {
+        if (this == target) return null;
+        amount = getMoveAmount(playerId, amount);
+        if (amount <= 0) return null;
         int[] dist = target.bfs();
-        amount = Math.min(amount, this.remainingUnits[id]);
 
         for (Node next : this.neighbors) {
             if (dist[next.id] < dist[this.id]) {
-                this.units[id] -= amount;
-                this.remainingUnits[id] -= amount;
-                next.units[id] += amount;
-                return true;
+                this.units[playerId] -= amount;
+                this.remainingUnits[playerId] -= amount;
+                next.units[playerId] += amount;
+                return next;
             }
         }
 
-        return false;
+        return null;
     }
 
     public Player getOwner() {

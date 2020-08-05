@@ -24,6 +24,7 @@ public class AttackTask extends Task {
         Node node3 = getNode(board, matcher.group("node3"));
         this.target = getNode(board, matcher.group("target"));
         this.triangle = getTriangle(board, node1, node2, node3);
+        if (!hasFailedParsing() && !triangle.hasNeighbor(target)) addParsingError("Can't attack node " + target.getId() + " from given triangle", false);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class AttackTask extends Task {
 
     @Override
     public boolean canApply(Board board) {
-        return triangle != null && triangle.canUse(player, 1) && triangle.hasNeighbor(target);
+        return !hasFailedParsing() && triangle.canUse(player, 1) && triangle.hasNeighbor(target);
     }
 
     @Override

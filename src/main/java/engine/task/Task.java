@@ -10,6 +10,7 @@ public abstract class Task {
     protected Player player;
     protected Board board;
     protected String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    protected boolean failedParsing = false;
 
     protected Task(Player player, Board board) {
         this.player = player;
@@ -44,17 +45,27 @@ public abstract class Task {
             return null;
         }
         if (task.getRequiredLeague() > league) {
-            player.addError(new InputError("Command not available in your league: " + command, false));
+            task.addParsingError("Command not available in your league: " + command, false);
             return null;
         }
-        if (!task.canApply(board)) player.addError(new InputError("Task can't be applied: " + command, false));
+        if (!task.canApply(board)) task.addParsingError("Task can't be applied: " + command, false);
         return task;
+    }
+
+    public boolean hasFailedParsing() {
+        return failedParsing;
+    }
+
+    protected void addParsingError(String message, boolean critical) {
+        if (failedParsing) return;
+        failedParsing = true;
+        player.addError(new InputError(message, critical));
     }
 
     protected Node getNode(Board board, String node) {
         int nodeId = Integer.parseInt(node);
         if (nodeId < 0 || nodeId >= board.nodes.size()) {
-            player.addError(new InputError("Invalid node: " + node, true));
+            addParsingError("Invalid node: " + node, false);
             return null;
         }
         return board.nodes.get(nodeId);
@@ -65,7 +76,7 @@ public abstract class Task {
         for (Triangle t : board.triangles) {
             if (t.hasNode(node1) && t.hasNode(node2) && t.hasNode(node3)) return t;
         }
-        player.addError(new InputError("Invalid triangle: " + node1.getId() + " " + node2.getId() + " " + node3.getId(), true));
+        addParsingError("Invalid triangle: " + node1.getId() + " " + node2.getId() + " " + node3.getId(), false);
         return null;
     }
 

@@ -24,6 +24,7 @@ public class AddEdgeTask extends Task {
         Node node3 = getNode(board, matcher.group("node3"));
         this.to = getNode(board, matcher.group("nodeTo"));
         this.triangle = getTriangle(board, from, node2, node3);
+        if (!hasFailedParsing() && !board.canConnect(from, to)) addParsingError("Can't connect nodes " + from.getId() + " and " + to.getId(), false);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class AddEdgeTask extends Task {
 
     @Override
     public boolean canApply(Board board) {
-        boolean valid = triangle != null && triangle.canUse(player, 1) && !from.neighbors.contains(to);
+        boolean valid = !hasFailedParsing() && triangle.canUse(player, 1) && !from.neighbors.contains(to);
         valid &= board.canConnect(from, to);
         return valid;
     }

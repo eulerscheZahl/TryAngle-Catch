@@ -256,6 +256,7 @@ public class Board {
 
         for (Triangle triangle : triangles) {
             if (triangle.getOwner() != null) triangle.getOwner().increaseScore();
+            triangle.finalizeTurn();
         }
         makeStats();
         return false;

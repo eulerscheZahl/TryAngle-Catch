@@ -22,6 +22,7 @@ public class MoveTask extends Task {
         nodeFrom = getNode(board, matcher.group("from"));
         nodeTo = getNode(board, matcher.group("to"));
         amount = Integer.parseInt(matcher.group("amount"));
+        if (amount <= 0) addParsingError("Amount of units to move be positive", false);
     }
 
     public MoveTask(Player player, Node from, Node to, int amount) {
@@ -48,12 +49,13 @@ public class MoveTask extends Task {
 
     @Override
     public boolean canApply(Board board) {
-        return nodeFrom != null && nodeTo != null && nodeFrom.canMoveTo(player.getIndex(), nodeTo);
+        return !hasFailedParsing() && nodeFrom.canMoveTo(player.getIndex(), nodeTo);
     }
 
     @Override
     public void apply(Board board) {
-        nodeFrom.moveTo(player.getIndex(), nodeTo, amount);
+        amount = nodeFrom.getMoveAmount(player.getIndex(), amount);
+        nodeTo = nodeFrom.moveTo(player.getIndex(), nodeTo, amount);
     }
 
     @Override

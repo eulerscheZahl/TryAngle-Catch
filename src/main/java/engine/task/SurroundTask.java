@@ -4,6 +4,7 @@ import com.codingame.game.Player;
 import engine.Board;
 import engine.Node;
 
+// not a real task, only needed for replay serialization
 public class SurroundTask extends Task {
     private int amount;
     private Node target;

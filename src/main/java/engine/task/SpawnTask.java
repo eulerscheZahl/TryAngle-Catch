@@ -41,7 +41,7 @@ public class SpawnTask extends Task {
 
     @Override
     public boolean canApply(Board board) {
-        return triangle != null && triangle.canUse(player, 0);
+        return !hasFailedParsing() && triangle.canUse(player, 0);
     }
 
     @Override

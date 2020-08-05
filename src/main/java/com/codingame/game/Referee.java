@@ -73,8 +73,8 @@ public class Referee extends AbstractReferee {
 
                 for (InputError error : player.popErrors()) {
                     if (error.isCritical()) {
-                        killPlayer(player, "invalid command");
-                    } else gameManager.addToGameSummary("[" + player.getNicknameToken() + "] " + error.getMessage());
+                        killPlayer(player, error.getMessage());
+                    } else gameManager.addToGameSummary(player.getNicknameToken() + ": " + error.getMessage());
                 }
             }
         } else {
