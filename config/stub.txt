@@ -2,6 +2,7 @@ read nodeCount:int
 loop nodeCount read nodeId:int nodeX:int nodeY:int
 
 gameloop
+read myScore:int opponentScore:int
 loopline nodeCount myUnits:int
 loopline nodeCount opponentUnits:int
 read linkCount:int

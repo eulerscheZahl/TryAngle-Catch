@@ -83,7 +83,7 @@
 
                 <br><br>
                 <strong>Triangles</strong><br>
-                A triangle is defined by three nodes, that are all connected with each other.<br>
+                A triangle is defined by three nodes, that are all connected with each other. A triangle may not contain any other nodes inside itself.<br>
                 After each turn the players get <const>1</const> point for each triangle they currently own.
 
                 <br><br>
@@ -201,6 +201,8 @@
             <span>Expert Rules</span>
         </h1>
         <div class="statement-expert-rules-content">
+            The source code of the referee can be found on github: <a href="https://github.com/eulerscheZahl/TryAngle-Catch">https://github.com/eulerscheZahl/TryAngle-Catch</a>
+            <br> <br>
             The game turn works as follows:
             <ol>
                 <!-- BEGIN level2 -->

@@ -79,7 +79,7 @@ public class TinyToggleModule implements Module {
             if (!data.containsKey(key)) data.put(key, "");
             data.put(key, data.get(key) + d + (newRegistration.get(d).state ? "+" : "-"));
         }
-        //if (newRegistration.size() > 0)
+        if (newRegistration.size() > 0)
         	gameManager.setViewData("toggles", data);
 
         newRegistration.clear();

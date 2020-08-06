@@ -110,6 +110,7 @@ class Solution
         // game loop
         while (true)
         {
+            int[] scores = ReadLine().Split().Select(int.Parse).ToArray();
             nodes.ForEach(n => n.Clear());
             inputs = ReadLine().Split(' ');
             for (int i = 0; i < nodeCount; i++)

@@ -77,7 +77,7 @@ public class BoardView {
             return this.n1 == conn.n1 && this.n2 == conn.n2;
         }
 
-        public void drawLine() {
+        public void drawEdge() {
             if (line != null) return;
             line = graphics.createLine().setX(n1.getX()).setY(n1.getY()).setX2(n2.getX()).setY2(n2.getY())
                     .setLineWidth(5).setFillColor(0).setZIndex(1).setAlpha(0);
@@ -106,7 +106,7 @@ public class BoardView {
         Connection connection = new Connection(n1, n2);
         if (!connections.contains(connection)) {
             connections.add(connection);
-            connection.drawLine();
+            connection.drawEdge();
         }
     }
 

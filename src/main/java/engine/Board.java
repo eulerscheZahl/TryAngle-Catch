@@ -59,37 +59,37 @@ public class Board {
         }
 
         // add edges to create triangles
-        ArrayList<Line> lines = new ArrayList<Line>();
+        ArrayList<Edge> edges = new ArrayList<Edge>();
         for (int i = 0; i < nodes.size(); i++) {
             for (int j = i + 1; j < nodes.size(); j++) {
                 Node n1 = nodes.get(i);
                 Node n2 = nodes.get(j);
-                lines.add(new Line(n1, n2));
+                edges.add(new Edge(n1, n2));
             }
         }
-        Collections.sort(lines, (o1, o2) -> (int) Math.signum(o1.length() - o2.length()));
-        ArrayList<Line> exsitingLines = new ArrayList<>();
-        for (int i = 0; i < lines.size(); i++) {
-            if (lines.get(i).isBlocked(exsitingLines)) {
-                lines.remove(i);
+        Collections.sort(edges, (o1, o2) -> (int) Math.signum(o1.length() - o2.length()));
+        ArrayList<Edge> exsitingEdges = new ArrayList<>();
+        for (int i = 0; i < edges.size(); i++) {
+            if (edges.get(i).isBlocked(exsitingEdges)) {
+                edges.remove(i);
                 i--;
             } else {
-                lines.get(i).makeNeighbors();
-                exsitingLines.add(lines.get(i));
+                edges.get(i).makeNeighbors();
+                exsitingEdges.add(edges.get(i));
             }
         }
 
         // randomly remove some edges again
-        int removeEdgeCount = (int) (exsitingLines.size() * (random.nextDouble() * (SPARSE_MAX - SPARSE_MIN) + SPARSE_MIN));
+        int removeEdgeCount = (int) (exsitingEdges.size() * (random.nextDouble() * (SPARSE_MAX - SPARSE_MIN) + SPARSE_MIN));
         while (removeEdgeCount > 0) {
             removeEdgeCount -= 2;
-            Line toDisconnect = exsitingLines.get(random.nextInt(exsitingLines.size()));
+            Edge toDisconnect = exsitingEdges.get(random.nextInt(exsitingEdges.size()));
             Node mirror1 = getMirror(toDisconnect.getN1());
             Node mirror2 = getMirror(toDisconnect.getN2());
-            Line partner = null;
-            for (Line line : exsitingLines) {
-                if (line.getN1() == mirror1 && line.getN2() == mirror2 || line.getN1() == mirror2 && line.getN2() == mirror1)
-                    partner = line;
+            Edge partner = null;
+            for (Edge edge : exsitingEdges) {
+                if (edge.getN1() == mirror1 && edge.getN2() == mirror2 || edge.getN1() == mirror2 && edge.getN2() == mirror1)
+                    partner = edge;
             }
 
             updateTriangles();
@@ -98,8 +98,8 @@ public class Board {
             partner.unmakeNeighbors();
             updateTriangles();
             if (triangleCount - 4 == triangles.size()) {
-                exsitingLines.remove(toDisconnect);
-                exsitingLines.remove(partner);
+                exsitingEdges.remove(toDisconnect);
+                exsitingEdges.remove(partner);
                 if (triangles.size() - 4 < MIN_TRIANGLE_COUNT) break;
             } else {
                 toDisconnect.makeNeighbors();
@@ -143,14 +143,14 @@ public class Board {
     }
 
     public boolean canConnect(Node from, Node to) {
-        ArrayList<Line> exsitingLines = new ArrayList<>();
+        ArrayList<Edge> exsitingEdges = new ArrayList<>();
         for (Node n1 : nodes) {
             for (Node n2 : n1.neighbors) {
-                if (n2.getId() > n1.getId()) exsitingLines.add(new Line(n1, n2));
+                if (n2.getId() > n1.getId()) exsitingEdges.add(new Edge(n1, n2));
             }
         }
-        Line connect = new Line(from, to);
-        return !connect.isBlocked(exsitingLines);
+        Edge connect = new Edge(from, to);
+        return !connect.isBlocked(exsitingEdges);
     }
 
     private Node getMirror(Node node) {
@@ -194,9 +194,9 @@ public class Board {
 
     private boolean isInside(Node n, Node a, Node b, Node c) {
         if (n == a || n == b || n == c) return false;
-        boolean ccw1 = Line.ccw(n, a, b);
-        boolean ccw2 = Line.ccw(n, b, c);
-        boolean ccw3 = Line.ccw(n, c, a);
+        boolean ccw1 = Edge.ccw(n, a, b);
+        boolean ccw2 = Edge.ccw(n, b, c);
+        boolean ccw3 = Edge.ccw(n, c, a);
 
         boolean has_neg = !ccw1 || !ccw2 || !ccw3;
         boolean has_pos = ccw1 || ccw2 || ccw3;
@@ -309,6 +309,8 @@ public class Board {
                 sb.append(node.getId() + " " + node.getX() + " " + node.getY() + "\n");
             }
         }
+
+        sb.append(player.getScore() + " " + player.getOpponent().getScore() + "\n");
         int[][] unitsPerPlayer = new int[2][nodes.size()];
         for (Node node : nodes) {
             unitsPerPlayer[0][node.getId()] = node.units[player.getIndex()];
@@ -331,7 +333,6 @@ public class Board {
         sb.append(triangles.size() + "\n");
         for (Triangle triangle : triangles) sb.append(triangle.getInput(player) + "\n");
 
-        //System.err.println(sb.toString());
         return sb.toString();
     }
 
