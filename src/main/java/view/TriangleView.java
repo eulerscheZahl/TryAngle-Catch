@@ -9,13 +9,11 @@ import engine.Triangle;
 public class TriangleView {
     private Triangle triangle;
     private GraphicEntityModule graphicEntityModule;
-    private TooltipModule tooltipModule;
     Player previousOwner = null;
 
     public TriangleView(Triangle triangle, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule) {
         this.triangle = triangle;
         this.graphicEntityModule = graphicEntityModule;
-        this.tooltipModule = tooltipModule;
     }
 
     Polygon region = null;
@@ -30,7 +28,7 @@ public class TriangleView {
         }
         if (triangle.getOwner() == null) {
             if (previousOwner == null || triangle.canCapture(previousOwner)) {
-                region.setAlpha(0);
+                region.setAlpha(0).setFillColor(0xFFFFFF);
             } else region.setAlpha(0.3);
         } else {
             region.setAlpha(1).setFillColor(triangle.getOwner().getColor());

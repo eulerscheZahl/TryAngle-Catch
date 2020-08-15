@@ -247,7 +247,7 @@
             <div style="color: #7cc576; background-color: rgba(124, 197, 118,.1); padding: 2px;">
                 <!-- END -->
                 <!-- BEGIN level3 level4 -->
-                For the addition of new edges, the pythagorean distance is used as a tie breaker, giving higher
+                For the addition of new edges, the Euclidean distance is used as a tie breaker, giving higher
                 priority to shorter
                 distances.
                 This can make another edge addition impossible due to crossing edges. The maps are generated in such a

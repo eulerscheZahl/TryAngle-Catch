@@ -85,7 +85,7 @@ class Solution
     static string ReadLine()
     {
         string line = Console.ReadLine();
-        Console.Error.WriteLine(line);
+        //Console.Error.WriteLine(line);
         return line;
     }
 

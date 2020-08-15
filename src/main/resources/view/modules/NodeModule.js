@@ -21,6 +21,10 @@ export class NodeModule {
 
   updateScene (previousData, currentData, progress) {
   }
+
+  getTooltipText(node) {
+    return `Node\nid: ${node.id}\nx: ${node.x}\ny: ${node.y}\nowner: ${node.owner}`
+  }
   
   drawNode(frameInfo, node) {
   	if (!node.shack) {
@@ -44,8 +48,8 @@ export class NodeModule {
 		TinyToggleModule.instance.registerToggle(node.roof, "d", false)
 		TinyToggleModule.instance.registerToggle(node.baseCircle, "d", true)
 		TinyToggleModule.instance.registerToggle(node.circle, "d", true)
-		FooltipModule.instance.registerTooltip(node.shack, `id: ${node.id}\nx: ${node.x}\ny: ${node.y}`)
-		FooltipModule.instance.registerTooltip(node.circle, `id: ${node.id}\nx: ${node.x}\ny: ${node.y}`)
+		FooltipModule.instance.registerTooltip(node.shack, this.getTooltipText(node))
+		FooltipModule.instance.registerTooltip(node.circle, this.getTooltipText(node))
 	}
 	var shackParams = { ...graphicsHelper.defaults.sprite, x:node.x-30, y:node.y-40, zIndex:8,
 				  image:"s1.png", scaleX:0.1, scaleY:0.1, }
@@ -70,6 +74,7 @@ export class NodeModule {
   
   updateOwner(frameInfo, node, player) {
   	if (player == -1) {
+  	    node.owner = "None"
 		var roofParams = { ...graphicsHelper.defaults.sprite, x:node.x-30, y:node.y-40, zIndex:8,
 					  image:"s2.png", scaleX:0.1, scaleY:0.1, t:1, }
 	    node.roof.addState(1, {values: roofParams, curve:{}}, frameInfo.number, frameInfo)
@@ -77,6 +82,7 @@ export class NodeModule {
 				  radius:31, fillColor:0, lineWidth:10, lineColor:0, t:1  }
     	node.circle.addState(1, {values: circleParams, curve:{}}, frameInfo.number, frameInfo)
   	} else {
+  	    node.owner = this.playerList[player].name
 		var roofParams = { ...graphicsHelper.defaults.sprite, x:node.x-30, y:node.y-40, zIndex:8, t:1,
 					  image:"s2.png", scaleX:0.1, scaleY:0.1, tint:graphicsHelper.playerColors[player] }
 	    node.roof.addState(1, {values: roofParams, curve:{}}, frameInfo.number, frameInfo)
@@ -84,6 +90,8 @@ export class NodeModule {
 				  radius:31, fillColor:0, lineWidth:10, lineColor:graphicsHelper.playerColors[player]  }
     	node.circle.addState(1, {values: circleParams, curve:{}}, frameInfo.number, frameInfo)
   	}
+    FooltipModule.instance.registerTooltip(node.shack, this.getTooltipText(node))
+    FooltipModule.instance.registerTooltip(node.circle, this.getTooltipText(node))
   }
   
   updateUnits(frameInfo, node, player, time, amount) {
@@ -126,6 +134,10 @@ export class NodeModule {
   	view.text.addState(time, {values: { ...textParams, visible:amount>0, text:""+amount, t:time}, curve:{}}, frameInfo.number, frameInfo)
   }
 
+  handleGlobalData(players, globalData) {
+      this.playerList = players;
+  }
+
   handleFrameData (frameInfo, data) {
     if (!data) {
       return
@@ -138,7 +150,7 @@ export class NodeModule {
             const xy = s.split('/')
             const x = +xy[0]
             const y = +xy[1]
-            const node = {"id":nodeId++, "x":x, "y":y, "unitView":{0:{},1:{}}}
+            const node = {"id":nodeId++, "x":x, "y":y, owner:"None", "unitView":{0:{},1:{}}}
             newRegistration[node.id] = node
             NodeModule.nodes[node.id] = node
             this.drawNode(frameInfo, node)
