@@ -130,6 +130,10 @@ export class FooltipModule {
   	this.interactive[tipElement.id] = true
   }
 
+  resetTooltip() { // when switching to/from debug view
+    this.tooltip.inside = []
+  }
+
   handleFrameData (frameInfo, data=[]) {
   	const registered = { ...this.previousFrame.registered }
   	const frame = { registered, number: frameInfo.number }

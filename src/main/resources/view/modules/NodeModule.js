@@ -67,7 +67,7 @@ export class NodeModule {
 				  radius:31, fillColor:0,lineWidth:10, lineColor:0  }
     node.circle.addState(0, {values: circleParams, curve:{}}, frameInfo.number, frameInfo)
 
-	var textParams = { ...graphicsHelper.defaults.text, x:node.x, y:node.y, zIndex:8,
+	var textParams = { ...graphicsHelper.defaults.text, x:node.x, y:node.y, zIndex:8, fontWeight: "italic",
 				  text:""+node.id, strokeThickness:4, fillColor:0xffffff, anchorX:0.5, anchorY:0.5, }
     node.text.addState(0, {values: textParams, curve:{}}, frameInfo.number, frameInfo)
   }

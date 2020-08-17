@@ -2,6 +2,7 @@ import { api as entityModule } from '../entity-module/GraphicEntityModule.js'
 import { ErrorLog } from '../core/ErrorLog.js'
 import { MissingToggleError } from '../toggle-module/errors/MissingToggleError.js'
 import { DuplicateToggleValueError } from '../toggle-module/errors/DuplicateToggleValueError.js'
+import { FooltipModule } from './FooltipModule.js'
 
 export class TinyToggleModule {
   constructor (assets) {
@@ -46,6 +47,7 @@ export class TinyToggleModule {
     option.set = (value) => {
       TinyToggleModule.toggles[option.toggle] = value
       TinyToggleModule.refreshContent()
+      FooltipModule.instance.resetTooltip()
     }
     return option
   }
