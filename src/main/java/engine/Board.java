@@ -234,7 +234,11 @@ public class Board {
             Player player = Player.getPlayer(playerIndex);
             player.setTriangles(0);
             player.setUnits(0);
-            for (Node node : nodes) player.setUnits(player.getUnits() + node.units[playerIndex]);
+            player.setNodes(0);
+            for (Node node : nodes) {
+                player.setUnits(player.getUnits() + node.units[playerIndex]);
+                if (node.ownedBy(player)) player.setNodes(1 + player.getNodes());
+            }
             for (Triangle triangle : triangles) {
                 if (triangle.getOwner() == player) player.setTriangles(player.getTriangles() + 1);
             }

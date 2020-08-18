@@ -13,6 +13,7 @@ public class Player extends AbstractMultiplayerPlayer {
     private String message = "";
     private int units;
     private int triangles;
+    private int nodes;
     private PlayerView view;
     private ArrayList<InputError> errors = new ArrayList<>();
 
@@ -62,6 +63,14 @@ public class Player extends AbstractMultiplayerPlayer {
 
     public void updateView() {
         view.update();
+    }
+
+    public int getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(int nodes) {
+        this.nodes = nodes;
     }
 
     public int getTriangles() {

@@ -59,6 +59,10 @@ public class Referee extends AbstractReferee {
                     killPlayer(player, "no units or triangles left");
                     continue;
                 }
+                if (player.getOpponent().getTriangles() >= board.triangles.size() * 0.8) {
+                    killPlayer(player, "is dominated");
+                    continue;
+                }
                 player.sendInputLine(board.getInput(turn == 1, player));
                 player.execute();
             }
