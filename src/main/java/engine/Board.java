@@ -23,7 +23,7 @@ public class Board {
     public static final int NODE_COUNT = 50;
     public static final int NODE_MIN_DIST = 140;
     public static final double SPARSE_MIN = 0.1;
-    public static final double SPARSE_MAX = 0.3;
+    public static final double SPARSE_MAX = 0.5;
     public static final int MIN_TRIANGLE_COUNT = 20;
     public static final int MAX_PATH_LENGTH = 400;
     public static final int MAX_ANGLE = 160;
@@ -80,10 +80,12 @@ public class Board {
         }
 
         // randomly remove some edges again
+        HashSet<Edge> testedEdges = new HashSet<>();
         int removeEdgeCount = (int) (exsitingEdges.size() * (random.nextDouble() * (SPARSE_MAX - SPARSE_MIN) + SPARSE_MIN));
         while (removeEdgeCount > 0) {
             removeEdgeCount -= 2;
             Edge toDisconnect = exsitingEdges.get(random.nextInt(exsitingEdges.size()));
+            if (testedEdges.contains(toDisconnect)) continue;
             Node mirror1 = getMirror(toDisconnect.getN1());
             Node mirror2 = getMirror(toDisconnect.getN2());
             Edge partner = null;
@@ -91,16 +93,16 @@ public class Board {
                 if (edge.getN1() == mirror1 && edge.getN2() == mirror2 || edge.getN1() == mirror2 && edge.getN2() == mirror1)
                     partner = edge;
             }
+            testedEdges.add(toDisconnect);
+            testedEdges.add(partner);
 
             updateTriangles();
-            int triangleCount = triangles.size();
             toDisconnect.unmakeNeighbors();
             partner.unmakeNeighbors();
             updateTriangles();
-            if (triangleCount - 4 == triangles.size()) {
+            if (triangles.size() >= MIN_TRIANGLE_COUNT && isStronglyConnected()) {
                 exsitingEdges.remove(toDisconnect);
                 exsitingEdges.remove(partner);
-                if (triangles.size() - 4 < MIN_TRIANGLE_COUNT) break;
             } else {
                 toDisconnect.makeNeighbors();
                 partner.makeNeighbors();
@@ -118,6 +120,20 @@ public class Board {
 
         view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule);
         finalizeTurn();
+    }
+
+    private boolean isStronglyConnected() {
+        for (Node blocked : nodes) {
+            Node start = nodes.get(0);
+            if (start == blocked) start = nodes.get(1);
+            int[] dist = start.bfs(blocked);
+            int unreachable = 0;
+            for (int i = 0; i < nodes.size(); i++) {
+                if (dist[i] == dist.length) unreachable++;
+            }
+            if (unreachable > 1) return false;
+        }
+        return true;
     }
 
     private boolean obtuseAngle(ArrayList<Node> nodes, Node n1, Node n2) {

@@ -54,6 +54,10 @@ public class Node {
     }
 
     private int[] bfs() {
+        return bfs(null);
+    }
+
+    public int[] bfs(Node blocked) {
         int[] dist = new int[Board.NODE_COUNT];
         for (int i = 0; i < dist.length; i++) dist[i] = dist.length;
         dist[this.id] = 0;
@@ -62,7 +66,7 @@ public class Node {
         while (queue.size() > 0) {
             Node current = queue.poll();
             for (Node next : current.neighbors) {
-                if (dist[next.id] < dist.length) continue;
+                if (dist[next.id] < dist.length || next == blocked) continue;
                 dist[next.id] = 1 + dist[current.id];
                 queue.add(next);
             }

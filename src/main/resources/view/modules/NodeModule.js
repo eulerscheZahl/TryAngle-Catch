@@ -48,6 +48,7 @@ export class NodeModule {
 		TinyToggleModule.instance.registerToggle(node.roof, "d", false)
 		TinyToggleModule.instance.registerToggle(node.baseCircle, "d", true)
 		TinyToggleModule.instance.registerToggle(node.circle, "d", true)
+		TinyToggleModule.instance.registerToggle(node.text, "d", true)
 		FooltipModule.instance.registerTooltip(node.shack, this.getTooltipText(node))
 		FooltipModule.instance.registerTooltip(node.circle, this.getTooltipText(node))
 	}
