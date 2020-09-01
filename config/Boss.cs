@@ -128,6 +128,11 @@ class Triangle
     {
         return Node1.ID + " " + Node2.ID + " " + Node3.ID;
     }
+
+    internal string Spawn(Node spawn)
+    {
+        return "SPAWN " + spawn + " " + string.Join(" ", Corners.Where(c => c != spawn));
+    }
 }
 
 class Solution
@@ -202,7 +207,7 @@ class Solution
             }
 
             string solution = "";
-            if (myUnitCells.Count > 10)
+            if (myUnitCells.Count > 20)
             {
                 List<Triangle> myTriangles = triangles.Where(t => t.Owner == 0 && t.Corners.All(c => c.MyUnits > 0)).ToList();
                 if (myTriangles.Count > 0)
@@ -270,13 +275,31 @@ class Solution
                     }
                 }
             }
-            solution += Mutate(triangles, myUnitCells, moveFrom, moveTo);
+            List<Node> targets = Mutate(triangles, myUnitCells, moveFrom, moveTo);
+            solution += string.Join(";", Enumerable.Range(0, myUnitCells.Count).Select(i => myUnitCells[i].Move(targets[i])));
 
             int unitCount = myUnitCells.Count;
             foreach (Triangle triangle in triangles.Where(t => t.Owner == 0))
             {
                 if (unitCount++ < nodes.Count)
-                    solution += ";SPAWN " + triangle;
+                {
+                    List<Node> corners = triangle.Corners.OrderBy(c => targets.Count(t => t == c)).ThenByDescending(c => c.Neighbors.Count).ToList();
+                    double score = int.MinValue;
+                    Node spawn = corners[0];
+                    foreach (Node corner in corners)
+                    {
+                        targets.Add(corner);
+                        double tmpScore = Score(triangles, targets);
+                        targets.RemoveAt(targets.Count - 1);
+                        if (tmpScore > score)
+                        {
+                            spawn = corner;
+                            score = tmpScore;
+                        }
+                    }
+                    solution += ";" + triangle.Spawn(spawn);
+                    targets.Add(spawn);
+                }
             }
 
             Console.Error.WriteLine("cost: " + bestCost);
@@ -285,7 +308,7 @@ class Solution
     }
 
     static Random random = new Random(0);
-    static string Mutate(List<Triangle> triangles, List<Node> myUnits, List<Node> moveFrom, List<Node> moveTo)
+    static List<Node> Mutate(List<Triangle> triangles, List<Node> myUnits, List<Node> moveFrom, List<Node> moveTo)
     {
         List<Node> targets = new List<Node>();
         foreach (Node n in myUnits) targets.Add(null);
@@ -317,7 +340,7 @@ class Solution
             else targets[index] = backup;
         }
 
-        return string.Join(";", Enumerable.Range(0, myUnits.Count).Select(i => myUnits[i].Move(targets[i])));
+        return targets;
     }
 
     static double Score(List<Triangle> triangles, List<Node> moveTo)

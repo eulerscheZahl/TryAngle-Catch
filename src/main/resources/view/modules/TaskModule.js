@@ -48,9 +48,8 @@ export class TaskModule {
   }
 
   generateSpawnAnimation(frameInfo, spawn) {
-    const from = this.getOffsetNode(spawn.from, spawn.player)
     const to = this.getOffsetNode(spawn.to, spawn.player)
-    this.performMove(frameInfo, spawn.player, from, to, 1)
+    this.performMove(frameInfo, spawn.player, spawn.from, to, 1)
   }
 
   generateTaskAnimation(frameInfo, task) {
