@@ -41,42 +41,50 @@ public class Board {
         this.tooltipModule = tooltipModule;
         this.toggleModule = toggleModule;
 
-        // place nodes on map, ensure minimum distance and unique distances
-        int tries = 0;
-        HashSet<Integer> nodeDistances = new HashSet<>();
-        while (nodes.size() < NODE_COUNT && tries++ < 10000) {
-            Node n1 = new Node(nodes.size(), SIDE_BORDER + random.nextInt(WIDTH), TOP_BORDER + random.nextInt(HEIGHT));
-            Node n2 = n1.mirror();
-            if (nodes.stream().anyMatch(n -> n.dist(n1) < NODE_MIN_DIST) ||
-                    n1.dist(n2) < NODE_MIN_DIST ||
-                    nodeDistances.contains(n1.dist2(n2)) ||
-                    nodes.stream().anyMatch(n -> nodeDistances.contains(n.dist2(n1)))) continue;
-            if (obtuseAngle(nodes, n1, n2)) continue;
-            nodeDistances.add(n1.dist2(n2));
-            for (Node n : nodes) nodeDistances.add(n.dist2(n1));
-            nodes.add(n1);
-            nodes.add(n2);
-        }
 
-        // add edges to create triangles
-        ArrayList<Edge> edges = new ArrayList<Edge>();
-        for (int i = 0; i < nodes.size(); i++) {
-            for (int j = i + 1; j < nodes.size(); j++) {
-                Node n1 = nodes.get(i);
-                Node n2 = nodes.get(j);
-                edges.add(new Edge(n1, n2));
+        ArrayList<Edge> exsitingEdges;
+        while (true) {
+            // place nodes on map, ensure minimum distance and unique distances
+            int tries = 0;
+            nodes.clear();
+            HashSet<Integer> nodeDistances = new HashSet<>();
+            while (nodes.size() < NODE_COUNT && tries++ < 10000) {
+                Node n1 = new Node(nodes.size(), SIDE_BORDER + random.nextInt(WIDTH), TOP_BORDER + random.nextInt(HEIGHT));
+                Node n2 = n1.mirror();
+                if (nodes.stream().anyMatch(n -> n.dist(n1) < NODE_MIN_DIST) ||
+                        n1.dist(n2) < NODE_MIN_DIST ||
+                        nodeDistances.contains(n1.dist2(n2)) ||
+                        nodes.stream().anyMatch(n -> nodeDistances.contains(n.dist2(n1)))) continue;
+                if (obtuseAngle(nodes, n1, n2)) continue;
+                nodeDistances.add(n1.dist2(n2));
+                for (Node n : nodes) nodeDistances.add(n.dist2(n1));
+                nodes.add(n1);
+                nodes.add(n2);
             }
-        }
-        Collections.sort(edges, (o1, o2) -> (int) Math.signum(o1.length() - o2.length()));
-        ArrayList<Edge> exsitingEdges = new ArrayList<>();
-        for (int i = 0; i < edges.size(); i++) {
-            if (edges.get(i).isBlocked(exsitingEdges)) {
-                edges.remove(i);
-                i--;
-            } else {
-                edges.get(i).makeNeighbors();
-                exsitingEdges.add(edges.get(i));
+
+            // add edges to create triangles
+            ArrayList<Edge> edges = new ArrayList<Edge>();
+            for (int i = 0; i < nodes.size(); i++) {
+                for (int j = i + 1; j < nodes.size(); j++) {
+                    Node n1 = nodes.get(i);
+                    Node n2 = nodes.get(j);
+                    edges.add(new Edge(n1, n2));
+                }
             }
+            Collections.sort(edges, (o1, o2) -> (int) Math.signum(o1.length() - o2.length()));
+            exsitingEdges = new ArrayList<>();
+            for (int i = 0; i < edges.size(); i++) {
+                if (edges.get(i).isBlocked(exsitingEdges)) {
+                    edges.remove(i);
+                    i--;
+                } else {
+                    edges.get(i).makeNeighbors();
+                    exsitingEdges.add(edges.get(i));
+                }
+            }
+
+            updateTriangles();
+            if (isStronglyConnected() && triangles.size() >= MIN_TRIANGLE_COUNT) break;
         }
 
         // randomly remove some edges again
