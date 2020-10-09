@@ -3,9 +3,10 @@ loop nodeCount read nodeId:int nodeX:int nodeY:int
 
 gameloop
 read myScore:int opponentScore:int
-loopline nodeCount myUnits:int
-loopline nodeCount opponentUnits:int
+loop nodeCount read nodeId:int myUnits:int opponentUnits:int
 read linkCount:int
 loop linkCount read node1:int node2:int
 read triangleCount:int
 loop triangleCount read node1:int node2:int node3:int owner:int meCanCapture:bool opponentCanCapture:bool
+
+write MOVE 3 17 1

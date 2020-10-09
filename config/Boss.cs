@@ -163,17 +163,12 @@ class Solution
         {
             int[] scores = ReadLine().Split().Select(int.Parse).ToArray();
             nodes.ForEach(n => n.Clear());
-            inputs = ReadLine().Split(' ');
             for (int i = 0; i < nodeCount; i++)
             {
-                int myUnits = int.Parse(inputs[i]);
-                nodes[i].MyUnits = myUnits;
-            }
-            inputs = ReadLine().Split(' ');
-            for (int i = 0; i < nodeCount; i++)
-            {
-                int opponentUnits = int.Parse(inputs[i]);
-                nodes[i].OpponentUnits = opponentUnits;
+                inputs = ReadLine().Split(' ');
+                int[] nums = inputs.Select(int.Parse).ToArray();
+                nodes[nums[0]].MyUnits = nums[1];
+                nodes[nums[0]].OpponentUnits = nums[2];
             }
             int linkCount = int.Parse(ReadLine());
             for (int i = 0; i < linkCount; i++)

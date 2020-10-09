@@ -36,7 +36,7 @@
       There will be no additional rules in higher leagues.
             <!-- END -->
     </span>
-<!-- BEGIN level1 level2 -->
+        <!-- BEGIN level1 level2 -->
         <br>To have a look at the final rules, go <a href="https://www.codingame.com/ide/demo/843364c35de5a48f4e0de3a6e0720b74d11b1a">here</a> and switch leagues at the top right corner.
         <!-- END -->
     </div>
@@ -208,6 +208,9 @@
         </h1>
         <div class="statement-expert-rules-content">
             The source code of the referee can be found on github: <a href="https://github.com/eulerscheZahl/TryAngle-Catch">https://github.com/eulerscheZahl/TryAngle-Catch</a>
+            <br>
+            There is a debug mode, that you can enable by clicking the gear icon below the player <br>
+            <img src="https://github.com/eulerscheZahl/TryAngle-Catch/tree/master/config/debug.png" style="width:100%" />
             <br> <br>
             The game turn works as follows:
             <ol>
@@ -245,7 +248,8 @@
                 enough units on each node) and applied if possible.
                 Then <const>A1b</const> and <const>A2b</const> will be processed in the same way. It's possible that the first group of actions renders one of them
                 invalid by killing units on a triangle that was supposed to be used later.
-                <br><br> <!-- END -->
+                <br><br>
+                <!-- END -->
                 <!-- BEGIN level2 -->
             </div>
             <!-- END -->
@@ -258,7 +262,7 @@
                 distances.
                 This can make another edge addition impossible due to crossing edges. The maps are generated in such a
                 way,
-                that there are no possible edges with identical distances that can cross each other. <!-- END -->
+                that there are no possible edges with identical distances that can cross each other.
                 <!-- END -->
                 <!-- BEGIN level3 -->
             </div>
@@ -284,15 +288,13 @@
             </div>
             <br>
             <br>
-            <div class="title">Input for one game turn</div>
+            <div class="title">Input for each game turn</div>
             <div class="text">
-                <span class="statement-lineno">First line</span>: <var>nodeCount</var> space separated numbers giving
-                <var>myUnits</var> for each node, ordered by the <var>nodeId</var>
+                <span class="statement-lineno">First line</span>: <var>myScore</var> <var>opponentScore</var>, the score points of you and your opponent respectively
                 <br>
-                <span class="statement-lineno">Second line</span>: <var>nodeCount</var> space separated numbers giving
-                <var>opponentUnits</var> for each node, ordered by the <var>nodeId</var>
+                <span class="statement-lineno">Next <var>nodeCount</var> lines</span>: <var>nodeId</var> <var>myUnits</var> <var>opponentUnits</var>, the node ID and the amount of your own and opponent units on it
                 <br>
-                <span class="statement-lineno">Third line</span>: <var>linkCount</var>, the number of edges
+                <span class="statement-lineno">Next line</span>: <var>linkCount</var>, the number of edges
                 <br>
                 <span class="statement-lineno">Next <var>linkCount</var> lines</span>: <var>node1</var> <var>node2</var>
                 indicating a connection between these two nodes

@@ -123,4 +123,8 @@ public class Node {
     public boolean ownedBy(Player player) {
         return getOwner() == player;
     }
+
+    public String getInput(Player player) {
+        return getId() + " " + units[player.getIndex()] + " " + units[player.getOpponent().getIndex()];
+    }
 }

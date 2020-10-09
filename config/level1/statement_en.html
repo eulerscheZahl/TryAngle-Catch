@@ -139,6 +139,9 @@
         </h1>
         <div class="statement-expert-rules-content">
             The source code of the referee can be found on github: <a href="https://github.com/eulerscheZahl/TryAngle-Catch">https://github.com/eulerscheZahl/TryAngle-Catch</a>
+            <br>
+            There is a debug mode, that you can enable by clicking the gear icon below the player <br>
+            <img src="https://github.com/eulerscheZahl/TryAngle-Catch/tree/master/config/debug.png" style="width:100%" />
             <br> <br>
             The game turn works as follows:
             <ol>
@@ -147,3 +150,98 @@
                 <li>Kill surrounded units</li>
                 <li>Change ownership of triangles</li>
             </ol>
+        </div>
+    </div>
+
+    <!-- PROTOCOL -->
+    <div class="statement-section statement-protocol">
+        <h2>
+            <span class="icon icon-protocol">&nbsp;</span>
+            <span>Game Input</span>
+        </h2>
+        <!-- Protocol block -->
+        <div class="blk">
+            <div class="title">Initial input</div>
+            <div class="text">
+
+                <span class="statement-lineno">First line</span>: <var>nodeCount</var>, the number of nodes on the board
+                <br>
+                <span class="statement-lineno">Next <var>nodeCount</var> lines</span>: <var>nodeId</var> <var>nodeX</var>
+                <var>nodeY</var>, the id and location of each point
+            </div>
+            <br>
+            <br>
+            <div class="title">Input for each game turn</div>
+            <div class="text">
+                <span class="statement-lineno">First line</span>: <var>myScore</var> <var>opponentScore</var>, the score points of you and your opponent respectively
+                <br>
+                <span class="statement-lineno">Next <var>nodeCount</var> lines</span>: <var>nodeId</var> <var>myUnits</var> <var>opponentUnits</var>, the node ID and the amount of your own and opponent units on it
+                <br>
+                <span class="statement-lineno">Next line</span>: <var>linkCount</var>, the number of edges
+                <br>
+                <span class="statement-lineno">Next <var>linkCount</var> lines</span>: <var>node1</var> <var>node2</var>
+                indicating a connection between these two nodes
+                <br>
+                <span class="statement-lineno">Next line</span>: <var>triangleCount</var>, the number of triangles
+                <br>
+                <span class="statement-lineno">Next <var>triangleCount</var> lines</span>: <var>node1</var>
+                <var>node2</var> <var>node3</var> <var>owner</var> <var>meCanCapture</var> <var>opponentCanCapture</var>.
+                <br>
+                <var>node1</var> <var>node2</var> <var>node3</var> give the corners of the triangle. <br>
+                <var>owner</var> indicating the owner of the triangle. It will be <const>-1</const> if it's neutral,
+                <const>0</const> if it belongs to you and <const>1</const> if it belongs to your opponent. <br>
+                <var>meCanCapture</var> is <const>1</const> if you can currently capture it, <const>0</const> otherwise <br>
+                <var>opponentCanCapture</var> is <const>1</const> if your opponent can currently capture it, <const>0</const> otherwise <br>
+                <br>
+            </div>
+
+            <div class="title">Output for one game turn</div>
+            <div class="text">
+                You can print an arbitrary amount of commands per turn, separated by
+                <action>;</action>
+                <ul style="padding-bottom: 0;">
+                    <li>
+                        <action>MOVE from to amount</action>
+                        move <var>amount</var> units from node <var>from</var> to node <var>to</var>
+                    </li>
+                    <li>
+                        <action>SPAWN node1 node2 node3</action>
+                        to spawn a unit on <var>node1</var> using the given triangle. Change the node order to affect
+                        the spawning location
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+
+        <!-- Protocol block -->
+        <div class="blk">
+            <div class="title">
+                Constraints
+            </div>
+            <div class="text">
+                <var>nodeCount</var> &le; <const>50</const>
+                <br>
+                <const>0</const> &le; <var>nodeX</var> &lt; <const>1920</const>
+                <br>
+                <const>0</const> &le; <var>nodeY</var> &lt; <const>1080</const>
+                <br>
+                <br>
+                <br> Response time first turn &le; <const>1000</const> ms
+                <br> Response time per turn &le; <const>50</const> ms
+                <br> The game ends after <const>200</const> turns
+            </div>
+        </div>
+    </div>
+
+    Sprites: <br>
+    <a href="https://craftpix.net/freebies/free-tropical-medieval-city-2d-tileset/">https://craftpix.net/freebies/free-tropical-medieval-city-2d-tileset/</a>
+    <br>
+    <a href="https://craftpix.net/freebies/2d-fantasy-knight-free-sprite-sheets/">https://craftpix.net/freebies/2d-fantasy-knight-free-sprite-sheets/</a>
+    <br>
+    <a href="https://craftpix.net/freebies/free-zombie-tds-tilesets-buildings-and-furniture/">https://craftpix.net/freebies/free-zombie-tds-tilesets-buildings-and-furniture/</a>
+    <br>
+    <a href="https://craftpix.net/freebies/free-different-sci-fi-item-icons/">https://craftpix.net/freebies/free-different-sci-fi-item-icons</a>
+    <br>
+</div>

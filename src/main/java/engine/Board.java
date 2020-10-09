@@ -338,17 +338,6 @@ public class Board {
             }
         }
 
-        sb.append(player.getScore() + " " + player.getOpponent().getScore() + "\n");
-        int[][] unitsPerPlayer = new int[2][nodes.size()];
-        for (Node node : nodes) {
-            unitsPerPlayer[0][node.getId()] = node.units[player.getIndex()];
-            unitsPerPlayer[1][node.getId()] = node.units[(player.getIndex() + 1) % 2];
-        }
-        for (int[] units : unitsPerPlayer) {
-            sb.append(units[0]);
-            for (int i = 1; i < units.length; i++) sb.append(" " + units[i]);
-            sb.append("\n");
-        }
         ArrayList<String> links = new ArrayList<>();
         for (Node n1 : nodes) {
             for (Node n2 : n1.neighbors) {
@@ -356,6 +345,9 @@ public class Board {
                 links.add(n1.getId() + " " + n2.getId());
             }
         }
+
+        sb.append(player.getScore() + " " + player.getOpponent().getScore() + "\n");
+        for (Node node : nodes) sb.append(node.getInput(player) + "\n");
         sb.append(links.size() + "\n");
         for (String link : links) sb.append(link + "\n");
         sb.append(triangles.size() + "\n");
