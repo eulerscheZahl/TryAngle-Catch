@@ -81,6 +81,11 @@ class Triangle
         yield return new List<Node> { Node3, Node1, Node2 };
         yield return new List<Node> { Node3, Node2, Node1 };
     }
+
+    public override string ToString()
+    {
+        return Node1.ID + " " + Node2.ID + " " + Node3.ID;
+    }
 }
 
 class Solution
