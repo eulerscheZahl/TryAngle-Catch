@@ -151,12 +151,14 @@ class Solution
             string solution = "WAIT";
             List<Node> moving = new List<Node>();
             if (myUnitCells.Count >= 3) {
+                List<Node> takeUnits = myUnitCells.ToList();
+                while (takeUnits.Count > 3) takeUnits.RemoveAt(random.Next(takeUnits.Count));
                 foreach (Triangle triangle in triangles.Where(t => t.Owner != 0 && t.MeCanCapture))
                 {
                     foreach (List<Node> corners in triangle.CornerPermutations())
                     {
                         List<Node> sources = new List<Node>();
-                        List<Node> free = myUnitCells.ToList();
+                        List<Node> free = takeUnits.ToList();
                         int currentScore = 0;
                         foreach (Node target in corners)
                         {
