@@ -48,8 +48,9 @@ public class AddEdgeTask extends Task {
     }
 
     @Override
-    public boolean canApply(Board board) {
+    public boolean canApply(Board board, boolean strict) {
         boolean valid = !hasFailedParsing() && triangle.canUse(player, 1) && !from.neighbors.contains(to);
+        if (!strict) valid = true;
         valid &= board.canConnect(from, to);
         return valid;
     }

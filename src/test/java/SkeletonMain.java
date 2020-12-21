@@ -7,11 +7,11 @@ public class SkeletonMain {
         MultiplayerGameRunner gameRunner = new MultiplayerGameRunner();
         gameRunner.setSeed(2728688809873374816L);
         gameRunner.setLeagueLevel(3);
-        //Properties parameters = new Properties();
-        //parameters.put("nodes", "500,500_500,700_700,600_900,600_1100,500_1100,700");
-        //parameters.put("edges", "0,1_0,2_1,2_2,3_3,4_3,5_4,5");
-        //parameters.put("units", "1,0_1,0_2,0_0,2_0,1_0,1");
-        //gameRunner.setGameParameters(parameters);
+        Properties parameters = new Properties();
+        parameters.put("nodes", "700,400_700,650_950,400_950,650_950,500_700,550");
+        parameters.put("edges", "0,5_0,2_1,3_2,4_4,3_0,4_3,5_1,5");
+        parameters.put("units", "1,0_0,1_1,0_0,1_1,0_0,1");
+        gameRunner.setGameParameters(parameters);
 
         //gameRunner.addAgent(Agent1.class);
         gameRunner.addAgent("mono /home/eulerschezahl/Documents/Programming/challenges/CodinGame/TryangleCatch/bin/Debug/TryangleCatch.exe", "eulerscheZahl", "https://static.codingame.com/servlet/fileservlet?id=43135502422075&format=profile_avatar");

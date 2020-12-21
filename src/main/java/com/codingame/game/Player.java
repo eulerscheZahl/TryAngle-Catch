@@ -17,6 +17,8 @@ public class Player extends AbstractMultiplayerPlayer {
     private PlayerView view;
     private ArrayList<InputError> errors = new ArrayList<>();
 
+    public Player() { }
+
     public Player(int index) {
         this.index = index;
     }

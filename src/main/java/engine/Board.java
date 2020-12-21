@@ -280,12 +280,23 @@ public class Board {
         Player.getPlayer(1).updateView();
 
         boolean move = false;
-        for (Task task : taskManager.popTasks()) {
-            if (view != null) view.updateTurn(gameTurn, task.getName());
-            if (!task.canApply(this)) continue; // double check because of multiple actions per turn
-            task.apply(this);
-            if (view != null) task.visualize(view);
-            move |= task instanceof MoveTask;
+        ArrayList<ArrayList<Task>> tasks = taskManager.popTasks();
+        for (int i = 0; i < Math.max(tasks.get(0).size(), tasks.get(1).size()); i++) {
+            ArrayList<Task> toApply = new ArrayList<>();
+            for (int player = 0; player < 2; player++) {
+                if (tasks.get(player).size() <= i) continue;
+                Task task = tasks.get(player).get(i);
+                if (view != null) view.updateTurn(gameTurn, task.getName());
+                if (!task.canApply(this, true)) continue; // double check because of multiple actions per turn
+                toApply.add(task);
+            }
+            toApply.sort(Comparator.comparingInt(Task::getTaskCost));
+            for (Task task : toApply) {
+                if (!task.canApply(this, false)) continue;
+                task.apply(this);
+                if (view != null) task.visualize(view);
+                move |= task instanceof MoveTask;
+            }
         }
 
         if (move && view != null) {
@@ -350,11 +361,11 @@ public class Board {
             for (Node node : nodes) {
                 int opponentIndex = (i + 1) % 2;
                 if (node.units[i] > 0 && node.neighbors.stream().allMatch(n -> playerAdvantage[opponentIndex].contains(n))) {
-                    view.animateTask(new SurroundTask(node, Player.getPlayer(i), node.units[i]));
+                    if (view != null) view.animateTask(new SurroundTask(node, Player.getPlayer(i), node.units[i]));
                     node.units[i] = 0;
                     node.updateView(i, true);
                     surrounded = true;
-                    view.updateTurn(gameTurn, "SURROUND");
+                    if (view != null) view.updateTurn(gameTurn, "SURROUND");
                 }
             }
         }
@@ -404,13 +415,13 @@ public class Board {
         from.neighbors.add(to);
         to.neighbors.add(from);
         updateTriangles();
-        view.connect(from, to);
+        if (view != null) view.connect(from, to);
     }
 
     public void disconnect(Node from, Node to) {
         from.neighbors.remove(to);
         to.neighbors.remove(from);
         updateTriangles();
-        view.disconnect(from, to);
+        if (view != null) view.disconnect(from, to);
     }
 }

@@ -31,7 +31,7 @@ public class SurroundTask extends Task {
     }
 
     @Override
-    public boolean canApply(Board board) {
+    public boolean canApply(Board board, boolean strict) {
         return false;
     }
 

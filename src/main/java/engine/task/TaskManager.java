@@ -27,15 +27,19 @@ public class TaskManager {
         return peekTasks().size() > 0;
     }
 
-    public ArrayList<Task> popTasks() {
-        ArrayList<Task> result = peekTasks();
-        for (Task task : result) tasks.remove(task);
+    public ArrayList<ArrayList<Task>> popTasks() {
+        ArrayList<Task> pop = peekTasks();
+        for (Task task : pop) tasks.remove(task);
+        ArrayList<ArrayList<Task>> result = new ArrayList<>();
+        result.add(new ArrayList<>());
+        result.add(new ArrayList<>());
+        for (Task task : pop) result.get(task.player.getIndex()).add(task);
         return result;
     }
 
     private ArrayList<Task> peekTasks() {
         for (int i = tasks.size() - 1; i >= 0; i--) {
-            if (!tasks.get(i).canApply(board)) tasks.remove(i);
+            if (!tasks.get(i).canApply(board, true)) tasks.remove(i);
         }
 
         ArrayList<Task> result = new ArrayList<>();

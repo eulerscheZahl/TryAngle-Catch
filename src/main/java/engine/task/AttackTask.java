@@ -43,7 +43,8 @@ public class AttackTask extends Task {
     }
 
     @Override
-    public boolean canApply(Board board) {
+    public boolean canApply(Board board, boolean strict) {
+        if (!strict) return true;
         return !hasFailedParsing() && triangle.canUse(player, 1) && triangle.hasNeighbor(target);
     }
 

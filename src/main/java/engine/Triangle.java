@@ -68,12 +68,11 @@ public class Triangle {
     }
 
     public void use(int units) {
-        node1.units[owner.getIndex()] -= units;
-        node2.units[owner.getIndex()] -= units;
-        node3.units[owner.getIndex()] -= units;
-        node1.remainingUnits[owner.getIndex()] -= units;
-        node2.remainingUnits[owner.getIndex()] -= units;
-        node3.remainingUnits[owner.getIndex()] -= units;
+        for (Node node : new Node[]{node1, node2, node3}) {
+            int take = Math.min(units, node.units[owner.getIndex()]);
+            node.units[owner.getIndex()] -= take;
+            node.remainingUnits[owner.getIndex()] -= take;
+        }
         canCapture[owner.getIndex()] = false;
         view.use();
         owner = null;

@@ -43,7 +43,8 @@ public class RemoveEdgeTask extends Task {
     }
 
     @Override
-    public boolean canApply(Board board) {
+    public boolean canApply(Board board, boolean strict) {
+        if (!strict) return true;
         return !hasFailedParsing() && triangle.canUse(player, 1) && from.neighbors.contains(to) && !triangle.hasNode(to);
     }
 

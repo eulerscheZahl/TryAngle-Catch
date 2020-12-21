@@ -48,7 +48,7 @@ public abstract class Task {
             task.addParsingError("Command not available in your league: " + command, false);
             return null;
         }
-        if (!task.canApply(board)) task.addParsingError("Task can't be applied: " + command, false);
+        if (!task.canApply(board, true)) task.addParsingError("Task can't be applied: " + command, false);
         return task;
     }
 
@@ -90,7 +90,7 @@ public abstract class Task {
         return 0;
     }
 
-    public abstract boolean canApply(Board board);
+    public abstract boolean canApply(Board board, boolean strict);
 
     public abstract void apply(Board board);
 
