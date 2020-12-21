@@ -110,8 +110,8 @@ public class Node {
 
     public Player getOwner() {
         // surrounded?
-        if (neighbors.stream().allMatch(n -> n.units[0] > n.units[1])) return Player.getPlayer(0);
-        if (neighbors.stream().allMatch(n -> n.units[1] > n.units[0])) return Player.getPlayer(1);
+        if (neighbors.size() > 0 && neighbors.stream().allMatch(n -> n.units[0] > n.units[1])) return Player.getPlayer(0);
+        if (neighbors.size() > 0 && neighbors.stream().allMatch(n -> n.units[1] > n.units[0])) return Player.getPlayer(1);
 
         // more units?
         if (units[0] > units[1]) return Player.getPlayer(0);
