@@ -17,6 +17,10 @@ public class Player extends AbstractMultiplayerPlayer {
     private PlayerView view;
     private ArrayList<InputError> errors = new ArrayList<>();
 
+    public Player(int index) {
+        this.index = index;
+    }
+
     public static int getColor(int id) {
         return colors[id];
     }
@@ -62,7 +66,7 @@ public class Player extends AbstractMultiplayerPlayer {
     }
 
     public void updateView() {
-        view.update();
+        if (view != null) view.update();
     }
 
     public int getNodes() {

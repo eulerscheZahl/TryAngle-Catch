@@ -42,7 +42,7 @@ public class Referee extends AbstractReferee {
         Player.registerPlayer(gameManager.getPlayer(0));
         Player.registerPlayer(gameManager.getPlayer(1));
 
-        board = new Board(random, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule);
+        board = new Board(gameManager.getGameParameters(), random, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule);
         taskManager = new TaskManager();
         gameManager.setMaxTurns(200);
     }

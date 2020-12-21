@@ -27,9 +27,11 @@ public class BoardView {
         this.toggleModule = toggleModule;
         this.taskModule = taskModule;
         this.board = board;
-        graphics.createRectangle().setZIndex(-9).setFillColor(0xffffff).setWidth(graphics.getWorld().getWidth()).setHeight(graphics.getWorld().getHeight());
-        Sprite background = graphics.createSprite().setImage("background.png").setZIndex(-9).setAlpha(0.7);
-        toggleModule.displayOnToggleState(background, "d", false);
+        if (graphics != null) {
+            graphics.createRectangle().setZIndex(-9).setFillColor(0xffffff).setWidth(graphics.getWorld().getWidth()).setHeight(graphics.getWorld().getHeight());
+            Sprite background = graphics.createSprite().setImage("background.png").setZIndex(-9).setAlpha(0.7);
+            toggleModule.displayOnToggleState(background, "d", false);
+        }
         for (Node node : board.nodes) {
             nodeModule.registerNode(node);
             nodeViews.add(new NodeView(node, nodeModule));

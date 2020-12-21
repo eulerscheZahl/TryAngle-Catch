@@ -1,6 +1,7 @@
 package engine;
 
 import com.codingame.game.Player;
+import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
 import engine.task.SurroundTask;
@@ -36,11 +37,38 @@ public class Board {
     private TooltipModule tooltipModule;
     private TinyToggleModule toggleModule;
 
-    public Board(Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, TinyToggleModule toggleModule, NodeModule nodeModule, TaskModule taskModule) {
+    public Board(Properties properties, Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, TinyToggleModule toggleModule, NodeModule nodeModule, TaskModule taskModule) {
         this.graphicEntityModule = graphicEntityModule;
         this.tooltipModule = tooltipModule;
         this.toggleModule = toggleModule;
 
+        if (properties.containsKey("nodes") &&
+                properties.containsKey("edges") &&
+                properties.containsKey("units")) {
+            for (String node : ((String) properties.get("nodes")).split("_")) {
+                String[] parts = node.split(",");
+                nodes.add(new Node(nodes.size(), Integer.parseInt(parts[0]), Integer.parseInt(parts[1])));
+            }
+            for (String edge : ((String) properties.get("edges")).split("_")) {
+                String[] parts = edge.split(",");
+                Node n1 = nodes.get(Integer.parseInt(parts[0]));
+                Node n2 = nodes.get(Integer.parseInt(parts[1]));
+                new Edge(n1, n2).makeNeighbors();
+            }
+            int nodeId = 0;
+            for (String node : ((String) properties.get("units")).split("_")) {
+                String[] parts = node.split(",");
+                nodes.get(nodeId).units[0] = Integer.parseInt(parts[0]);
+                nodes.get(nodeId).units[1] = Integer.parseInt(parts[1]);
+                nodeId++;
+            }
+
+            updateTriangles();
+            if (graphicEntityModule != null)
+                view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule);
+            while (finalizeTurn()) ;
+            return;
+        }
 
         ArrayList<Edge> exsitingEdges;
         while (true) {
@@ -124,10 +152,25 @@ public class Board {
             node.units[0] = 1;
             getMirror(node).units[1] = 1;
         }
-        updateTriangles();
 
+        String[] nodeParam = new String[nodes.size()];
+        for (int i = 0; i < nodes.size(); i++) nodeParam[i] = nodes.get(i).getX() + "," + nodes.get(i).getY();
+        properties.put("nodes", String.join("_", nodeParam));
+        ArrayList<String> edgeParam = new ArrayList<>();
+        for (Node n1 : nodes) {
+            for (Node n2 : n1.neighbors) {
+                if (n2.getId() <= n1.getId()) continue;
+                edgeParam.add(n1.getId() + "-" + n2.getId());
+            }
+        }
+        properties.put("edges", String.join("_", edgeParam));
+        String[] unitParam = new String[nodes.size()];
+        for (int i = 0; i < nodes.size(); i++) unitParam[i] = nodes.get(i).units[0] + "," + nodes.get(i).units[1];
+        properties.put("units", String.join("_", unitParam));
+
+        updateTriangles();
         view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule);
-        finalizeTurn();
+        while (finalizeTurn()) ;
     }
 
     private boolean isStronglyConnected() {
@@ -238,22 +281,23 @@ public class Board {
 
         boolean move = false;
         for (Task task : taskManager.popTasks()) {
-            view.updateTurn(gameTurn, task.getName());
+            if (view != null) view.updateTurn(gameTurn, task.getName());
             if (!task.canApply(this)) continue; // double check because of multiple actions per turn
             task.apply(this);
-            task.visualize(view);
+            if (view != null) task.visualize(view);
             move |= task instanceof MoveTask;
         }
 
-        if (move) {
+        if (move && view != null) {
             view.startMove();
             view.animateMoves();
         }
         makeStats();
-        view.endMove();
+        if (view != null) view.endMove();
     }
 
     private void makeStats() {
+        if (graphicEntityModule == null) return;
         for (int playerIndex = 0; playerIndex < 2; playerIndex++) {
             Player player = Player.getPlayer(playerIndex);
             player.setTriangles(0);
@@ -272,7 +316,7 @@ public class Board {
 
     public boolean finalizeTurn() {
         for (Node node : nodes) node.finalizeTurn();
-        view.clearMoves();
+        if (view != null) view.clearMoves();
 
         for (Triangle triangle : triangles) {
             triangle.updateAllowedCaptures();
@@ -323,7 +367,7 @@ public class Board {
         for (Triangle triangle : triangles) {
             result |= triangle.capture();
         }
-        if (result) view.updateTurn(gameTurn, "CAPTURE");
+        if (result && view != null) view.updateTurn(gameTurn, "CAPTURE");
         return result;
     }
 

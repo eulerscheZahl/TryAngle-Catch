@@ -76,7 +76,7 @@ public class Node {
     }
 
     public void updateView(int playerId, boolean startTurn) {
-        view.updateView(playerId, startTurn);
+        if (view != null) view.updateView(playerId, startTurn);
     }
 
     public boolean canMoveTo(int id, Node target) {
