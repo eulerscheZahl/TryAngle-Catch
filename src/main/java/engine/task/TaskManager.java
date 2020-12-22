@@ -45,12 +45,15 @@ public class TaskManager {
         ArrayList<Task> result = new ArrayList<>();
         for (Task task : tasks) {
             if (result.size() > 0 && result.get(0).getTaskPriority() > task.getTaskPriority()) result.clear();
-            if ((result.size() == 0 || task.getTaskPriority() == result.get(0).getTaskPriority()) &&
-                    (task.allowMultiplePerFrame() || !result.stream().anyMatch(t -> t.player == task.player)))
+            if ((result.size() == 0 || task.getTaskPriority() == result.get(0).getTaskPriority()))
                 result.add(task);
         }
         result.sort(Comparator.comparingInt(Task::getTaskCost));
 
         return result;
+    }
+
+    public void returnTasks(ArrayList<ArrayList<Task>> tasks) {
+        for (ArrayList<Task> playerTasks : tasks) this.tasks.addAll(playerTasks);
     }
 }

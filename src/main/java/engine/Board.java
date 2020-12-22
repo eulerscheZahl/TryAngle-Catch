@@ -281,23 +281,26 @@ public class Board {
 
         boolean move = false;
         ArrayList<ArrayList<Task>> tasks = taskManager.popTasks();
-        for (int i = 0; i < Math.max(tasks.get(0).size(), tasks.get(1).size()); i++) {
-            ArrayList<Task> toApply = new ArrayList<>();
-            for (int player = 0; player < 2; player++) {
-                if (tasks.get(player).size() <= i) continue;
-                Task task = tasks.get(player).get(i);
+        ArrayList<Task> toApply = new ArrayList<>();
+        for (int player = 0; player < 2; player++) {
+            while (tasks.get(player).size() > 0) {
+                Task task = tasks.get(player).get(0);
+                tasks.get(player).remove(0);
                 if (view != null) view.updateTurn(gameTurn, task.getName());
                 if (!task.canApply(this, true)) continue; // double check because of multiple actions per turn
                 toApply.add(task);
-            }
-            toApply.sort(Comparator.comparingInt(Task::getTaskCost));
-            for (Task task : toApply) {
-                if (!task.canApply(this, false)) continue;
-                task.apply(this);
-                if (view != null) task.visualize(view);
-                move |= task instanceof MoveTask;
+                if (!task.allowMultiplePerFrame()) break;
             }
         }
+        toApply.sort(Comparator.comparingInt(Task::getTaskCost));
+        for (Task task : toApply) {
+            if (!task.canApply(this, false)) continue;
+            if (task.allowMultiplePerFrame() && !task.canApply(this, true)) continue;
+            task.apply(this);
+            if (view != null) task.visualize(view);
+            move |= task instanceof MoveTask;
+        }
+        taskManager.returnTasks(tasks);
 
         if (move && view != null) {
             view.startMove();

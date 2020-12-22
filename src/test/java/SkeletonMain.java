@@ -7,7 +7,7 @@ public class SkeletonMain {
         MultiplayerGameRunner gameRunner = new MultiplayerGameRunner();
         gameRunner.setSeed(2728688809873374816L);
         gameRunner.setLeagueLevel(3);
-        //Properties parameters = new Properties();
+        Properties parameters = new Properties();
         //parameters.put("nodes", "700,400_700,650_950,400_950,650_950,500_700,550");
         //parameters.put("edges", "0,5_0,2_1,3_2,4_4,3_0,4_3,5_1,5");
         //parameters.put("units", "1,0_0,1_1,0_0,1_1,0_0,1");
