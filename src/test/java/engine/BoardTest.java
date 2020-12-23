@@ -237,4 +237,20 @@ public class BoardTest {
         assertWasUsed(board.triangles.get(0), Player.getPlayer(0));
         assertEquals(Player.getPlayer(0), board.triangles.get(1).getOwner(), "triangle could not be used");
     }
+
+    @Test
+    public void testAddAndRemoveEdge() {
+        createMap2();
+        playTurn("ADD_EDGE 4 2 0 5", "REMOVE_EDGE 5 1 3 4");
+        assertTrue(board.nodes.get(4).neighbors.contains(board.nodes.get(5)), "edge was added and not removed again");
+    }
+
+    @Test
+    public void testAlternativeAction() {
+        populateMap("500,500_400,600_600,600_400,700_600,700_400,800_600,800", "0,1_0,2_1,2_1,3_1,4_2,4_3,4_3,5_3,6_4,6", "1,0_1,0_1,0_0,3_0,3_0,3_0,3");
+        playTurn("REMOVE_EDGE 0 1 2 4", "REMOVE_EDGE 3 5 6 1;REMOVE_EDGE 4 3 6 2;REMOVE_EDGE 3 4 6 1");
+        assertFalse(board.nodes.get(2).neighbors.contains(board.nodes.get(4)), "player0, action 1");
+        assertFalse(board.nodes.get(6).neighbors.contains(board.nodes.get(1)), "player1, action 1");
+        assertFalse(board.nodes.get(6).neighbors.contains(board.nodes.get(1)), "player1, action 3 (2 was skipped as done by player0)");
+    }
 }
