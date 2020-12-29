@@ -23,7 +23,7 @@ export class NodeModule {
   }
 
   getTooltipText(node) {
-    return `Node\nid: ${node.id}\nx: ${node.x}\ny: ${node.y}\nowner: ${node.owner}`
+    return `House ${node.id}\nx: ${node.x}\ny: ${node.y}\nowner: ${node.owner}`
   }
   
   drawNode(frameInfo, node) {

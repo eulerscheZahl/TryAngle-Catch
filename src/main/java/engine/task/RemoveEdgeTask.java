@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RemoveEdgeTask extends Task {
-    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>REMOVE_EDGE)\\s+(?<nodeFrom>\\d+)\\s+(?<node2>\\d+)\\s+(?<node3>\\d+)\\s+(?<nodeTo>\\d+)\\s*$", Pattern.CASE_INSENSITIVE);
+    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>REMOVE_PATH)\\s+(?<nodeFrom>\\d+)\\s+(?<node2>\\d+)\\s+(?<node3>\\d+)\\s+(?<nodeTo>\\d+)\\s*$", Pattern.CASE_INSENSITIVE);
 
     private Node from;
     private Node to;
@@ -24,7 +24,7 @@ public class RemoveEdgeTask extends Task {
         Node node3 = getNode(board, matcher.group("node3"));
         this.to = getNode(board, matcher.group("nodeTo"));
         this.triangle = getTriangle(board, from, node2, node3);
-        if (!hasFailedParsing() && !triangle.hasNeighbor(to)) addParsingError("Node " + to.getId() + " isn't connected to given triangle", false);
+        if (!hasFailedParsing() && !triangle.hasNeighbor(to)) addParsingError("House " + to.getId() + " isn't connected to given triangle", false);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class RemoveEdgeTask extends Task {
 
     @Override
     public String getName() {
-        return "REMOVE_EDGE";
+        return "REMOVE_PATH";
     }
 
     @Override

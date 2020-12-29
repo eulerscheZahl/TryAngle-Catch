@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AddEdgeTask extends Task {
-    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>ADD_EDGE)\\s+(?<nodeFrom>\\d+)\\s+(?<node2>\\d+)\\s+(?<node3>\\d+)\\s+(?<nodeTo>\\d+)\\s*$", Pattern.CASE_INSENSITIVE);
+    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>ADD_PATH)\\s+(?<nodeFrom>\\d+)\\s+(?<node2>\\d+)\\s+(?<node3>\\d+)\\s+(?<nodeTo>\\d+)\\s*$", Pattern.CASE_INSENSITIVE);
 
     private Node from;
     private Node to;
@@ -24,7 +24,7 @@ public class AddEdgeTask extends Task {
         Node node3 = getNode(board, matcher.group("node3"));
         this.to = getNode(board, matcher.group("nodeTo"));
         this.triangle = getTriangle(board, from, node2, node3);
-        if (!hasFailedParsing() && !board.canConnect(from, to)) addParsingError("Can't connect nodes " + from.getId() + " and " + to.getId(), false);
+        if (!hasFailedParsing() && !board.canConnect(from, to)) addParsingError("Can't connect houses " + from.getId() + " and " + to.getId(), false);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class AddEdgeTask extends Task {
 
     @Override
     public String getName() {
-        return "ADD_EDGE";
+        return "ADD_PATH";
     }
 
     @Override

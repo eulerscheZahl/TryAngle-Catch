@@ -15,7 +15,7 @@
             Welcome to the Wood1 league!
         </p>
         <span class="statement-league-alert-content">
-      In Wood 1 you can now ATTACK nodes
+      In Wood 1 you can now ATTACK houses
     </span>
         <br>To have a look at the final rules, go <a href="https://www.codingame.com/ide/demo/843364c35de5a48f4e0de3a6e0720b74d11b1a">here</a> and switch leagues at the top right corner.
     </div>
@@ -38,30 +38,30 @@
         </h1>
         <div>
             <div class="statement-rules-content">
-                The map consists of nodes, some of which are connected by edges. Nodes are defined by x and y
+                The map consists of houses, some of which are connected by paths. Houses are defined by x and y
                 coordinate.
                 Each player starts with <const>3</const> units on one side of the map.
-                Then the players try to capture a triangle by owning all three corner nodes of it.
-                They can use a triangle to spawn a new unit, kill all opponent units on a given node and add or remove a
-                connection between two nodes.
+                Then the players try to capture a triangle by owning all three corner houses of it.
+                They can use a triangle to spawn a new unit, kill all opponent units on a given house and add or remove a
+                path between two houses.
 
                 <br><br>
                 <strong>Moving units</strong><br>
-                Units can be moved from a node to one of the direct neighbors each turn.
+                Units can be moved from a house to one of the direct neighbors each turn.
 
                 <br><br>
-                <strong>Node ownership</strong><br>
-                A node is owned, when the player has strictly more units on it than the opponent player or when all
-                neighboring nodes are owned by that player.
+                <strong>House ownership</strong><br>
+                A house is owned, when the player has strictly more units on it than the opponent player or when all
+                neighboring houses are owned by that player.
 
                 <br><br>
                 <strong>Surrounded units</strong><br>
-                When a unit is surrounded by opponent nodes, meaning each neighboring node is owned by the opponent, the
+                When a unit is surrounded by opponent houses, meaning each neighboring house is owned by the opponent, the
                 unit is killed.
 
                 <br><br>
                 <strong>Triangles</strong><br>
-                A triangle is defined by three nodes, that are all connected with each other. A triangle may not contain any other nodes inside itself.<br>
+                A triangle is defined by three houses, that are all connected with each other. A triangle may not contain any other houses inside itself.<br>
                 After each turn the players get <const>1</const> point for each triangle they currently own.
 
                 <br><br>
@@ -76,24 +76,27 @@
                 <strong>Using a triangle</strong><br>
                 When owning a triangle, a player can use it to perform one of the actions described below.
                 This will make the triangle neutral again. The player using it can only capture it again after moving
-                all units away from each node or after it got captured by the opponent player. <br>
+                all units away from each house or after it got captured by the opponent player. <br>
                 <div style="color: #7cc576; background-color: rgba(124, 197, 118,.1); padding: 2px;">
                     Some usages have an additional cost, meaning that the player loses a certain amount of units on each
-                    node of the triangle. If the player doesn't have enough units on each node, the triangle can't be
+                    house of the triangle. If the player doesn't have enough units on each house, the triangle can't be
                     used. In order to use a unit, it must have been there for the whole turn and not just moved or
                     spawned there.
                 </div>
 
                 <br><br>
                 <strong>Spawning a unit</strong><br>
-                One way to use a triangle is to spawn a unit. This will place a unit on one node of the triangle. The
-                player can decide the corner to spawn on. Spawning has no cost.
-
+                One way to use a triangle is to spawn a unit. This will place a unit on one house of the triangle. The
+                player can choose the corner to spawn on.
+                <span style="color: #7cc576; background-color: rgba(124, 197, 118,.1); padding: 2px;">
+                Spawning has no cost.
+                </span>
                 <br><br>
+
                 <div style="color: #7cc576; background-color: rgba(124, 197, 118,.1); padding: 2px;">
-                    <strong>Attacking a node</strong><br>
-                    A triangle can be used to attack a node, killing all opponent units on it. This action has a cost of
-                    <const>1</const>. The attacked node has to be adjacent to at least one node of the used triangle.
+                    <strong>Attacking a house</strong><br>
+                    A triangle can be used to attack a house, killing all opponent units on it. This action has a cost of
+                    <const>1</const>. The attacked house has to be adjacent to at least one house of the used triangle.
                 </div>
 
             </div>
@@ -151,8 +154,11 @@
         <div class="statement-expert-rules-content">
             The source code of the referee can be found on github: <a href="https://github.com/eulerscheZahl/TryAngle-Catch">https://github.com/eulerscheZahl/TryAngle-Catch</a>
             <br>
-            There is a debug mode, that you can enable by clicking the gear icon below the player <br>
+            <!--There is a debug mode, that you can enable by clicking the gear icon below the player <br>
             <img src="https://cdn-games.codingame.com/community/1500515-1592038359044/2e2e36ce0515e6ef82bbfa5f818c4a359337219f0981bc17b9b159f6114f4f11.png" style="width:100%" />
+            -->
+            Don't hesitate to change the viewer's options to help debug your code (<img style="opacity:.8;background:#20252a;"
+                                                                                        height="18" src="https://www.codingame.com/servlet/fileservlet?id=3463235186409" width="18">).
             <br> <br>
             The game turn works as follows:
             <ol>
@@ -171,8 +177,8 @@
                 Player 1 wants to perform two attack actions <const>A1a</const> and <const>A1b</const>.
                 Player 2 wants to perform two attack actions <const>A2a</const> and <const>A2b</const>.
                 First <const>A1a</const> and <const>A2a</const> will be checked for being valid (the triangles in use are owned by the respective players and they have
-                enough units on each node) and applied if possible.
-                Then <const>A1b</const> and <const>A2b</const> will be processed in the same way. It's possible that the first group of actions renders one of them
+                enough units on each house) and applied if possible.
+                Then <const>A1b</const> and <const>A2b</const> will be processed in the same way. It's possible that the first pair of actions renders one of the later ones
                 invalid by killing units on a triangle that was supposed to be used later.
                 <br><br>
             </div>
@@ -190,10 +196,10 @@
             <div class="title">Initial input</div>
             <div class="text">
 
-                <span class="statement-lineno">First line</span>: <var>nodeCount</var>, the number of nodes on the board
+                <span class="statement-lineno">First line</span>: <var>houseCount</var>, the number of houses on the board
                 <br>
-                <span class="statement-lineno">Next <var>nodeCount</var> lines</span>: <var>nodeId</var> <var>nodeX</var>
-                <var>nodeY</var>, the id and location of each point
+                <span class="statement-lineno">Next <var>houseCount</var> lines</span>: <var>houseId</var> <var>houseX</var>
+                <var>houseY</var>, the id and location of each point
             </div>
             <br>
             <br>
@@ -201,19 +207,19 @@
             <div class="text">
                 <span class="statement-lineno">First line</span>: <var>myScore</var> <var>opponentScore</var>, the score points of you and your opponent respectively
                 <br>
-                <span class="statement-lineno">Next <var>nodeCount</var> lines</span>: <var>nodeId</var> <var>myUnits</var> <var>opponentUnits</var>, the node ID and the amount of your own and opponent units on it
+                <span class="statement-lineno">Next <var>houseCount</var> lines</span>: <var>houseId</var> <var>myUnits</var> <var>opponentUnits</var>, the house ID and the amount of your own and opponent units on it
                 <br>
-                <span class="statement-lineno">Next line</span>: <var>linkCount</var>, the number of edges
+                <span class="statement-lineno">Next line</span>: <var>linkCount</var>, the number of paths
                 <br>
-                <span class="statement-lineno">Next <var>linkCount</var> lines</span>: <var>node1</var> <var>node2</var>
-                indicating a connection between these two nodes
+                <span class="statement-lineno">Next <var>linkCount</var> lines</span>: <var>house1</var> <var>house2</var>
+                indicating a connection between these two houses
                 <br>
                 <span class="statement-lineno">Next line</span>: <var>triangleCount</var>, the number of triangles
                 <br>
-                <span class="statement-lineno">Next <var>triangleCount</var> lines</span>: <var>node1</var>
-                <var>node2</var> <var>node3</var> <var>owner</var> <var>meCanCapture</var> <var>opponentCanCapture</var>.
+                <span class="statement-lineno">Next <var>triangleCount</var> lines</span>: <var>house1</var>
+                <var>house2</var> <var>house3</var> <var>owner</var> <var>meCanCapture</var> <var>opponentCanCapture</var>.
                 <br>
-                <var>node1</var> <var>node2</var> <var>node3</var> give the corners of the triangle. <br>
+                <var>house1</var> <var>house2</var> <var>house3</var> give the corners of the triangle. <br>
                 <var>owner</var> indicating the owner of the triangle. It will be <const>-1</const> if it's neutral,
                 <const>0</const> if it belongs to you and <const>1</const> if it belongs to your opponent. <br>
                 <var>meCanCapture</var> is <const>1</const> if you can currently capture it, <const>0</const> otherwise <br>
@@ -228,17 +234,17 @@
                 <ul style="padding-bottom: 0;">
                     <li>
                         <action>MOVE from to amount</action>
-                        move <var>amount</var> units from node <var>from</var> to node <var>to</var>
+                        move <var>amount</var> units from house <var>from</var> to house <var>to</var>
                     </li>
                     <li>
-                        <action>SPAWN node1 node2 node3</action>
-                        to spawn a unit on <var>node1</var> using the given triangle. Change the node order to affect
+                        <action>SPAWN house1 house2 house3</action>
+                        to spawn a unit on <var>house1</var> using the given triangle. Change the house order to affect
                         the spawning location
                     </li>
                     <li><span style="color: #7cc576; background-color: rgba(124, 197, 118,.1);">
 
-                        <action>ATTACK node1 node2 node3 target</action>
-                        attack the <var>target</var> node using the given triangle
+                        <action>ATTACK house1 house2 house3 target</action>
+                        attack the <var>target</var> house using the given triangle
                     </span></li>
 
                 </ul>
@@ -252,11 +258,11 @@
                 Constraints
             </div>
             <div class="text">
-                <var>nodeCount</var> &le; <const>50</const>
+                <var>houseCount</var> &le; <const>50</const>
                 <br>
-                <const>0</const> &le; <var>nodeX</var> &lt; <const>1920</const>
+                <const>0</const> &le; <var>houseX</var> &lt; <const>1920</const>
                 <br>
-                <const>0</const> &le; <var>nodeY</var> &lt; <const>1080</const>
+                <const>0</const> &le; <var>houseY</var> &lt; <const>1080</const>
                 <br>
                 <br>
                 <br> Response time first turn &le; <const>1000</const> ms

@@ -214,8 +214,8 @@ class Solution
                         solution = "ATTACK " + attackSource + " " + attack.ID + ";MSG ATTACK!;";
                     }
                     Node removeEdge = attackSource.Neighbors.Except(attackSource.Corners).OrderByDescending(n => n.OpponentUnits).First();
-                    //if (attack.OpponentUnits > 0) solution = ";REMOVE_EDGE " + attackSource + " " + removeEdge.ID + ";MSG ATTACK!";
-                    //if (attackSource.ToString() == "14 23 38") solution = "ADD_EDGE 38 14 23 5";
+                    //if (attack.OpponentUnits > 0) solution = ";REMOVE_PATH " + attackSource + " " + removeEdge.ID + ";MSG ATTACK!";
+                    //if (attackSource.ToString() == "14 23 38") solution = "ADD_PATH 38 14 23 5";
                     foreach (Node corner in attackSource.Corners)
                     {
                         if (solution != "") break;
@@ -225,7 +225,7 @@ class Solution
                             {
                                 List<Node> others = attackSource.Corners.ToList();
                                 others.Remove(corner);
-                                solution = $"ADD_EDGE {corner} {others[0]} {others[1]} {partner};";
+                                solution = $"ADD_PATH {corner} {others[0]} {others[1]} {partner};";
                                 attackSource.Corners.ForEach(c => myUnitCells.Remove(c));
                                 attackSource.Corners.ForEach(c => c.MyUnits--);
                                 attackSource.Owner = -1;

@@ -59,6 +59,12 @@ public class BoardTest {
     }
 
     @Test
+    public void testFindTriangles() {
+        populateMap("200,200_400,400_0,400_200,300", "0,1_0,2_0,3_1,2_1,3_2,3", "0,0_0,0_0,0_0,0");
+        assertEquals(3, board.triangles.size(), "triangle can't have node inside");
+    }
+
+    @Test
     public void testMove() {
         createMap();
         playTurn("MOVE 0 4 1;MOVE 1 4 1;MOVE 2 4 1", "");
@@ -116,7 +122,7 @@ public class BoardTest {
     @Test
     public void testAddEdge() {
         createMap2();
-        playTurn("ADD_EDGE 4 2 0 5", "");
+        playTurn("ADD_PATH 4 2 0 5", "");
         assertTrue(board.nodes.get(4).neighbors.contains(board.nodes.get(5)));
         assertCanRecapture(board.triangles.get(0), Player.getPlayer(0));
         assertEquals(4, board.triangles.size(), "created new triangles");
@@ -125,7 +131,7 @@ public class BoardTest {
     @Test
     public void testComflictingAddEdge() {
         createMap2();
-        playTurn("ADD_EDGE 4 2 0 5", "ADD_EDGE 3 1 5 0");
+        playTurn("ADD_PATH 4 2 0 5", "ADD_PATH 3 1 5 0");
         assertTrue(board.nodes.get(4).neighbors.contains(board.nodes.get(5)), "shorter edge gets created");
         assertFalse(board.nodes.get(0).neighbors.contains(board.nodes.get(3)), "longer, crossing edge gets discarded");
         assertCanRecapture(board.triangles.get(0), Player.getPlayer(0));
@@ -133,7 +139,7 @@ public class BoardTest {
         assertEquals(4, board.triangles.size(), "created new triangles");
 
         createMap2();
-        playTurn("ADD_EDGE 0 2 4 3", "ADD_EDGE 5 1 3 4");
+        playTurn("ADD_PATH 0 2 4 3", "ADD_PATH 5 1 3 4");
         assertTrue(board.nodes.get(4).neighbors.contains(board.nodes.get(5)));
         assertFalse(board.nodes.get(0).neighbors.contains(board.nodes.get(3)));
         assertCanRecapture(board.triangles.get(1), Player.getPlayer(1));
@@ -151,7 +157,7 @@ public class BoardTest {
     public void testRemoveEdge() {
         createMap();
         board.nodes.get(3).units[0] = 1;
-        playTurn("REMOVE_EDGE 2 1 0 3", "");
+        playTurn("REMOVE_PATH 2 1 0 3", "");
         assertWasUsed(board.triangles.get(0), Player.getPlayer(0));
         assertTrue(!board.nodes.get(2).neighbors.contains(board.nodes.get(3)), "edge removed");
     }
@@ -160,7 +166,7 @@ public class BoardTest {
     public void testConcurrentRemoveEdge() {
         createMap();
         board.nodes.get(3).units[0] = 1;
-        playTurn("REMOVE_EDGE 2 1 0 3", "REMOVE_EDGE 3 4 5 2");
+        playTurn("REMOVE_PATH 2 1 0 3", "REMOVE_PATH 3 4 5 2");
         assertWasUsed(board.triangles.get(0), Player.getPlayer(0));
         assertWasUsed(board.triangles.get(1), Player.getPlayer(1));
         assertTrue(!board.nodes.get(2).neighbors.contains(board.nodes.get(3)), "edge removed");
@@ -170,7 +176,7 @@ public class BoardTest {
     public void testCantUseAfterMove() {
         createMap();
         board.nodes.get(3).units[0] = 1;
-        playTurn("MOVE 1 0 1;MOVE 0 1 1;REMOVE_EDGE 2 1 0 3", "");
+        playTurn("MOVE 1 0 1;MOVE 0 1 1;REMOVE_PATH 2 1 0 3", "");
         assertEquals(Player.getPlayer(0), board.triangles.get(0).getOwner(), "can't use if units moved before");
         assertTrue(board.nodes.get(2).neighbors.contains(board.nodes.get(3)), "edge still exists");
     }
@@ -241,14 +247,14 @@ public class BoardTest {
     @Test
     public void testAddAndRemoveEdge() {
         createMap2();
-        playTurn("ADD_EDGE 4 2 0 5", "REMOVE_EDGE 5 1 3 4");
+        playTurn("ADD_PATH 4 2 0 5", "REMOVE_PATH 5 1 3 4");
         assertTrue(board.nodes.get(4).neighbors.contains(board.nodes.get(5)), "edge was added and not removed again");
     }
 
     @Test
     public void testAlternativeAction() {
         populateMap("500,500_400,600_600,600_400,700_600,700_400,800_600,800", "0,1_0,2_1,2_1,3_1,4_2,4_3,4_3,5_3,6_4,6", "1,0_1,0_1,0_0,3_0,3_0,3_0,3");
-        playTurn("REMOVE_EDGE 0 1 2 4", "REMOVE_EDGE 3 5 6 1;REMOVE_EDGE 4 3 6 2;REMOVE_EDGE 3 4 6 1");
+        playTurn("REMOVE_PATH 0 1 2 4", "REMOVE_PATH 3 5 6 1;REMOVE_PATH 4 3 6 2;REMOVE_PATH 3 4 6 1");
         assertFalse(board.nodes.get(2).neighbors.contains(board.nodes.get(4)), "player0, action 1");
         assertFalse(board.nodes.get(6).neighbors.contains(board.nodes.get(1)), "player1, action 1");
         assertFalse(board.nodes.get(6).neighbors.contains(board.nodes.get(1)), "player1, action 3 (2 was skipped as done by player0)");

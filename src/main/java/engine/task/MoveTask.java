@@ -22,7 +22,7 @@ public class MoveTask extends Task {
         nodeFrom = getNode(board, matcher.group("from"));
         nodeTo = getNode(board, matcher.group("to"));
         amount = Integer.parseInt(matcher.group("amount"));
-        if (amount <= 0) addParsingError("Amount of units to move be positive", false);
+        if (amount <= 0) addParsingError("Amount of units to move must be positive", false);
     }
 
     public MoveTask(Player player, Node from, Node to, int amount) {

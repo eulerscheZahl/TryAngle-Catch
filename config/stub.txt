@@ -1,12 +1,12 @@
-read nodeCount:int
-loop nodeCount read nodeId:int nodeX:int nodeY:int
+read houseCount:int
+loop houseCount read houseId:int houseX:int houseY:int
 
 gameloop
 read myScore:int opponentScore:int
-loop nodeCount read nodeId:int myUnits:int opponentUnits:int
-read linkCount:int
-loop linkCount read node1:int node2:int
+loop houseCount read houseId:int myUnits:int opponentUnits:int
+read pathCount:int
+loop pathCount read house1:int house2:int
 read triangleCount:int
-loop triangleCount read node1:int node2:int node3:int owner:int meCanCapture:bool opponentCanCapture:bool
+loop triangleCount read house1:int house2:int house3:int owner:int meCanCapture:bool opponentCanCapture:bool
 
 write MOVE 3 17 1
