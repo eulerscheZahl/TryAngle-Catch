@@ -126,6 +126,12 @@ export class NodeModule {
   		text.id = ++graphicsHelper.runtimeId
   		entityModule.entities.set(text.id, text)
   		view.text = text
+
+  		if (time > 0) {
+            view.circle.addState(time, {values: { ...circleParams, visible:false, t:0}, curve:{}}, frameInfo.number, frameInfo)
+            view.knight.addState(time, {values: { ...knightParams, visible:false, t:0, image:imageName}, curve:{}}, frameInfo.number, frameInfo)
+            view.text.addState(time, {values: { ...textParams, visible:false, text:""+amount, t:0}, curve:{}}, frameInfo.number, frameInfo)
+  		}
   	}
 
 	var imageName = "rb"[player]+Math.min(amount,5)+".png"
