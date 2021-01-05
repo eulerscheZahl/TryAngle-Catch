@@ -51,6 +51,7 @@ public class Board {
             }
             for (String edge : ((String) properties.get("edges")).split("_")) {
                 String[] parts = edge.split(",");
+                if (parts.length < 2) continue;
                 Node n1 = nodes.get(Integer.parseInt(parts[0]));
                 Node n2 = nodes.get(Integer.parseInt(parts[1]));
                 new Edge(n1, n2).makeNeighbors();
@@ -363,7 +364,7 @@ public class Board {
         for (int i = 0; i < 2; i++) {
             for (Node node : nodes) {
                 int opponentIndex = (i + 1) % 2;
-                if (node.units[i] > 0 && node.neighbors.stream().allMatch(n -> playerAdvantage[opponentIndex].contains(n))) {
+                if (node.units[i] > 0 && node.neighbors.size() > 0 && node.neighbors.stream().allMatch(n -> playerAdvantage[opponentIndex].contains(n))) {
                     if (view != null) view.animateTask(new SurroundTask(node, Player.getPlayer(i), node.units[i]));
                     node.units[i] = 0;
                     node.updateView(i, true);

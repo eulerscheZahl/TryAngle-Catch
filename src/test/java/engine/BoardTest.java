@@ -147,10 +147,25 @@ public class BoardTest {
     }
 
     @Test
-    public void surroundNode() {
+    public void testSurroundNode() {
         populateMap("100,100_200,100_100,200", "0,1_0,2_1,2", "1,0_1,0_0,1");
         assertEquals(Player.getPlayer(0), board.triangles.get(0).getOwner(), "triangle captured");
         assertEquals(0, board.nodes.get(2).units[1], "opponent unit got surrounded and died");
+    }
+
+    @Test
+    public void testIsolatedNode() {
+        populateMap("100,100", "", "1,0");
+        playTurn("", "");
+        assertEquals(1, board.nodes.get(0).units[0], "single nodes don't die because of being surrounded");
+    }
+
+    @Test
+    public void testDoubleSurrounded() {
+        populateMap("100,100_200,200", "0,1", "1,0_0,1");
+        playTurn("", "");
+        assertEquals(0, board.nodes.get(0).units[0], "units surround each other");
+        assertEquals(0, board.nodes.get(1).units[1], "units surround each other");
     }
 
     @Test
