@@ -32,12 +32,29 @@ export const options = [
     default: false
   }),
   TinyToggleModule.defineToggle({
-    toggle: 'color',
-    title: 'MAKE ME GREEN',
+    toggle: 'myColor',
+    title: 'ASSIGN STATIC COLOR TO ME',
     values: {
-      'YES': true,
-      'NO': false
+      'NO': 0,
+      'RED': 1,
+      'BLUE': 2,
+      'GREEN': 3,
+      'YELLOW': 4,
+      'PURPLE': 5,
     },
-    default: false
+    default: 0
+  }),
+  TinyToggleModule.defineToggle({
+    toggle: 'oppColor',
+    title: 'ASSIGN STATIC COLOR TO OPPONENT',
+    values: {
+      'NO': 0,
+      'RED': 1,
+      'BLUE': 2,
+      'GREEN': 3,
+      'YELLOW': 4,
+      'PURPLE': 5,
+    },
+    default: 0
   }),
 ]

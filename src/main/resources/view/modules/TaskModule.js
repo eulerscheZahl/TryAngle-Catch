@@ -160,14 +160,14 @@ export class TaskModule {
                 this.generateMoveAnimation(frameInfo, task)
             })
         } else if (type == 'S') { // spawn
-                      parts[player].match(/\w\w\w/g).forEach(s => {
-                          var node1 = NodeModule.nodes[alphabet.indexOf(s[0])]
-                          var node2 = NodeModule.nodes[alphabet.indexOf(s[1])]
-                          var node3 = NodeModule.nodes[alphabet.indexOf(s[2])]
-                          task.from = {"x":(node1.x+node2.x+node3.x)/3, "y":(node1.y+node2.y+node3.y)/3}
-                          task.to = node1
-                          this.generateSpawnAnimation(frameInfo, task)
-                      })
+              parts[player].match(/\w\w\w/g).forEach(s => {
+                  var node1 = NodeModule.nodes[alphabet.indexOf(s[0])]
+                  var node2 = NodeModule.nodes[alphabet.indexOf(s[1])]
+                  var node3 = NodeModule.nodes[alphabet.indexOf(s[2])]
+                  task.from = {"x":(node1.x+node2.x+node3.x)/3, "y":(node1.y+node2.y+node3.y)/3}
+                  task.to = node1
+                  this.generateSpawnAnimation(frameInfo, task)
+              })
         } else if (type == 'X') { // surround
             parts[player].match(/\w\d*/g).forEach(s => {
                 task.target = NodeModule.nodes[alphabet.indexOf(s[0])]

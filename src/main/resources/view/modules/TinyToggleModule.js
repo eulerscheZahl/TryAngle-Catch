@@ -39,8 +39,7 @@ export class TinyToggleModule {
                 )
             }
 
-            if (TinyToggleModule.toggles["color"]) TinyToggleModule.replaceColor(TinyToggleModule.toggleColor, [0x40ff40, 0x40dd40]);
-            else TinyToggleModule.replaceColor([0x40ff40, 0x40dd40], TinyToggleModule.toggleColor);
+            TinyToggleModule.replaceColors();
         }
 
         pushDuplicateErrors()
@@ -59,7 +58,17 @@ export class TinyToggleModule {
         return "rgb(" + (color>>16) + ", " + ((color>>8) & 0xff) + ", " + (color&0xff) + ")";
     }
 
-    static replaceColor(oldColor, newColor) {
+    static replaceColors() {
+        TinyToggleModule.replaceColor(TinyToggleModule.toggles["myColor"], 0)
+        TinyToggleModule.replaceColor(TinyToggleModule.toggles["oppColor"], 1)
+    }
+
+    static replaceColor(newColorIndex, playerIndex) {
+        if (TinyToggleModule.colorIndex[playerIndex] == newColorIndex) return;
+        var oldColor = TinyToggleModule.colorTheme[playerIndex][TinyToggleModule.colorIndex[playerIndex]];
+        var newColor = TinyToggleModule.colorTheme[playerIndex][newColorIndex];
+        TinyToggleModule.colorIndex[playerIndex] = newColorIndex;
+
         entityModule.entities.forEach(e => {
             for (var stateKey in e.states) {
                 var frameStates = e.states[stateKey]
@@ -79,6 +88,7 @@ export class TinyToggleModule {
                 if (e.style.borderTopColor == TinyToggleModule.toRgb(oldColor[1])) e.style.borderTopColor = TinyToggleModule.toRgb(newColor[1]);
             })
         })
+
     }
 
     static defineToggle(option) {
@@ -131,10 +141,15 @@ export class TinyToggleModule {
     }
 
     handleGlobalData(players, globalData) {
-        TinyToggleModule.toggleColor = -1;
+        TinyToggleModule.colorIndex = [0, 0];
+        var playerColor = [-1, -1];
+        var oppColor = [-1, -1];
         //players[0].isMe = true;
-        if (players[0].isMe && !players[1].isMe) TinyToggleModule.toggleColor = [0xff4040, players[0].color];
-        if (players[1].isMe && !players[0].isMe) TinyToggleModule.toggleColor = [0x4040ff, players[1].color];
+        if (players[0].isMe && !players[1].isMe) { playerColor = [0xff4040, players[0].color]; oppColor = [0x4040ff, players[1].color] }
+        if (players[1].isMe && !players[0].isMe) { playerColor = [0x4040ff, players[1].color]; oppColor = [0xff4040, players[0].color] }
+        var meColorTheme = [playerColor, [0xff4041, players[0].color+1], [0x4041ff, players[1].color+1], [0x40dd41, 0x40bb41], [0xdddd21, 0xbbbb21], [0x801081, 0x800081]];
+        var oppColorTheme = [oppColor, [0xff4140, players[0].color+0x100], [0x4140ff, players[1].color+0x100], [0x41dd40, 0x41bb40], [0xddde20, 0xbbbc20], [0x801180, 0x800180]];
+        TinyToggleModule.colorTheme = [meColorTheme, oppColorTheme];
     }
 
     reinitScene(container, canvasData) {
