@@ -161,7 +161,7 @@ public class Board {
         for (Node n1 : nodes) {
             for (Node n2 : n1.neighbors) {
                 if (n2.getId() <= n1.getId()) continue;
-                edgeParam.add(n1.getId() + "-" + n2.getId());
+                edgeParam.add(n1.getId() + "," + n2.getId());
             }
         }
         properties.put("edges", String.join("_", edgeParam));
