@@ -24,7 +24,7 @@ public class AddEdgeTask extends Task {
         Node node3 = getNode(board, matcher.group("node3"));
         this.to = getNode(board, matcher.group("nodeTo"));
         this.triangle = getTriangle(board, from, node2, node3);
-        if (!hasFailedParsing() && !board.canConnect(from, to)) addParsingError("Can't connect houses " + from.getId() + " and " + to.getId(), false);
+        if (!hasFailedParsing() && !board.canConnect(from, to)) addParsingError("Can't connect houses " + from.getId() + " and " + to.getId(), InputError.CANT_ADD_PATH, false);
     }
 
     @Override

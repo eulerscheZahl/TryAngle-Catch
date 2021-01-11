@@ -24,7 +24,7 @@ public class RemoveEdgeTask extends Task {
         Node node3 = getNode(board, matcher.group("node3"));
         this.to = getNode(board, matcher.group("nodeTo"));
         this.triangle = getTriangle(board, from, node2, node3);
-        if (!hasFailedParsing() && !triangle.hasNeighbor(to)) addParsingError("House " + to.getId() + " isn't connected to given triangle", false);
+        if (!hasFailedParsing() && !triangle.hasNeighbor(to)) addParsingError("House " + to.getId() + " isn't connected to given triangle", InputError.NOT_NEAR_TRIANGLE, false);
     }
 
     @Override

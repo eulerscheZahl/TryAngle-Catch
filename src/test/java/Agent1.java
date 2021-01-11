@@ -2,7 +2,11 @@ import java.util.Scanner;
 
 public class Agent1 {
     public static void main(String args[]) {
-        System.out.println("MOVE 26 11 1;MOVE 43 11 1");
+        String command = "MOVE 3 17 1";
+        for (int i = 1; i < 500; i++) command += ";MOVE 3 17 1";
+        while (true) System.out.println(command);
+
+        /*System.out.println("MOVE 26 11 1;MOVE 43 11 1");
         System.out.println("MOVE 11 35 1;MOVE 11 46 1; MOVE 11 38 1");
         System.out.println("MOVE 38 35 1;MOVE 38 46 1; MOVE 38 38 1");
         System.out.println("MOVE 11 35 1;MOVE 11 46 1; MOVE 11 38 1");
@@ -14,5 +18,6 @@ public class Agent1 {
         System.out.println("MOVE 9 9 2");
         System.out.println("MOVE 9 9 1");
         System.out.println("MOVE 9 9 1");
+        */
     }
 }

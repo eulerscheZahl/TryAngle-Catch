@@ -6,6 +6,8 @@ import view.PlayerView;
 import view.modules.TinyToggleModule;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Player extends AbstractMultiplayerPlayer {
 
@@ -97,8 +99,18 @@ public class Player extends AbstractMultiplayerPlayer {
     }
 
     public ArrayList<InputError> popErrors() {
-        ArrayList<InputError> result = errors;
-        errors = new ArrayList<>();
+        ArrayList<InputError> result = new ArrayList<>();
+        while (errors.size() > 0) {
+            InputError error = errors.get(0);
+            ArrayList<InputError> errorsOfType = errors.stream().filter(e -> e.getErrorCode() == error.getErrorCode()).collect(Collectors.toCollection(ArrayList::new));
+            errors.removeAll(errorsOfType);
+            if (errorsOfType.size() <= 3) result.addAll(errorsOfType);
+            else {
+                result.add(errorsOfType.get(0));
+                result.add(errorsOfType.get(1));
+                result.add(new InputError((errorsOfType.size() - 2) + " more errors of that type", error.getErrorCode(), error.isCritical()));
+            }
+        }
         return result;
     }
 

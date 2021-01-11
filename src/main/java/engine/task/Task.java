@@ -37,18 +37,18 @@ public abstract class Task {
             if (RemoveEdgeTask.pattern.matcher(command).matches())
                 task = new RemoveEdgeTask(player, board, command);
         } catch (Exception ex) {
-            player.addError(new InputError("Unknown command: " + command, true));
+            player.addError(new InputError("Unknown command: " + command, InputError.UNKNOWN_COMMAND, true));
             return null;
         }
         if (task == null) {
-            player.addError(new InputError("Unknown command: " + command, true));
+            player.addError(new InputError("Unknown command: " + command, InputError.UNKNOWN_COMMAND, true));
             return null;
         }
         if (task.getRequiredLeague() > league) {
-            task.addParsingError("Command not available in your league: " + command, false);
+            task.addParsingError("Command not available in your league: " + command, InputError.NOT_AVAILABLE, false);
             return null;
         }
-        if (!task.canApply(board, true)) task.addParsingError("Task can't be applied: " + command, false);
+        if (!task.canApply(board, true)) task.addParsingError("Task can't be applied: " + command, InputError.CANT_BE_APPLIED, false);
         return task;
     }
 
@@ -56,16 +56,16 @@ public abstract class Task {
         return failedParsing;
     }
 
-    protected void addParsingError(String message, boolean critical) {
+    protected void addParsingError(String message, int errorCode, boolean critical) {
         if (failedParsing) return;
         failedParsing = true;
-        player.addError(new InputError(message, critical));
+        player.addError(new InputError(message, errorCode, critical));
     }
 
     protected Node getNode(Board board, String node) {
         int nodeId = Integer.parseInt(node);
         if (nodeId < 0 || nodeId >= board.nodes.size()) {
-            addParsingError("Invalid node: " + node, false);
+            addParsingError("Invalid node: " + node, InputError.INVALID_NODE, false);
             return null;
         }
         return board.nodes.get(nodeId);
@@ -76,7 +76,7 @@ public abstract class Task {
         for (Triangle t : board.triangles) {
             if (t.hasNode(node1) && t.hasNode(node2) && t.hasNode(node3)) return t;
         }
-        addParsingError("Invalid triangle: " + node1.getId() + " " + node2.getId() + " " + node3.getId(), false);
+        addParsingError("Invalid triangle: " + node1.getId() + " " + node2.getId() + " " + node3.getId(), InputError.INVALID_TRIANGLE, false);
         return null;
     }
 
