@@ -4,6 +4,10 @@ import com.codingame.game.Player;
 import engine.Board;
 import engine.Node;
 import engine.Triangle;
+import engine.task.debug.CircleTask;
+import engine.task.debug.LineTask;
+import engine.task.debug.RectTask;
+import engine.task.debug.TextTask;
 import view.BoardView;
 
 public abstract class Task {
@@ -36,6 +40,14 @@ public abstract class Task {
                 task = new AddEdgeTask(player, board, command);
             if (RemoveEdgeTask.pattern.matcher(command).matches())
                 task = new RemoveEdgeTask(player, board, command);
+            if (LineTask.pattern.matcher(command).matches())
+                task = new LineTask(player, board, command);
+            if (RectTask.pattern.matcher(command).matches())
+                task = new RectTask(player, board, command);
+            if (CircleTask.pattern.matcher(command).matches())
+                task = new CircleTask(player, board, command);
+            if (TextTask.pattern.matcher(command).matches())
+                task = new TextTask(player, board, command);
         } catch (Exception ex) {
             player.addError(new InputError("Unknown command: " + command, InputError.UNKNOWN_COMMAND, true));
             return null;
@@ -48,7 +60,8 @@ public abstract class Task {
             task.addParsingError("Command not available in your league: " + command, InputError.NOT_AVAILABLE, false);
             return null;
         }
-        if (!task.canApply(board, true)) task.addParsingError("Task can't be applied: " + command, InputError.CANT_BE_APPLIED, false);
+        if (!task.canApply(board, true))
+            task.addParsingError("Task can't be applied: " + command, InputError.CANT_BE_APPLIED, false);
         return task;
     }
 

@@ -2,8 +2,8 @@ import java.util.Scanner;
 
 public class Agent1 {
     public static void main(String args[]) {
-        String command = "MOVE 3 17 1";
-        for (int i = 1; i < 500; i++) command += ";MOVE 3 17 1";
+        String command = "LINE 100 100 500 500";
+        for (int i = 0; i < 1; i++) command += ";MOVE 3 17 1";
         while (true) System.out.println(command);
 
         /*System.out.println("MOVE 26 11 1;MOVE 43 11 1");

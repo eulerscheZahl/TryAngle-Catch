@@ -23,6 +23,10 @@ public class TaskManager {
         }
     }
 
+    public boolean hasDebug() {
+        return hasTasks() && peekTasks().get(0).getTaskPriority() == -1;
+    }
+
     public boolean hasTasks() {
         return peekTasks().size() > 0;
     }

@@ -34,9 +34,10 @@ export class TinyToggleModule {
                     ErrorLog.push(new MissingToggleError(toggleInfo.name))
                     this.missingToggles[toggleInfo.name] = true
                 }
-                entity.setHidden(
-                    toggleState !== toggleInfo.state
-                )
+                if (toggleInfo.name == "draw")
+                    entity.setHidden(toggleInfo.state.indexOf(toggleState) == -1)
+                else
+                    entity.setHidden(toggleState !== toggleInfo.state)
             }
 
             TinyToggleModule.replaceColors();
@@ -55,7 +56,7 @@ export class TinyToggleModule {
     static refreshContent() {}
 
     static toRgb(color) {
-        return "rgb(" + (color>>16) + ", " + ((color>>8) & 0xff) + ", " + (color&0xff) + ")";
+        return "rgb(" + (color >> 16) + ", " + ((color >> 8) & 0xff) + ", " + (color & 0xff) + ")";
     }
 
     static replaceColors() {
@@ -142,13 +143,24 @@ export class TinyToggleModule {
 
     handleGlobalData(players, globalData) {
         TinyToggleModule.colorIndex = [0, 0];
-        var playerColor = [-1, -1];
-        var oppColor = [-1, -1];
-        //players[0].isMe = true;
-        if (players[0].isMe && !players[1].isMe) { playerColor = [0xff4040, players[0].color]; oppColor = [0x4040ff, players[1].color] }
-        if (players[1].isMe && !players[0].isMe) { playerColor = [0x4040ff, players[1].color]; oppColor = [0xff4040, players[0].color] }
-        var meColorTheme = [playerColor, [0xff4041, players[0].color+1], [0x4041ff, players[1].color+1], [0x40dd41, 0x40bb41], [0xdddd21, 0xbbbb21], [0x801081, 0x800081]];
-        var oppColorTheme = [oppColor, [0xff4140, players[0].color+0x100], [0x4140ff, players[1].color+0x100], [0x41dd40, 0x41bb40], [0xddde20, 0xbbbc20], [0x801180, 0x800180]];
+        var playerColor = [0xff4040, players[0].color];
+        var oppColor = [0x4040ff, players[1].color];
+        if (players[1].isMe && !players[0].isMe) {
+            playerColor = [0x4040ff, players[1].color];
+            oppColor = [0xff4040, players[0].color]
+        }
+        var meColorTheme = [playerColor, [0xff4041, players[0].color + 1],
+            [0x4041ff, players[1].color + 1],
+            [0x40dd41, 0x40bb41],
+            [0xdddd21, 0xbbbb21],
+            [0x801081, 0x800081]
+        ];
+        var oppColorTheme = [oppColor, [0xff4140, players[0].color + 0x100],
+            [0x4140ff, players[1].color + 0x100],
+            [0x41dd40, 0x41bb40],
+            [0xddde20, 0xbbbc20],
+            [0x801180, 0x800180]
+        ];
         TinyToggleModule.colorTheme = [meColorTheme, oppColorTheme];
     }
 

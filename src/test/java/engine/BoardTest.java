@@ -25,7 +25,7 @@ public class BoardTest {
         parameters.put("nodes", nodes);
         parameters.put("edges", edges);
         parameters.put("units", units);
-        board = new Board(parameters, new Random(), null, null, null, null, null);
+        board = new Board(parameters, new Random(), null, null, null, null, null, null);
     }
 
     private void createMap() {

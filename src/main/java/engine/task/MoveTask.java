@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MoveTask extends Task {
-    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>MOVE)\\s+(?<from>\\d+)\\s+(?<to>\\d+)\\s+(?<amount>\\d+)\\s*$", Pattern.CASE_INSENSITIVE);
+    protected static final Pattern pattern = Pattern.compile("^\\s*(?<action>MOVE)\\s+(?<from>\\d+)\\s+(?<to>\\d+)\\s+(?<amount>-?\\d+)\\s*$", Pattern.CASE_INSENSITIVE);
 
     private Node nodeFrom;
     private Node nodeTo;

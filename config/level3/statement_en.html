@@ -165,8 +165,7 @@
             <!--There is a debug mode, that you can enable by clicking the gear icon below the player <br>
             <img src="https://cdn-games.codingame.com/community/1500515-1592038359044/2e2e36ce0515e6ef82bbfa5f818c4a359337219f0981bc17b9b159f6114f4f11.png" style="width:100%" />
             -->
-            Don't hesitate to change the viewer's options to help debug your code (<img style="opacity:.8;background:#20252a;"
-                                                                                        height="18" src="https://www.codingame.com/servlet/fileservlet?id=3463235186409" width="18">).
+            Don't hesitate to change the viewer's options to help debug your code (<img style="opacity:.8;background:#20252a;" height="18" src="https://www.codingame.com/servlet/fileservlet?id=3463235186409" width="18">).
             <br> <br>
             The game turn works as follows:
             <ol>
@@ -271,6 +270,36 @@
                         </span></li>
                 </ul>
 
+            </div>
+
+            <br>
+            <div style="color: #7cc576; background-color: rgba(124, 197, 118,.1); padding: 2px;">
+            <div class="title">Debug drawing</div>
+            <div class="text">
+                You can draw additional objects directly into the viewer to help you visualize what your bot is thinking. <br>
+                The following commands can be appended to your output commands described above. They have no effect on the gameplay.
+                <ul style="padding-bottom: 0;">
+                    <li>
+                        <action>LINE x1 y1 x2 y2</action>
+                        draw a line from (<var>x1</var>, <var>y1</var>) to (<var>x2</var>, <var>y2</var>)
+                    </li>
+                    <li>
+                        <action>RECT x y width height</action>
+                        draw a rectangle at (<var>x</var>, <var>y</var>) with a given <var>width</var> and <var>height</var>.
+                    </li>
+                    <li>
+                        <action>CIRCLE x y radius</action>
+                        draw a circle at (<var>x</var>, <var>y</var>) with a given <var>radius</var>.
+                    </li>
+                    <li>
+                        <action>TEXT x y message</action>
+                        draw a text at (<var>x</var>, <var>y</var>) with a given <var>message</var> of at most <const>20</const>.
+                    </li>
+                </ul>
+                You may create up to <const>50</const> entities for debugging. Entities of the same kind can be reused in later frames.
+                By default only your own debug annotations are visible. You can change this in the viewer settings (<img style="opacity:.8;background:#20252a;" height="18" src="https://www.codingame.com/servlet/fileservlet?id=3463235186409" width="18">).
+                The color of the debug annotations will match the color of the respective player.
+            </div>
             </div>
         </div>
 

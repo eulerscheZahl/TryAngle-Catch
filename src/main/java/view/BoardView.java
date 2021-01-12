@@ -8,6 +8,8 @@ import engine.Board;
 import engine.Node;
 import engine.Triangle;
 import engine.task.*;
+import engine.task.debug.DebugTask;
+import view.modules.DebugModule;
 import view.modules.NodeModule;
 import view.modules.TaskModule;
 import view.modules.TinyToggleModule;
@@ -20,12 +22,14 @@ public class BoardView {
     private GraphicEntityModule graphics;
     private TinyToggleModule toggleModule;
     private TaskModule taskModule;
+    private DebugModule debugModule;
     private Text textTurn;
 
-    public BoardView(Board board, GraphicEntityModule graphics, TooltipModule tooltips, TinyToggleModule toggleModule, NodeModule nodeModule, TaskModule taskModule) {
+    public BoardView(Board board, GraphicEntityModule graphics, TooltipModule tooltips, TinyToggleModule toggleModule, NodeModule nodeModule, TaskModule taskModule, DebugModule debugModule) {
         this.graphics = graphics;
         this.toggleModule = toggleModule;
         this.taskModule = taskModule;
+        this.debugModule = debugModule;
         this.board = board;
         if (graphics != null) {
             graphics.createRectangle().setZIndex(-9).setFillColor(0xffffff).setWidth(graphics.getWorld().getWidth()).setHeight(graphics.getWorld().getHeight());
@@ -167,5 +171,13 @@ public class BoardView {
 
     public void animateTask(Task task) {
         taskModule.registerTask(task);
+    }
+
+    public void cacheDebug(DebugTask task) {
+        debugModule.registerTask(task);
+    }
+
+    public void clearDebug() {
+        debugModule.clear();
     }
 }

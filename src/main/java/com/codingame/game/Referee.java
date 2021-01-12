@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 import engine.Board;
 import engine.task.InputError;
 import engine.task.TaskManager;
+import view.modules.DebugModule;
 import view.modules.NodeModule;
 import view.modules.TaskModule;
 import view.modules.TinyToggleModule;
@@ -31,6 +32,8 @@ public class Referee extends AbstractReferee {
     private NodeModule nodeModule;
     @Inject
     private TaskModule taskModule;
+    @Inject
+    private DebugModule debugModule;
 
 
     private Board board;
@@ -42,7 +45,7 @@ public class Referee extends AbstractReferee {
         Player.registerPlayer(gameManager.getPlayer(0));
         Player.registerPlayer(gameManager.getPlayer(1));
 
-        board = new Board(gameManager.getGameParameters(), random, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule);
+        board = new Board(gameManager.getGameParameters(), random, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule, debugModule);
         taskManager = new TaskManager();
         gameManager.setMaxTurns(200);
     }
@@ -81,6 +84,7 @@ public class Referee extends AbstractReferee {
                     } else gameManager.addToGameSummary(player.getNicknameToken() + ": " + error.getMessage());
                 }
             }
+            board.applyDebug(taskManager);
         } else {
             gameManager.setMaxTurns(gameManager.getMaxTurns() + 1);
         }

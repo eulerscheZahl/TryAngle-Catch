@@ -8,7 +8,9 @@ import engine.task.SurroundTask;
 import engine.task.MoveTask;
 import engine.task.Task;
 import engine.task.TaskManager;
+import engine.task.debug.DebugTask;
 import view.BoardView;
+import view.modules.DebugModule;
 import view.modules.NodeModule;
 import view.modules.TaskModule;
 import view.modules.TinyToggleModule;
@@ -37,7 +39,7 @@ public class Board {
     private TooltipModule tooltipModule;
     private TinyToggleModule toggleModule;
 
-    public Board(Properties properties, Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, TinyToggleModule toggleModule, NodeModule nodeModule, TaskModule taskModule) {
+    public Board(Properties properties, Random random, GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, TinyToggleModule toggleModule, NodeModule nodeModule, TaskModule taskModule, DebugModule debugModule) {
         this.graphicEntityModule = graphicEntityModule;
         this.tooltipModule = tooltipModule;
         this.toggleModule = toggleModule;
@@ -66,7 +68,7 @@ public class Board {
 
             updateTriangles();
             if (graphicEntityModule != null)
-                view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule);
+                view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule, debugModule);
             while (finalizeTurn()) ;
             return;
         }
@@ -170,7 +172,7 @@ public class Board {
         properties.put("units", String.join("_", unitParam));
 
         updateTriangles();
-        view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule);
+        view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule, debugModule);
         while (finalizeTurn()) ;
     }
 
@@ -274,6 +276,19 @@ public class Board {
 
     private boolean killedSurrounded = false;
     private int gameTurn = 0;
+
+    public void  applyDebug(TaskManager taskManager) {
+    	if (view == null) return;
+        if (taskManager.hasDebug()) {
+            ArrayList<ArrayList<Task>> tasks = taskManager.popTasks();
+            for (int player = 0; player < 2; player++) {
+                for (Task task : tasks.get(player))
+                    task.visualize(view);
+            }
+        } else {
+        	view.clearDebug();
+        }
+    }
 
     public void applyActions(TaskManager taskManager) {
         killedSurrounded = false;
