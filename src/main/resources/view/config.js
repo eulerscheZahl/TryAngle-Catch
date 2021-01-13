@@ -1,24 +1,10 @@
-import {
-    GraphicEntityModule
-} from './entity-module/GraphicEntityModule.js';
-import {
-    TinyToggleModule
-} from './modules/TinyToggleModule.js'
-import {
-    NodeModule
-} from './modules/NodeModule.js'
-import {
-    TaskModule
-} from './modules/TaskModule.js'
-import {
-    DebugModule
-} from './modules/DebugModule.js'
-import {
-    FooltipModule
-} from './modules/FooltipModule.js'
-import {
-    EndScreenModule
-} from './endscreen-module/EndScreenModule.js';
+import { GraphicEntityModule } from './entity-module/GraphicEntityModule.js';
+import { TinyToggleModule } from './modules/TinyToggleModule.js'
+import { NodeModule } from './modules/NodeModule.js'
+import { TaskModule } from './modules/TaskModule.js'
+import { DebugModule } from './modules/DebugModule.js'
+import { FooltipModule } from './modules/FooltipModule.js'
+import { EndScreenModule } from './endscreen-module/EndScreenModule.js';
 
 export const playerColors = [
     '#FF1D5C', //'#ff4040',

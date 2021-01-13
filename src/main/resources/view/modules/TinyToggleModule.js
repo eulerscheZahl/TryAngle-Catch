@@ -1,18 +1,8 @@
-import {
-    api as entityModule
-} from '../entity-module/GraphicEntityModule.js'
-import {
-    ErrorLog
-} from '../core/ErrorLog.js'
-import {
-    MissingToggleError
-} from '../toggle-module/errors/MissingToggleError.js'
-import {
-    DuplicateToggleValueError
-} from '../toggle-module/errors/DuplicateToggleValueError.js'
-import {
-    FooltipModule
-} from './FooltipModule.js'
+import { api as entityModule } from '../entity-module/GraphicEntityModule.js'
+import { ErrorLog } from '../core/ErrorLog.js'
+import { MissingToggleError } from '../toggle-module/errors/MissingToggleError.js'
+import { DuplicateToggleValueError } from '../toggle-module/errors/DuplicateToggleValueError.js'
+import { FooltipModule } from './FooltipModule.js'
 
 export class TinyToggleModule {
     constructor(assets) {
@@ -47,10 +37,7 @@ export class TinyToggleModule {
     }
 
     registerToggle(entity, name, state) {
-        this.previousFrame.registered[entity.id] = {
-            "name": name,
-            "state": state
-        }
+        this.previousFrame.registered[entity.id] = { "name": name, "state": state }
     }
 
     static refreshContent() {}
@@ -122,21 +109,12 @@ export class TinyToggleModule {
                 value.match(/\d+./g).forEach(m => {
                     var entityId = m.slice(0, -1)
                     var state = m.slice(-1) === "+"
-                    newRegistration[entityId] = {
-                        "name": key,
-                        "state": state
-                    }
+                    newRegistration[entityId] = { "name": key, "state": state }
                 })
             })
         }
-        const registered = {
-            ...this.previousFrame.registered,
-            ...newRegistration
-        }
-        const frame = {
-            registered,
-            number: frameInfo.number
-        }
+        const registered = { ...this.previousFrame.registered, ...newRegistration }
+        const frame = { registered, number: frameInfo.number }
         this.previousFrame = frame
         return frame
     }
@@ -149,18 +127,8 @@ export class TinyToggleModule {
             playerColor = [0x4040ff, players[1].color];
             oppColor = [0xff4040, players[0].color]
         }
-        var meColorTheme = [playerColor, [0xff4041, players[0].color + 1],
-            [0x4041ff, players[1].color + 1],
-            [0x40dd41, 0x40bb41],
-            [0xdddd21, 0xbbbb21],
-            [0x801081, 0x800081]
-        ];
-        var oppColorTheme = [oppColor, [0xff4140, players[0].color + 0x100],
-            [0x4140ff, players[1].color + 0x100],
-            [0x41dd40, 0x41bb40],
-            [0xddde20, 0xbbbc20],
-            [0x801180, 0x800180]
-        ];
+        var meColorTheme = [playerColor, [0xff4041, players[0].color + 1], [0x4041ff, players[1].color + 1], [0x40dd41, 0x40bb41], [0xdddd21, 0xbbbb21], [0x801081, 0x800081] ];
+        var oppColorTheme = [oppColor, [0xff4140, players[0].color + 0x100], [0x4140ff, players[1].color + 0x100], [0x41dd40, 0x41bb40], [0xddde20, 0xbbbc20], [0x801180, 0x800180] ];
         TinyToggleModule.colorTheme = [meColorTheme, oppColorTheme];
     }
 
@@ -181,10 +149,7 @@ function checkDuplicates(option) {
         let matchedPair = TinyToggleModule.optionValues[option.toggle].find(elem => elem.value === value)
 
         if (!matchedPair) {
-            matchedPair = {
-                keys: [],
-                value
-            }
+            matchedPair = { keys: [], value }
             TinyToggleModule.optionValues[option.toggle].push(matchedPair)
         }
 

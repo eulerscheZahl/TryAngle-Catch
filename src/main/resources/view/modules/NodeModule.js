@@ -1,18 +1,8 @@
-import {
-    api as entityModule
-} from '../entity-module/GraphicEntityModule.js'
-import {
-    EntityFactory
-} from '../entity-module/EntityFactory.js'
-import {
-    TinyToggleModule
-} from './TinyToggleModule.js'
-import {
-    graphicsHelper
-} from './TaskModule.js'
-import {
-    FooltipModule
-} from './FooltipModule.js'
+import { api as entityModule } from '../entity-module/GraphicEntityModule.js'
+import { EntityFactory } from '../entity-module/EntityFactory.js'
+import { TinyToggleModule } from './TinyToggleModule.js'
+import { graphicsHelper } from './TaskModule.js'
+import { FooltipModule } from './FooltipModule.js'
 
 export class NodeModule {
 
@@ -60,146 +50,34 @@ export class NodeModule {
             FooltipModule.instance.registerTooltip(node.shack, this.getTooltipText(node))
             FooltipModule.instance.registerTooltip(node.circle, this.getTooltipText(node))
         }
-        var shackParams = {
-            ...graphicsHelper.defaults.sprite,
-            x: node.x - 30,
-            y: node.y - 40,
-            zIndex: 8,
-            image: "s1.png",
-            scaleX: 0.1,
-            scaleY: 0.1,
-        }
-        node.shack.addState(0, {
-            values: shackParams,
-            curve: {}
-        }, frameInfo.number, frameInfo)
+        var shackParams = { ...graphicsHelper.defaults.sprite, x: node.x - 30, y: node.y - 40, zIndex: 8, image: "s1.png", scaleX: 0.1, scaleY: 0.1, }
+        node.shack.addState(0, { values: shackParams, curve: {} }, frameInfo.number, frameInfo)
 
-        var roofParams = {
-            ...graphicsHelper.defaults.sprite,
-            x: node.x - 30,
-            y: node.y - 40,
-            zIndex: 8,
-            image: "s2.png",
-            scaleX: 0.1,
-            scaleY: 0.1,
-        }
-        node.roof.addState(0, {
-            values: roofParams,
-            curve: {}
-        }, frameInfo.number, frameInfo)
+        var roofParams = { ...graphicsHelper.defaults.sprite, x: node.x - 30, y: node.y - 40, zIndex: 8, image: "s2.png", scaleX: 0.1, scaleY: 0.1, }
+        node.roof.addState(0, { values: roofParams, curve: {} }, frameInfo.number, frameInfo)
 
-        var baseCircleParams = {
-            ...graphicsHelper.defaults.circle,
-            x: node.x,
-            y: node.y,
-            zIndex: 8,
-            radius: 35,
-            fillColor: 0,
-            lineWidth: 10,
-            lineColor: 0
-        }
-        node.baseCircle.addState(0, {
-            values: baseCircleParams,
-            curve: {}
-        }, frameInfo.number, frameInfo)
+        var baseCircleParams = { ...graphicsHelper.defaults.circle, x: node.x, y: node.y, zIndex: 8, radius: 35, fillColor: 0, lineWidth: 10, lineColor: 0 }
+        node.baseCircle.addState(0, { values: baseCircleParams, curve: {} }, frameInfo.number, frameInfo)
 
-        var circleParams = {
-            ...graphicsHelper.defaults.circle,
-            x: node.x,
-            y: node.y,
-            zIndex: 8,
-            radius: 31,
-            fillColor: 0,
-            lineWidth: 10,
-            lineColor: 0
-        }
-        node.circle.addState(0, {
-            values: circleParams,
-            curve: {}
-        }, frameInfo.number, frameInfo)
+        var circleParams = { ...graphicsHelper.defaults.circle, x: node.x, y: node.y, zIndex: 8, radius: 31, fillColor: 0, lineWidth: 10, lineColor: 0 }
+        node.circle.addState(0, { values: circleParams, curve: {} }, frameInfo.number, frameInfo)
 
-        var textParams = {
-            ...graphicsHelper.defaults.text,
-            x: node.x,
-            y: node.y,
-            zIndex: 8,
-            fontWeight: "italic",
-            text: "" + node.id,
-            strokeThickness: 4,
-            fillColor: 0xffffff,
-            anchorX: 0.5,
-            anchorY: 0.5,
-        }
-        node.text.addState(0, {
-            values: textParams,
-            curve: {}
-        }, frameInfo.number, frameInfo)
-    }
+        var textParams = { ...graphicsHelper.defaults.text, x: node.x, y: node.y, zIndex: 8, fontWeight: "italic", text: "" + node.id, strokeThickness: 4, fillColor: 0xffffff, anchorX: 0.5, anchorY: 0.5, }
+        node.text.addState(0, { values: textParams, curve: {} }, frameInfo.number, frameInfo) }
 
     updateOwner(frameInfo, node, player) {
         if (player == -1) {
             node.owner = "None"
-            var roofParams = {
-                ...graphicsHelper.defaults.sprite,
-                x: node.x - 30,
-                y: node.y - 40,
-                zIndex: 8,
-                image: "s2.png",
-                scaleX: 0.1,
-                scaleY: 0.1,
-                t: 1,
-            }
-            node.roof.addState(1, {
-                values: roofParams,
-                curve: {}
-            }, frameInfo.number, frameInfo)
-            var circleParams = {
-                ...graphicsHelper.defaults.circle,
-                x: node.x,
-                y: node.y,
-                zIndex: 8,
-                radius: 31,
-                fillColor: 0,
-                lineWidth: 10,
-                lineColor: 0,
-                t: 1
-            }
-            node.circle.addState(1, {
-                values: circleParams,
-                curve: {}
-            }, frameInfo.number, frameInfo)
+            var roofParams = { ...graphicsHelper.defaults.sprite, x: node.x - 30, y: node.y - 40, zIndex: 8, image: "s2.png", scaleX: 0.1, scaleY: 0.1, t: 1, }
+            node.roof.addState(1, { values: roofParams, curve: {} }, frameInfo.number, frameInfo)
+            var circleParams = { ...graphicsHelper.defaults.circle, x: node.x, y: node.y, zIndex: 8, radius: 31, fillColor: 0, lineWidth: 10, lineColor: 0, t: 1 }
+            node.circle.addState(1, { values: circleParams, curve: {} }, frameInfo.number, frameInfo)
         } else {
             node.owner = this.playerList[player].name
-            var roofParams = {
-                ...graphicsHelper.defaults.sprite,
-                x: node.x - 30,
-                y: node.y - 40,
-                zIndex: 8,
-                t: 1,
-                image: "s2.png",
-                scaleX: 0.1,
-                scaleY: 0.1,
-                tint: graphicsHelper.playerColors[player]
-            }
-            node.roof.addState(1, {
-                values: roofParams,
-                curve: {}
-            }, frameInfo.number, frameInfo)
-            var circleParams = {
-                ...graphicsHelper.defaults.circle,
-                x: node.x,
-                y: node.y,
-                zIndex: 8,
-                t: 1,
-                radius: 31,
-                fillColor: 0,
-                lineWidth: 10,
-                lineColor: graphicsHelper.playerColors[player]
-            }
-            node.circle.addState(1, {
-                values: circleParams,
-                curve: {}
-            }, frameInfo.number, frameInfo)
+            var roofParams = { ...graphicsHelper.defaults.sprite, x: node.x - 30, y: node.y - 40, zIndex: 8, t: 1, image: "s2.png", scaleX: 0.1, scaleY: 0.1, tint: graphicsHelper.playerColors[player] }
+            node.roof.addState(1, { values: roofParams, curve: {} }, frameInfo.number, frameInfo)
+            var circleParams = { ...graphicsHelper.defaults.circle, x: node.x, y: node.y, zIndex: 8, t: 1, radius: 31, fillColor: 0, lineWidth: 10, lineColor: graphicsHelper.playerColors[player] }
+            node.circle.addState(1, { values: circleParams, curve: {} }, frameInfo.number, frameInfo)
         }
         FooltipModule.instance.registerTooltip(node.shack, this.getTooltipText(node))
         FooltipModule.instance.registerTooltip(node.circle, this.getTooltipText(node))
@@ -210,34 +88,9 @@ export class NodeModule {
         const offsetX = -40 + 80 * player
         const offsetY = -40
         const knightOffset = 10 - 20 * player
-        var circleParams = {
-            ...graphicsHelper.defaults.circle,
-            x: node.x + offsetX,
-            y: node.y + offsetY,
-            fillColor: graphicsHelper.playerColors[player],
-            zIndex: 9
-        }
-        var knightParams = {
-            ...graphicsHelper.defaults.sprite,
-            x: node.x + offsetX + knightOffset,
-            y: node.y + offsetY,
-            tint: graphicsHelper.playerColors[player],
-            zIndex: 9,
-            scaleX: 0.1,
-            scaleY: 0.1,
-            anchorX: 0.5,
-            anchorY: 0.5
-        }
-        var textParams = {
-            ...graphicsHelper.defaults.text,
-            x: node.x + offsetX,
-            y: node.y + offsetY,
-            fillColor: 0xffffff,
-            strokeThickness: 4,
-            zIndex: 9,
-            anchorX: 0.5,
-            anchorY: 0.5
-        }
+        var circleParams = { ...graphicsHelper.defaults.circle, x: node.x + offsetX, y: node.y + offsetY, fillColor: graphicsHelper.playerColors[player], zIndex: 9 }
+        var knightParams = { ...graphicsHelper.defaults.sprite, x: node.x + offsetX + knightOffset, y: node.y + offsetY, tint: graphicsHelper.playerColors[player], zIndex: 9, scaleX: 0.1, scaleY: 0.1, anchorX: 0.5, anchorY: 0.5 }
+        var textParams = { ...graphicsHelper.defaults.text, x: node.x + offsetX, y: node.y + offsetY, fillColor: 0xffffff, strokeThickness: 4, zIndex: 9, anchorX: 0.5, anchorY: 0.5 }
 
         // create view if necessary
         if (!view.circle) {
@@ -259,63 +112,17 @@ export class NodeModule {
             view.text = text
 
             if (time > 0) {
-                view.circle.addState(time, {
-                    values: {
-                        ...circleParams,
-                        visible: false,
-                        t: 0
-                    },
-                    curve: {}
-                }, frameInfo.number, frameInfo)
-                view.knight.addState(time, {
-                    values: {
-                        ...knightParams,
-                        visible: false,
-                        t: 0,
-                        image: imageName
-                    },
-                    curve: {}
-                }, frameInfo.number, frameInfo)
-                view.text.addState(time, {
-                    values: {
-                        ...textParams,
-                        visible: false,
-                        text: "" + amount,
-                        t: 0
-                    },
-                    curve: {}
-                }, frameInfo.number, frameInfo)
+                view.circle.addState(time, { values: { ...circleParams, visible: false, t: 0 }, curve: {} }, frameInfo.number, frameInfo)
+                view.knight.addState(time, { values: { ...knightParams, visible: false, t: 0, image: imageName }, curve: {} }, frameInfo.number, frameInfo)
+                view.text.addState(time, { values: { ...textParams, visible: false, text: "" + amount, t: 0 }, curve: {} }, frameInfo.number, frameInfo)
             }
         }
 
         var imageName = "rb" [player] + Math.min(amount, 5) + ".png"
         if (amount == 0) imageName = null
-        view.circle.addState(time, {
-            values: {
-                ...circleParams,
-                visible: amount > 0,
-                t: time
-            },
-            curve: {}
-        }, frameInfo.number, frameInfo)
-        view.knight.addState(time, {
-            values: {
-                ...knightParams,
-                visible: amount > 0,
-                t: time,
-                image: imageName
-            },
-            curve: {}
-        }, frameInfo.number, frameInfo)
-        view.text.addState(time, {
-            values: {
-                ...textParams,
-                visible: amount > 0,
-                text: "" + amount,
-                t: time
-            },
-            curve: {}
-        }, frameInfo.number, frameInfo)
+        view.circle.addState(time, { values: { ...circleParams, visible: amount > 0, t: time }, curve: {} }, frameInfo.number, frameInfo)
+        view.knight.addState(time, { values: { ...knightParams, visible: amount > 0, t: time, image: imageName }, curve: {} }, frameInfo.number, frameInfo)
+        view.text.addState(time, { values: { ...textParams, visible: amount > 0, text: "" + amount, t: time }, curve: {} }, frameInfo.number, frameInfo)
     }
 
     handleGlobalData(players, globalData) {
@@ -334,16 +141,7 @@ export class NodeModule {
                 const xy = s.split('/')
                 const x = +xy[0]
                 const y = +xy[1]
-                const node = {
-                    "id": nodeId++,
-                    "x": x,
-                    "y": y,
-                    owner: "None",
-                    "unitView": {
-                        0: {},
-                        1: {}
-                    }
-                }
+                const node = { "id": nodeId++, "x": x, "y": y, owner: "None", "unitView": { 0: {}, 1: {} } }
                 newRegistration[node.id] = node
                 NodeModule.nodes[node.id] = node
                 this.drawNode(frameInfo, node)
@@ -365,14 +163,8 @@ export class NodeModule {
                 }
             }
         })
-        const registered = {
-            ...this.previousFrame.registered,
-            ...newRegistration
-        }
-        const frame = {
-            registered,
-            number: frameInfo.number
-        }
+        const registered = { ...this.previousFrame.registered, ...newRegistration }
+        const frame = { registered, number: frameInfo.number }
         this.previousFrame = frame
         return frame
     }

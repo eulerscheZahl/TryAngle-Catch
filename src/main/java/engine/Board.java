@@ -278,7 +278,7 @@ public class Board {
     private int gameTurn = 0;
 
     public void  applyDebug(TaskManager taskManager) {
-    	if (view == null) return;
+        if (view == null) return;
         if (taskManager.hasDebug()) {
             ArrayList<ArrayList<Task>> tasks = taskManager.popTasks();
             for (int player = 0; player < 2; player++) {
@@ -286,7 +286,7 @@ public class Board {
                     task.visualize(view);
             }
         } else {
-        	view.clearDebug();
+            view.clearDebug();
         }
     }
 

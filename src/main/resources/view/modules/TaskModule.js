@@ -1,149 +1,18 @@
-import {
-    api as entityModule
-} from '../entity-module/GraphicEntityModule.js'
-import {
-    EntityFactory
-} from '../entity-module/EntityFactory.js'
-import {
-    TinyToggleModule
-} from './TinyToggleModule.js'
-import {
-    NodeModule
-} from './NodeModule.js'
+import { api as entityModule } from '../entity-module/GraphicEntityModule.js'
+import { EntityFactory } from '../entity-module/EntityFactory.js'
+import { TinyToggleModule } from './TinyToggleModule.js'
+import { NodeModule } from './NodeModule.js'
 
 export const graphicsHelper = {
     runtimeId: 1000000, // don't interfere with counter from SDK, as this would update the wrong entities from Java code
     playerColors: [0xff4040, 0x4040ff],
     defaults: {
-        sprite: {
-            alpha: 1,
-            anchorX: 0,
-            anchorY: 0,
-            baseHeight: null,
-            baseWidth: null,
-            blendMode: 0,
-            curve: {},
-            image: null,
-            mask: -1,
-            rotation: 0,
-            scaleMode: "LINEAR",
-            scaleX: 1,
-            scaleY: 1,
-            skewX: 0,
-            skewY: 0,
-            t: 0,
-            tint: 0xFFFFFF,
-            visible: true,
-            x: 0,
-            y: 0,
-            zIndex: 0,
-        },
-        circle: {
-            alpha: 1,
-            blendMode: 0,
-            curve: {},
-            fillAlpha: 1,
-            fillColor: 0xFFFFFF,
-            lineAlpha: 1,
-            lineColor: 0,
-            lineWidth: 1,
-            mask: -1,
-            radius: 25,
-            rotation: 0,
-            scaleX: 1,
-            scaleY: 1,
-            skewX: 0,
-            skewY: 0,
-            t: 0,
-            visible: true,
-            x: 0,
-            y: 0,
-            zIndex: 0,
-        },
-        group: {
-            alpha: 1,
-            children: [],
-            mask: -1,
-            rotation: 0,
-            scaleX: 1,
-            scaleY: 1,
-            skewX: 0,
-            skewY: 0,
-            visible: true,
-            x: 0,
-            y: 0,
-            zIndex: 0,
-        },
-        text: {
-            alpha: 1,
-            anchorX: 0,
-            anchorY: 0,
-            blendMode: 0,
-            fillColor: 0,
-            fontFamily: "Lato",
-            fontSize: 26,
-            fontWeight: "normal",
-            mask: -1,
-            maxWidth: 0,
-            rotation: 0,
-            scaleX: 1,
-            scaleY: 1,
-            skewX: 0,
-            skewY: 0,
-            strokeColor: 0,
-            strokeThickness: 0,
-            text: "",
-            textAlign: "left",
-            tint: 16777215,
-            visible: true,
-            x: 0,
-            y: 0,
-            zIndex: 0,
-        },
-        line: {
-            alpha: 1,
-            blendMode: 0,
-            curve: {},
-            fillAlpha: 1,
-            fillColor: 0xFFFFFF,
-            lineAlpha: 1,
-            lineColor: 0,
-            lineWidth: 1,
-            mask: -1,
-            rotation: 0,
-            scaleX: 1,
-            scaleY: 1,
-            skewX: 0,
-            skewY: 0,
-            t: 0,
-            visible: true,
-            x: 0,
-            y: 0,
-            zIndex: 0,
-        },
-        rect: {
-            alpha: 1,
-            blendMode: 0,
-            curve: {},
-            fillAlpha: 1,
-            fillColor: 0xFFFFFF,
-            lineAlpha: 1,
-            lineColor: 0,
-            lineWidth: 1,
-            mask: -1,
-            width: 25,
-            height: 25,
-            rotation: 0,
-            scaleX: 1,
-            scaleY: 1,
-            skewX: 0,
-            skewY: 0,
-            t: 0,
-            visible: true,
-            x: 0,
-            y: 0,
-            zIndex: 0,
-        },
+        sprite: { alpha: 1, anchorX: 0, anchorY: 0, baseHeight: null, baseWidth: null, blendMode: 0, curve: {}, image: null, mask: -1, rotation: 0, scaleMode: "LINEAR", scaleX: 1, scaleY: 1, skewX: 0, skewY: 0, t: 0, tint: 0xFFFFFF, visible: true, x: 0, y: 0, zIndex: 0, },
+        circle: { alpha: 1, blendMode: 0, curve: {}, fillAlpha: 1, fillColor: 0xFFFFFF, lineAlpha: 1, lineColor: 0, lineWidth: 1, mask: -1, radius: 25, rotation: 0, scaleX: 1, scaleY: 1, skewX: 0, skewY: 0, t: 0, visible: true, x: 0, y: 0, zIndex: 0, },
+        group: { alpha: 1, children: [], mask: -1, rotation: 0, scaleX: 1, scaleY: 1, skewX: 0, skewY: 0, visible: true, x: 0, y: 0, zIndex: 0, },
+        text: { alpha: 1, anchorX: 0, anchorY: 0, blendMode: 0, fillColor: 0, fontFamily: "Lato", fontSize: 26, fontWeight: "normal", mask: -1, maxWidth: 0, rotation: 0, scaleX: 1, scaleY: 1, skewX: 0, skewY: 0, strokeColor: 0, strokeThickness: 0, text: "", textAlign: "left", tint: 16777215, visible: true, x: 0, y: 0, zIndex: 0, },
+        line: { alpha: 1, blendMode: 0, curve: {}, fillAlpha: 1, fillColor: 0xFFFFFF, lineAlpha: 1, lineColor: 0, lineWidth: 1, mask: -1, rotation: 0, scaleX: 1, scaleY: 1, skewX: 0, skewY: 0, t: 0, visible: true, x: 0, y: 0, zIndex: 0, },
+        rect: { alpha: 1, blendMode: 0, curve: {}, fillAlpha: 1, fillColor: 0xFFFFFF, lineAlpha: 1, lineColor: 0, lineWidth: 1, mask: -1, width: 25, height: 25, rotation: 0, scaleX: 1, scaleY: 1, skewX: 0, skewY: 0, t: 0, visible: true, x: 0, y: 0, zIndex: 0, },
     }
 }
 
@@ -194,9 +63,7 @@ export class TaskModule {
 
         if (task.type === "A" && task.amount > 0) {
             const to = this.getOffsetNode(task.target, 1 - task.player)
-            this.performMove(frameInfo, (1 - task.player), to, to, task.amount, {}, {
-                alpha: 0
-            })
+            this.performMove(frameInfo, (1 - task.player), to, to, task.amount, {}, { alpha: 0 })
             this.animateAttack(frameInfo, task.player, task.triangle, to)
         }
     }
@@ -211,45 +78,17 @@ export class TaskModule {
             TinyToggleModule.instance.registerToggle(sprite, "d", false)
         }
 
-        var spriteParams = {
-            ...graphicsHelper.defaults.sprite,
-            x: from.x,
-            y: from.y,
-            zIndex: 9,
-            image: "x" + "rb" [player] + ".png",
-            t: 0.5,
-            scaleX: 0.1,
-            scaleY: 0.1,
-            anchorX: 0.5,
-            anchorY: 0.5
-        }
-        sprite.addState(0.5, {
-            values: spriteParams,
-            curve: {}
-        }, frameInfo.number, frameInfo)
-        var spriteMoveParams = {
-            ...spriteParams,
-            x: to.x,
-            y: to.y,
-            t: 1,
-            rotation: 180,
-            visible: false
-        }
-        sprite.addState(1, {
-            values: spriteMoveParams,
-            curve: {}
-        }, frameInfo.number, frameInfo)
+        var spriteParams = { ...graphicsHelper.defaults.sprite, x: from.x, y: from.y, zIndex: 9, image: "x" + "rb" [player] + ".png", t: 0.5, scaleX: 0.1, scaleY: 0.1, anchorX: 0.5, anchorY: 0.5 }
+        sprite.addState(0.5, { values: spriteParams, curve: {} }, frameInfo.number, frameInfo)
+        var spriteMoveParams = { ...spriteParams, x: to.x, y: to.y, t: 1, rotation: 180, visible: false }
+        sprite.addState(1, { values: spriteMoveParams, curve: {} }, frameInfo.number, frameInfo)
 
         this.spriteTurnCache.push(sprite)
     }
 
     generateDisappearAnimation(frameInfo, task) {
         const to = this.getOffsetNode(task.target, task.player)
-        this.performMove(frameInfo, task.player, to, to, task.amount, {}, {
-            scaleX: 0,
-            scaleY: 0,
-            alpha: 0
-        })
+        this.performMove(frameInfo, task.player, to, to, task.amount, {}, { scaleX: 0, scaleY: 0, alpha: 0 })
     }
 
     performMove(frameInfo, player, from, to, amount, initialArgs = {}, finalArgs = {}) {
@@ -271,100 +110,27 @@ export class TaskModule {
             var text = EntityFactory.create("T")
             text.id = ++graphicsHelper.runtimeId
             entityModule.entities.set(text.id, text)
-            var group = {
-                knight: knight,
-                circle: circle,
-                text: text
-            }
+            var group = { knight: knight, circle: circle, text: text }
         }
 
         var t0 = initialArgs.t || 0
         var t1 = finalArgs.t || 1
         var knightOffset = 10 - 20 * player
         // set initial location
-        var knightParams = {
-            ...graphicsHelper.defaults.sprite,
-            x: from.x + knightOffset,
-            y: from.y,
-            zIndex: 9,
-            t: t0,
-            image: "rb" [player] + Math.min(5, amount) + ".png",
-            tint: graphicsHelper.playerColors[player],
-            scaleX: 0.1,
-            scaleY: 0.1,
-            anchorX: 0.5,
-            anchorY: 0.5
-        }
-        knight.addState(t0, {
-            values: knightParams,
-            curve: {}
-        }, frameInfo.number, frameInfo)
-        var circleParams = {
-            ...graphicsHelper.defaults.circle,
-            x: from.x,
-            y: from.y,
-            t: t0,
-            fillColor: graphicsHelper.playerColors[player],
-            zIndex: 9
-        }
-        circle.addState(t0, {
-            values: circleParams,
-            curve: {}
-        }, frameInfo.number, frameInfo)
-        var textParams = {
-            ...graphicsHelper.defaults.text,
-            x: from.x,
-            y: from.y,
-            text: "" + amount,
-            t: t0,
-            zIndex: 10,
-            anchorX: 0.5,
-            anchorY: 0.5,
-            strokeThickness: 4,
-            fillColor: 0xFFFFFF
-        }
-        text.addState(t0, {
-            values: textParams,
-            curve: {}
-        }, frameInfo.number, frameInfo)
+        var knightParams = { ...graphicsHelper.defaults.sprite, x: from.x + knightOffset, y: from.y, zIndex: 9, t: t0, image: "rb" [player] + Math.min(5, amount) + ".png", tint: graphicsHelper.playerColors[player], scaleX: 0.1, scaleY: 0.1, anchorX: 0.5, anchorY: 0.5 }
+        knight.addState(t0, { values: knightParams, curve: {} }, frameInfo.number, frameInfo)
+        var circleParams = { ...graphicsHelper.defaults.circle, x: from.x, y: from.y, t: t0, fillColor: graphicsHelper.playerColors[player], zIndex: 9 }
+        circle.addState(t0, { values: circleParams, curve: {} }, frameInfo.number, frameInfo)
+        var textParams = { ...graphicsHelper.defaults.text, x: from.x, y: from.y, text: "" + amount, t: t0, zIndex: 10, anchorX: 0.5, anchorY: 0.5, strokeThickness: 4, fillColor: 0xFFFFFF }
+        text.addState(t0, { values: textParams, curve: {} }, frameInfo.number, frameInfo)
 
         // move and hide
-        var knightMoveParams = {
-            ...knightParams,
-            x: to.x + knightOffset,
-            y: to.y,
-            t: t1,
-            visible: false,
-            ...finalArgs
-        }
-        knight.addState(t1, {
-            values: knightMoveParams,
-            curve: {}
-        }, frameInfo.number, frameInfo)
-        var circleMoveParams = {
-            ...circleParams,
-            x: to.x,
-            y: to.y,
-            t: t1,
-            visible: false,
-            ...finalArgs
-        }
-        circle.addState(t1, {
-            values: circleMoveParams,
-            curve: {}
-        }, frameInfo.number, frameInfo)
-        var textMoveParams = {
-            ...textParams,
-            x: to.x,
-            y: to.y,
-            t: t1,
-            visible: false,
-            ...finalArgs
-        }
-        text.addState(t1, {
-            values: textMoveParams,
-            curve: {}
-        }, frameInfo.number, frameInfo)
+        var knightMoveParams = { ...knightParams, x: to.x + knightOffset, y: to.y, t: t1, visible: false, ...finalArgs }
+        knight.addState(t1, { values: knightMoveParams, curve: {} }, frameInfo.number, frameInfo)
+        var circleMoveParams = { ...circleParams, x: to.x, y: to.y, t: t1, visible: false, ...finalArgs }
+        circle.addState(t1, { values: circleMoveParams, curve: {} }, frameInfo.number, frameInfo)
+        var textMoveParams = { ...textParams, x: to.x, y: to.y, t: t1, visible: false, ...finalArgs }
+        text.addState(t1, { values: textMoveParams, curve: {} }, frameInfo.number, frameInfo)
 
         this.knightTurnCache.push(group)
     }
@@ -396,10 +162,7 @@ export class TaskModule {
                     var node1 = NodeModule.nodes[alphabet.indexOf(s[0])]
                     var node2 = NodeModule.nodes[alphabet.indexOf(s[1])]
                     var node3 = NodeModule.nodes[alphabet.indexOf(s[2])]
-                    task.from = {
-                        "x": (node1.x + node2.x + node3.x) / 3,
-                        "y": (node1.y + node2.y + node3.y) / 3
-                    }
+                    task.from = { "x": (node1.x + node2.x + node3.x) / 3, "y": (node1.y + node2.y + node3.y) / 3 }
                     task.to = node1
                     this.generateSpawnAnimation(frameInfo, task)
                 })
@@ -419,10 +182,7 @@ export class TaskModule {
                     task.node1 = node1
                     task.node2 = node2
                     task.node3 = node3
-                    task.triangle = {
-                        "x": (node1.x + node2.x + node3.x) / 3,
-                        "y": (node1.y + node2.y + node3.y) / 3
-                    }
+                    task.triangle = { "x": (node1.x + node2.x + node3.x) / 3, "y": (node1.y + node2.y + node3.y) / 3 }
                     task.target = target
                     task.amount = 1
                     if (s.length > 4) task.amount = parseInt(s.substr(4))

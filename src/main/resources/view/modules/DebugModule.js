@@ -64,7 +64,7 @@ export class DebugModule {
                         lineColor: graphicsHelper.playerColors[playerIndex], lineWidth: 3, zIndex: 10, fillAlpha: 0 }
                 }
                 if (d[0] == 'T') {
-                	p.splice(0, 2)
+                    p.splice(0, 2)
                     params = { ...graphicsHelper.defaults.text, ...params, text: p.join(" "), t: 0, fontSize: 25,
                         fillColor: graphicsHelper.playerColors[playerIndex], lineWidth: 3, zIndex: 10 }
                 }
