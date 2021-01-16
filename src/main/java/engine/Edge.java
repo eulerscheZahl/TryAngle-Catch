@@ -20,13 +20,11 @@ public class Edge {
     }
 
     public void makeNeighbors() {
-        n1.neighbors.add(n2);
-        n2.neighbors.add(n1);
+        n1.addNeighbor(n2);
     }
 
     public void unmakeNeighbors() {
-        n1.neighbors.remove(n2);
-        n2.neighbors.remove(n1);
+        n1.removeNeighbor(n2);
     }
 
     public static boolean ccw(Node a, Node b, Node c) {

@@ -4,6 +4,7 @@ import com.codingame.game.Player;
 import view.NodeView;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -126,5 +127,17 @@ public class Node {
 
     public String getInput(Player player) {
         return getId() + " " + units[player.getIndex()] + " " + units[player.getOpponent().getIndex()];
+    }
+
+    public void addNeighbor(Node node) {
+        if (neighbors.contains(node)) return;
+        neighbors.add(node);
+        neighbors.sort(Comparator.comparing(Node::getId));
+        node.addNeighbor(this);
+    }
+
+    public void removeNeighbor(Node node) {
+        this.neighbors.remove(node);
+        node.neighbors.remove(this);
     }
 }

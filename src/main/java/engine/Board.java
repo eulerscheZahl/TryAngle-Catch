@@ -431,15 +431,13 @@ public class Board {
     }
 
     public void connect(Node from, Node to) {
-        from.neighbors.add(to);
-        to.neighbors.add(from);
+        from.addNeighbor(to);
         updateTriangles();
         if (view != null) view.connect(from, to);
     }
 
     public void disconnect(Node from, Node to) {
-        from.neighbors.remove(to);
-        to.neighbors.remove(from);
+        from.removeNeighbor(to);
         updateTriangles();
         if (view != null) view.disconnect(from, to);
     }
