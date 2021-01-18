@@ -66,7 +66,7 @@ public class Referee extends AbstractReferee {
                     killPlayer(player, "is dominated");
                     continue;
                 }
-                player.sendInputLine(board.getInput(turn == 1, player));
+                player.sendInputLine(board.getInput(turn == 1, player, gameManager.getLeagueLevel() >= 3));
                 player.execute();
             }
 

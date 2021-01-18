@@ -401,7 +401,7 @@ public class Board {
         return result;
     }
 
-    public String getInput(boolean initial, Player player) {
+    public String getInput(boolean initial, Player player, boolean allowNewEdges) {
         if (player.getIndex() == 0) gameTurn++;
 
         StringBuilder sb = new StringBuilder();
@@ -420,12 +420,24 @@ public class Board {
             }
         }
 
+        ArrayList<String> canLink = new ArrayList<>();
+        for (Node n1 : nodes) {
+            for (Node n2 : nodes) {
+                if (n1.getId() < n2.getId() && !n1.neighbors.contains(n2) && canConnect(n1, n2)) {
+                    canLink.add(n1.getId() + " " + n2.getId());
+                }
+            }
+        }
+        if (!allowNewEdges) canLink.clear();
+
         sb.append(player.getScore() + " " + player.getOpponent().getScore() + "\n");
         for (Node node : nodes) sb.append(node.getInput(player) + "\n");
         sb.append(links.size() + "\n");
         for (String link : links) sb.append(link + "\n");
         sb.append(triangles.size() + "\n");
         for (Triangle triangle : triangles) sb.append(triangle.getInput(player) + "\n");
+        sb.append(canLink.size() + "\n");
+        for (String link : canLink) sb.append(link + "\n");
 
         return sb.toString();
     }

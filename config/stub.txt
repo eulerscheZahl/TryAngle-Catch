@@ -8,5 +8,7 @@ read pathCount:int
 loop pathCount read house1:int house2:int
 read triangleCount:int
 loop triangleCount read house1:int house2:int house3:int owner:int meCanCapture:bool opponentCanCapture:bool
+read linkableCount:int
+loop linkableCount read house1:int house2:int
 
 write MOVE 3 17 1

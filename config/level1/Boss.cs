@@ -138,6 +138,8 @@ class Solution
                 bool opponentCanCapture = inputs[5] != "0";
                 triangles.Add(new Triangle(nodes[node1], nodes[node2], nodes[node3], owner, meCanCapture, opponentCanCapture));
             }
+            int linkableCount = int.Parse(ReadLine());
+            for (int i = 0; i < linkableCount; i++) ReadLine();
 
             nodes.ForEach(n => n.ComputeDist());
 
