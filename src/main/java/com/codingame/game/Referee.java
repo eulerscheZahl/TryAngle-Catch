@@ -81,7 +81,9 @@ public class Referee extends AbstractReferee {
                 for (InputError error : player.popErrors()) {
                     if (error.isCritical()) {
                         killPlayer(player, error.getMessage());
-                    } else gameManager.addToGameSummary(player.getNicknameToken() + ": " + error.getMessage());
+                    } else {
+                        gameManager.addToGameSummary(player.getNicknameToken() + ": " + error.getMessage());
+                    }
                 }
             }
             board.applyDebug(taskManager);
@@ -94,6 +96,7 @@ public class Referee extends AbstractReferee {
 
     private void killPlayer(Player player, String message) {
         if (!player.isActive()) return;
+        gameManager.addToGameSummary(player.getNicknameToken() + ": " + message);
         player.deactivate(String.format("$%d %s!", player.getIndex(), message));
         player.setScore(-1);
         gameManager.endGame();
