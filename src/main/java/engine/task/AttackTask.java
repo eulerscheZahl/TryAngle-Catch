@@ -27,6 +27,10 @@ public class AttackTask extends Task {
         if (!hasFailedParsing() && !triangle.hasNeighbor(target)) addParsingError("Can't attack house " + target.getId() + " from given triangle", InputError.NOT_NEAR_TRIANGLE, false);
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
     @Override
     public boolean allowMultiplePerFrame() {
         return false;

@@ -4,11 +4,7 @@ import com.codingame.game.Player;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
-import engine.task.SurroundTask;
-import engine.task.MoveTask;
-import engine.task.Task;
-import engine.task.TaskManager;
-import engine.task.debug.DebugTask;
+import engine.task.*;
 import view.BoardView;
 import view.modules.DebugModule;
 import view.modules.NodeModule;
@@ -69,7 +65,7 @@ public class Board {
             updateTriangles();
             if (graphicEntityModule != null)
                 view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule, debugModule);
-            while (finalizeTurn()) ;
+            while (finalizeTurn(null)) ;
             return;
         }
 
@@ -173,7 +169,7 @@ public class Board {
 
         updateTriangles();
         view = new BoardView(this, graphicEntityModule, tooltipModule, toggleModule, nodeModule, taskModule, debugModule);
-        while (finalizeTurn()) ;
+        while (finalizeTurn(null)) ;
     }
 
     private boolean isStronglyConnected() {
@@ -290,6 +286,7 @@ public class Board {
         }
     }
 
+    private HashMap<String, Integer> turnSummary = new HashMap<>();
     public void applyActions(TaskManager taskManager) {
         killedSurrounded = false;
         Player.getPlayer(0).updateView();
@@ -312,9 +309,16 @@ public class Board {
         for (Task task : toApply) {
             if (!task.canApply(this, false)) continue;
             if (task.allowMultiplePerFrame() && !task.canApply(this, true)) continue;
+
+            if (task instanceof SpawnTask) addSummary(task.getPlayer().getNicknameToken() + " spawned %d unit", 1);
+            if (task instanceof AddEdgeTask) addSummary(task.getPlayer().getNicknameToken() + " added %d path", 1);
+            if (task instanceof RemoveEdgeTask) addSummary(task.getPlayer().getNicknameToken() + " removed %d path", 1);
+            if (task instanceof AttackTask) addSummary(task.getPlayer().getNicknameToken() + " attacked %d unit", ((AttackTask)task).getAmount());
+
             task.apply(this);
             if (view != null) task.visualize(view);
             move |= task instanceof MoveTask;
+
         }
         taskManager.returnTasks(tasks);
 
@@ -324,6 +328,10 @@ public class Board {
         }
         makeStats();
         if (view != null) view.endMove();
+    }
+
+    private void addSummary(String message, int amount) {
+         turnSummary.put(message, turnSummary.getOrDefault(message, 0) + amount);
     }
 
     private void makeStats() {
@@ -344,7 +352,7 @@ public class Board {
         }
     }
 
-    public boolean finalizeTurn() {
+    public boolean finalizeTurn(MultiplayerGameManager<Player> gameManager) {
         for (Node node : nodes) node.finalizeTurn();
         if (view != null) view.clearMoves();
 
@@ -361,6 +369,14 @@ public class Board {
             triangle.finalizeTurn();
         }
         makeStats();
+        if (gameManager != null) {
+            for (String key : turnSummary.keySet()) {
+                String message = String.format(key, turnSummary.get(key));
+                if (turnSummary.get(key) != 1) message += "s";
+                gameManager.addToGameSummary(message);
+            }
+        }
+        turnSummary.clear();
         return false;
     }
 
@@ -380,6 +396,7 @@ public class Board {
             for (Node node : nodes) {
                 int opponentIndex = (i + 1) % 2;
                 if (node.units[i] > 0 && node.neighbors.size() > 0 && node.neighbors.stream().allMatch(n -> playerAdvantage[opponentIndex].contains(n))) {
+                    addSummary(Player.getPlayer(opponentIndex).getNicknameToken() + " surrounded %d unit", node.units[i]);
                     if (view != null) view.animateTask(new SurroundTask(node, Player.getPlayer(i), node.units[i]));
                     node.units[i] = 0;
                     node.updateView(i, true);
@@ -395,7 +412,9 @@ public class Board {
     private boolean captureTriangles() {
         boolean result = false;
         for (Triangle triangle : triangles) {
-            result |= triangle.capture();
+            boolean capture = triangle.capture();
+            result |= capture;
+            if (capture)  addSummary(triangle.getOwner().getNicknameToken() + " captured %d triangle", 1);
         }
         if (result && view != null) view.updateTurn(gameTurn, "CAPTURE");
         return result;

@@ -53,7 +53,7 @@ public class Referee extends AbstractReferee {
     @Override
     public void gameTurn(int turn) {
         if (!taskManager.hasTasks()) {
-            if (board.finalizeTurn()) {
+            if (board.finalizeTurn(gameManager)) {
                 gameManager.setMaxTurns(gameManager.getMaxTurns() + 1);
                 return;
             }

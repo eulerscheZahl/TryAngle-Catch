@@ -1,11 +1,8 @@
 package engine;
 
 import com.codingame.game.Player;
-import com.codingame.gameengine.core.GameManager;
 import com.codingame.gameengine.core.MultiplayerGameManager;
-import com.codingame.gameengine.runner.MultiplayerGameRunner;
 import engine.task.TaskManager;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
@@ -45,7 +42,7 @@ public class BoardTest {
         taskManager.parseTasks(Player.getPlayer(1), board, player1, 5);
         while (taskManager.hasTasks())
             board.applyActions(taskManager);
-        while (board.finalizeTurn()) ;
+        while (board.finalizeTurn(null)) ;
     }
 
     private void assertWasUsed(Triangle triangle, Player player) {
