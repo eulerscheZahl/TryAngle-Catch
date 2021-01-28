@@ -75,11 +75,11 @@ class Triangle
     public IEnumerable<List<Node>> CornerPermutations()
     {
         yield return new List<Node> { Node1, Node2, Node3 };
-        yield return new List<Node> { Node1, Node3, Node2 };
-        yield return new List<Node> { Node2, Node1, Node3 };
-        yield return new List<Node> { Node2, Node3, Node1 };
-        yield return new List<Node> { Node3, Node1, Node2 };
-        yield return new List<Node> { Node3, Node2, Node1 };
+        //yield return new List<Node> { Node1, Node3, Node2 };
+        //yield return new List<Node> { Node2, Node1, Node3 };
+        //yield return new List<Node> { Node2, Node3, Node1 };
+        //yield return new List<Node> { Node3, Node1, Node2 };
+        //yield return new List<Node> { Node3, Node2, Node1 };
     }
 
     public override string ToString()
@@ -198,6 +198,8 @@ class Solution
                         {
                             bestCost = currentScore;
                             solution = string.Join(";", Enumerable.Range(0, 3).Select(i => sources[i].Move(corners[i])));
+                            foreach (Node node in sources) solution += ";CIRCLE " + node.X + " " + node.Y + " 45";
+                            for (int i = 0; i < corners.Count; i++) solution += ";LINE " + corners[i].X + " " + corners[i].Y + " " + corners[(i+1)%corners.Count].X + " " + corners[(i+1)%corners.Count].Y;
                             moving = sources;
                         }
                     }
