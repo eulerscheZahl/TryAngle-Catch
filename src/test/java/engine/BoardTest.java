@@ -41,7 +41,7 @@ public class BoardTest {
         taskManager.parseTasks(Player.getPlayer(0), board, player0, 5);
         taskManager.parseTasks(Player.getPlayer(1), board, player1, 5);
         while (taskManager.hasTasks())
-            board.applyActions(taskManager);
+            board.applyActions(taskManager, null);
         while (board.finalizeTurn(null)) ;
     }
 

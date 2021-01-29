@@ -287,7 +287,7 @@ public class Board {
     }
 
     private HashMap<String, Integer> turnSummary = new HashMap<>();
-    public void applyActions(TaskManager taskManager) {
+    public void applyActions(TaskManager taskManager, MultiplayerGameManager<Player> gameManager) {
         killedSurrounded = false;
         Player.getPlayer(0).updateView();
         Player.getPlayer(1).updateView();
@@ -313,9 +313,9 @@ public class Board {
             if (task instanceof SpawnTask) addSummary(task.getPlayer().getNicknameToken() + " spawned %d unit", 1);
             if (task instanceof AddEdgeTask) addSummary(task.getPlayer().getNicknameToken() + " added %d path", 1);
             if (task instanceof RemoveEdgeTask) addSummary(task.getPlayer().getNicknameToken() + " removed %d path", 1);
+            task.apply(this);
             if (task instanceof AttackTask) addSummary(task.getPlayer().getNicknameToken() + " attacked %d unit", ((AttackTask)task).getAmount());
 
-            task.apply(this);
             if (view != null) task.visualize(view);
             move |= task instanceof MoveTask;
 
@@ -328,6 +328,8 @@ public class Board {
         }
         makeStats();
         if (view != null) view.endMove();
+
+        if (!taskManager.hasTasks()) summarizeTurn(gameManager);
     }
 
     private void addSummary(String message, int amount) {
@@ -361,6 +363,7 @@ public class Board {
         }
         if (surroundNodes() || captureTriangles()) {
             makeStats();
+            summarizeTurn(gameManager);
             return true;
         }
 
@@ -369,6 +372,11 @@ public class Board {
             triangle.finalizeTurn();
         }
         makeStats();
+        summarizeTurn(gameManager);
+        return false;
+    }
+
+    private void summarizeTurn(MultiplayerGameManager<Player> gameManager) {
         if (gameManager != null) {
             for (String key : turnSummary.keySet()) {
                 String message = String.format(key, turnSummary.get(key));
@@ -377,7 +385,6 @@ public class Board {
             }
         }
         turnSummary.clear();
-        return false;
     }
 
     private boolean surroundNodes() {

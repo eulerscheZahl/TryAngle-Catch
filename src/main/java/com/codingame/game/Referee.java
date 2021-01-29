@@ -91,7 +91,7 @@ public class Referee extends AbstractReferee {
             gameManager.setMaxTurns(gameManager.getMaxTurns() + 1);
         }
 
-        board.applyActions(taskManager);
+        board.applyActions(taskManager, gameManager);
     }
 
     private void killPlayer(Player player, String message) {
