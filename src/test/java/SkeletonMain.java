@@ -13,9 +13,9 @@ public class SkeletonMain {
         //parameters.put("units", "1,0_0,1_1,0_0,1_1,0_0,1");
         //gameRunner.setGameParameters(parameters);
 
-        gameRunner.addAgent(Agent1.class);
-        //gameRunner.addAgent("mono /home/eulerschezahl/Documents/Programming/challenges/CodinGame/TryangleCatch/bin/Debug/TryangleCatch.exe", "eulerscheZahl", "https://static.codingame.com/servlet/fileservlet?id=43135502422075&format=profile_avatar");
-        gameRunner.addAgent("mono /home/eulerschezahl/Documents/Programming/challenges/CodinGame/TryangleCatch/bin/Debug/TryangleCatch.exe", "struct", "https://static.codingame.com/servlet/fileservlet?id=45097182899192&format=profile_avatar");
+        //gameRunner.addAgent(Agent1.class);
+        gameRunner.addAgent("mono /home/eulerschezahl/Documents/Programming/challenges/CodinGame/TryangleCatch/bin/Debug/TryangleCatch.exe", "eulerscheZahl", "https://static.codingame.com/servlet/fileservlet?id=43135502422075&format=profile_avatar");
+        gameRunner.addAgent("mono /home/eulerschezahl/Documents/Programming/challenges/CodinGame/TryangleCatch/bin/Debug/TryangleCatch.exe", "struct", "https://static.codingame.com/servlet/fileservlet?id=61418101984360&format=profile_avatar");
         gameRunner.start();
     }
 }

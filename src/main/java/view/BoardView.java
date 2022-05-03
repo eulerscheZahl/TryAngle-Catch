@@ -46,13 +46,13 @@ public class BoardView {
         Player.getPlayer(0).initView(graphics, toggleModule);
         Player.getPlayer(1).initView(graphics, toggleModule);
 
-        Sprite scoreBox = graphics.createSprite().setX(graphics.getWorld().getWidth() / 2).setY(-45).setAnchorX(0.5).setImage("decor_4.png").setScaleX(1.8).setScaleY(1.5).setZIndex(2);
+        Sprite scoreBox = graphics.createSprite().setX(graphics.getWorld().getWidth() / 2).setY(-45).setAnchorX(0.5).setImage("decor_4.png").setScaleX(1.8).setScaleY(1.5).setZIndex(3);
         Rectangle rect = graphics.createRectangle().setWidth(graphics.getWorld().getWidth()).setHeight(200).setFillColor(0xFFFFFF).setZIndex(1);
-        Sprite wall1 = graphics.createSprite().setImage("w.png").setScale(2).setZIndex(1).setAlpha(0.6);
-        Sprite wall2 = graphics.createSprite().setX(682).setImage("w.png").setScale(2).setZIndex(1).setAlpha(0.6);
-        Sprite wall3 = graphics.createSprite().setX(682 * 2).setImage("w.png").setScale(2).setZIndex(1).setAlpha(0.6);
+        Sprite wall1 = graphics.createSprite().setImage("w.png").setScale(2).setZIndex(2).setAlpha(0.6);
+        Sprite wall2 = graphics.createSprite().setX(682).setImage("w.png").setScale(2).setZIndex(2).setAlpha(0.6);
+        Sprite wall3 = graphics.createSprite().setX(682 * 2).setImage("w.png").setScale(2).setZIndex(2).setAlpha(0.6);
 
-        Group decor = graphics.createGroup(rect, wall1, wall2, wall3, scoreBox).setY(945);
+        Group decor = graphics.createGroup(rect, wall1, wall2, wall3, scoreBox).setY(945).setZIndex(1);
         toggleModule.displayOnToggleState(decor, "d", false);
         textTurn = graphics.createText().setX(graphics.getWorld().getWidth() / 2 - 5).setY(990).setAnchorX(0.5).setFontSize(30).setText("Tryangle catch").setZIndex(2);
     }
