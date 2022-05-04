@@ -71,10 +71,10 @@ export class TinyToggleModule {
         var markerContainer = document.getElementsByClassName("marker_container")[0]
         var subClasses = ["ai_player", "tooltip_content", "tooltipFrameTriangle"]
         subClasses.forEach(c => {
-            markerContainer.getElementsByClassName(c).forEach(e => {
+            for (let e of markerContainer.getElementsByClassName(c)) {
                 if (e.style.backgroundColor == TinyToggleModule.toRgb(oldColor[1])) e.style.backgroundColor = TinyToggleModule.toRgb(newColor[1]);
                 if (e.style.borderTopColor == TinyToggleModule.toRgb(oldColor[1])) e.style.borderTopColor = TinyToggleModule.toRgb(newColor[1]);
-            })
+            }
         })
 
     }
